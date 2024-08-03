@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <div className='home-container justify-around'>
     <Header />
-    <main style={{ width: "100%" }}>&apos;
+    <main style={{ width: "100%" }}>
         <div className='main-container'>
             <div className='w-full relative'>
                 <div className='relative w-full h-[801px] top-[0px] right-[0px] responsive-tire-image'>

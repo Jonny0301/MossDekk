@@ -3444,6 +3444,23 @@
     .mcscat-select-tag{
         width: 100%;
     }
+    .cat-info-input-special{
+        max-width: unset;
+        width: 100%;
+    }
+    .cat-info-input-special>div{
+        max-width: unset;
+        width: 100%;
+    }
+    .cat-info-btn-group{
+        justify-content: flex-end;
+    }
+    .pp-product-list{
+        grid: unset;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 
 @media (max-width:650px) {
@@ -4296,6 +4313,10 @@
     .guide-pan-section-title>p {
         font-size: 14px;
     }
+    
+    
+
+
 }
 
 @media (max-width:442px) {

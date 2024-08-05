@@ -3086,7 +3086,7 @@
     }
 
     .dmp-text {
-        font-size:20px;
+        font-size: 20px;
     }
 
     .download-main-pan {
@@ -3432,34 +3432,92 @@
         font-style: normal;
         font-weight: 400;
     }
-    .main-product-pan{
+
+    .main-product-pan {
         flex-direction: column;
     }
-    .mpp-category-control-pan{
+
+    .mpp-category-control-pan {
         order: 1;
     }
-    .pp-product-list{
+
+    .pp-product-list {
         order: 2;
     }
-    .mcscat-select-tag{
+
+    .mcscat-select-tag {
         width: 100%;
     }
-    .cat-info-input-special{
+
+    .cat-info-input-special {
         max-width: unset;
         width: 100%;
     }
-    .cat-info-input-special>div{
+
+    .cat-info-input-special>div {
         max-width: unset;
         width: 100%;
     }
-    .cat-info-btn-group{
+
+    .cat-info-btn-group {
         justify-content: flex-end;
     }
-    .pp-product-list{
+
+    .pp-product-list {
         grid: unset;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    .main-cat-search-title>p {
+        font-size: 18px;
+        line-height: 1.75rem;
+    }
+
+    .category-control-main-cat-info {
+        gap: 16px;
+    }
+
+    .mcscat-title>p {
+        font-size: 16px;
+        line-height: 1.5rem;
+    }
+
+    .mpp-category-control-pan {
+        gap: 16px;
+    }
+
+    .cat-info-item-title>p {
+        font-size: 16px;
+        line-height: 1.75rem;
+    }
+
+    .mcscat-select-tag {
+        padding: 5px 8px 5px 10px;
+    }
+
+    .mcscat-select-tag-item {
+        width: 100px;
+        text-align: center;
+    }
+
+    .mcscat-select-tag-item>p {
+        font-size: 14px;
+        line-height: 1.25rem;
+    }
+
+    .cat-info-input>select {
+        padding: 12px 13px 12px 10px;
+    }
+
+    .cat-info-search-btn {
+        padding: 14px 113.5px;
+        width: 280px;
+    }
+
+    .cat-info-reset-btn {
+        padding: 14px 13px;
     }
 }
 
@@ -4229,6 +4287,27 @@
     .collapse-container {
         gap: 12px;
     }
+
+    .products-pan-title {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .ppt-main-title {
+        padding: 0;
+    }
+
+    .ppt-main-title>p {
+        font-size: 30px;
+        line-height: 2.25rem;
+    }
+
+    .ppt-cat-type-title>p {
+        font-size: 18px;
+        line-height: 1.75rem;
+    }
 }
 
 @media (max-width:476px) {
@@ -4313,11 +4392,13 @@
     .guide-pan-section-title>p {
         font-size: 14px;
     }
-    
-    
+
+
 
 
 }
+
+@media (max-width:449px) {}
 
 @media (max-width:442px) {
     .responsive-header {

@@ -180,3 +180,8 @@ input::placeholder {
   width: 97.68px;
   height: 97.74px;
 }
+.dashed-line {
+  flex-grow: 1;
+  border-bottom: 1px dashed #ccc;
+  margin: 0 10px;
+}

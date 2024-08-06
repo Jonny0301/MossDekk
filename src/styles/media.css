@@ -1252,12 +1252,14 @@
         gap: 65px;
     }
 }
-@media (max-width:1340px){
-    .pdi-info-item-img > svg{
+
+@media (max-width:1340px) {
+    .pdi-info-item-img>svg {
         width: 79px !important;
         height: 79px !important;
     }
 }
+
 @media (max-width:1332px) {
     .header-nav-item {
         padding-right: 80px;
@@ -1914,6 +1916,12 @@
         padding-right: 50px;
         padding-left: 44px;
     }
+
+    .fcip-item>svg path{
+        /* stroke: #AAAAAA !important; */
+        color: orange;
+    }
+
 
     .responsive-header {
         padding-right: 60px;
@@ -3060,6 +3068,13 @@
 
 }
 
+@media (max-width:834px) {
+    .cancel-btn>svg {
+        width: 24px !important;
+        height: 24px !important;
+    }
+}
+
 @media (max-width:802px) {
     .report-main-infor {
         padding-top: 11px;
@@ -3525,11 +3540,13 @@
     .cat-info-reset-btn {
         padding: 14px 13px;
     }
-    .main-product-pan{
+
+    .main-product-pan {
         gap: 41px;
     }
-    .products-total-amount{
-padding-bottom: 14px;
+
+    .products-total-amount {
+        padding-bottom: 14px;
     }
 }
 
@@ -4118,12 +4135,14 @@ padding-bottom: 14px;
         width: 75%;
     }
 }
-@media (max-width:520px){
-    .pdi-info-item-img > svg{
+
+@media (max-width:520px) {
+    .pdi-info-item-img>svg {
         width: 70px !important;
         height: 70px !important;
     }
 }
+
 @media (max-width:504px) {
     .about-founder-pan {
         margin-left: 10%;
@@ -4416,36 +4435,44 @@ padding-bottom: 14px;
 }
 
 @media (max-width:449px) {
-    .pp-product-list-mpp-image{
+    .pp-product-list-mpp-image {
         width: 331px;
         height: 312px;
     }
-    .pp-product-list-mpp-main-info{
+
+    .pp-product-list-mpp-main-info {
         width: 331px;
         height: 336px;
         padding: 11.5px 34px;
     }
-    .pp-product-list-mpp-image-outback>img{
+
+    .pp-product-list-mpp-image-outback>img {
         width: 176.52px;
         height: 238px;
     }
-    .pp-product-list-mmp-exact-info>p{
+
+    .pp-product-list-mmp-exact-info>p {
         font-size: 18px;
         line-height: 1.75rem;
     }
-    .pp-product-list-mmp-exact-info{
+
+    .pp-product-list-mmp-exact-info {
         height: auto;
     }
-    .pp-product-list-mmp-figures{
+
+    .pp-product-list-mmp-figures {
         margin-top: 28px;
     }
-    .pp-product-list-mmp-figures>p{
+
+    .pp-product-list-mmp-figures>p {
         font-size: 18px;
         line-height: 1.75rem;
     }
-    .pp-product-list-mmp-show-tyre-infor{
+
+    .pp-product-list-mmp-show-tyre-infor {
         margin-top: 19px;
     }
+
     .pp-product-list-mmp-show-tyre-infor-detail-svg {
         padding: 3.99px 4px;
     }
@@ -4454,36 +4481,41 @@ padding-bottom: 14px;
         width: 24px;
         height: 24px;
     }
+
     .pp-product-list-mmp-show-tyre-infor-detail-figures {
         padding: 6px 10.5px;
     }
+
     .pp-product-list-mmp-price {
         padding-top: 19px;
     }
+
     .pp-product-list-mmp-price>p {
         font-size: 18px;
         line-height: 1.75rem;
     }
-    
+
     .pp-product-list-mmp-price>span {
         font-size: 18px;
         line-height: 1.75rem;
     }
+
     .pp-product-list-mmp-btn-group {
         padding-top: 19px;
         gap: 6px;
     }
-    .pp-product-list-mmp-btn-group > div{
+
+    .pp-product-list-mmp-btn-group>div {
         width: 88px;
         height: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    .products-pan{
+
+    .products-pan {
         padding-top: 23px;
-        padding-bottom: 118px
-        ;
+        padding-bottom: 118px;
     }
 }
 

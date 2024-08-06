@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import Header from "@/components/Header";
@@ -16,7 +17,7 @@ import Swiper from 'swiper';
 import { Navigation } from "swiper/modules";
 import { Thumbs } from "swiper/modules";
 import 'swiper/swiper-bundle.css';
-import Dfacebook from "@/svg/dfacebook";
+import Dfacebook from "@/svg/Dfacebook";
 import Dinstagram from "@/svg/Dinstagram";
 import Dlinkedin from "@/svg/Dlinkedin";
 import Dtwitter from "@/svg/Dtwitter";

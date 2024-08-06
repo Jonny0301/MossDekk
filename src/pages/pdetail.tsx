@@ -16,7 +16,7 @@ import Swiper from 'swiper';
 import { Navigation } from "swiper/modules";
 import { Thumbs } from "swiper/modules";
 import 'swiper/swiper-bundle.css';
-import Dfacebook from "@/svg/dfacebook";
+import Dfacebook from "@/svg/Dfacebook";
 import Dinstagram from "@/svg/Dinstagram";
 import Dlinkedin from "@/svg/Dlinkedin";
 import Dtwitter from "@/svg/Dtwitter";

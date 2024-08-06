@@ -1,150 +1,182 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .home-container {
-    display: flex;
-    flex-grow: 1;
-    background-color: #1B1B1B;
-    width: 100%;
-    flex-direction: column;
+  display: flex;
+  flex-grow: 1;
+  background-color: #1B1B1B;
+  width: 100%;
+  flex-direction: column;
 }
 
 .show-nav-bar {
-    display: none;
+  display: none;
 }
 
 .responsive-language {
-    display: none;
+  display: none;
 }
 
 .main-container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
 }
 
 .responsive-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
 }
 
 .background-gradient {
-    opacity: 0.85;
-    background: linear-gradient(96deg, #161B1E 28.56%, #617784 96.5%);
-    mix-blend-mode: multiply;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
+  opacity: 0.85;
+  background: linear-gradient(96deg, #161B1E 28.56%, #617784 96.5%);
+  mix-blend-mode: multiply;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
 }
-.responsive-rti-image{
-    display: none;
+
+.responsive-rti-image {
+  display: none;
 }
-a{
-    cursor: pointer;
+
+a {
+  cursor: pointer;
 }
+
 select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: #fff;
-    color: #000;
-    padding: 8px 12px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    width: 100%;
-  }
-  
-  select:focus {
-    border-color: #3182ce; /* Tailwind color */
-    outline: none;
-  }
-  
-  option {
-    background-color: #fff; /* Ensuring options have a consistent background */
-    color: #000; /* Text color for options */
-  }
-  .service-pan-slide-item{
-    display: none;
-  }
-  .responsive-tire-change-human{
-    display: none;
-  }
-  .passenger-tire-item{
-    padding-top: 30px;
-  }
-  .responsive-passenger-tire-title{
-    display: none;
-  }
-  .responsive-passenger-tire-text{
-    display: none;
-  }
-  input::placeholder {
-    color: #000000; /* Tailwind's gray-400 color */
-    font-family: "Inter" sans-serif;
-    font-style: Normal; /* Optional: to make the placeholder text italic */
-  }
-  .second-price-service-image{
-    display: none;
-  }
-
-
-
-
-
-  .custom-input {
-  
-      height: 2px;                    /* Height of each bar */
-      background: repeating-linear-gradient(
-        90deg,                        /* Gradient direction: left to right */
-        dimgrey 0,                    /* Start with dimgrey color */
-        dimgrey 59px,                  /* Bar width: 2px */
-        transparent 2px,              /* Start transparency right after the bar */
-        transparent calc(59px + 14px)  /* End transparency: bar width + spacing */
-      ) 0 0 / 480px 16px no-repeat;    /* Background size: total width and bar height */
-  }
-
-
-  .ok-icon > svg{
-    width: 128.95px;
-    height: 122.83px;
-  }
-  .slide-icon>svg{
-    width: 123px;
-    height: 123px;
-  }
-  .mpp-image-outback{
-    width: 176.52px;
-    height: 238px;
-  }
-  .mpp-image-outback > img{
-    width: 176.52px;
-    height: 238px;
-  }
-
-
-  .nav-for-slider .swiper-slide {
-    height: auto;
-    width: auto;
-    cursor: pointer;
-   
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  color: #000;
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
 }
-.swiper-wrapper{
-    height: auto;
+
+select:focus {
+  border-color: #3182ce;
+  /* Tailwind color */
+  outline: none;
 }
-.nav-for-slider .swiper-slide img{
-    border:2px solid transparent;
-    border-radius: 10px;
-   
+
+option {
+  background-color: #fff;
+  /* Ensuring options have a consistent background */
+  color: #000;
+  /* Text color for options */
 }
-.nav-for-slider .swiper-slide-thumb-active img{
-   
-    border-color: rgb(79 70 229 );
+
+.service-pan-slide-item {
+  display: none;
+}
+
+.responsive-tire-change-human {
+  display: none;
+}
+
+.passenger-tire-item {
+  padding-top: 30px;
+}
+
+.responsive-passenger-tire-title {
+  display: none;
+}
+
+.responsive-passenger-tire-text {
+  display: none;
+}
+
+input::placeholder {
+  color: #000000;
+  /* Tailwind's gray-400 color */
+  font-family: "Inter" sans-serif;
+  font-style: Normal;
+  /* Optional: to make the placeholder text italic */
+}
+
+.second-price-service-image {
+  display: none;
+}
+
+
+
+
+
+.custom-input {
+
+  height: 2px;
+  /* Height of each bar */
+  background: repeating-linear-gradient(90deg,
+      /* Gradient direction: left to right */
+      dimgrey 0,
+      /* Start with dimgrey color */
+      dimgrey 59px,
+      /* Bar width: 2px */
+      transparent 2px,
+      /* Start transparency right after the bar */
+      transparent calc(59px + 14px)
+      /* End transparency: bar width + spacing */
+    ) 0 0 / 480px 16px no-repeat;
+  /* Background size: total width and bar height */
+}
+
+
+.ok-icon>svg {
+  width: 128.95px;
+  height: 122.83px;
+}
+
+.slide-icon>svg {
+  width: 123px;
+  height: 123px;
+}
+
+.mpp-image-outback {
+  width: 176.52px;
+  height: 238px;
+}
+
+.mpp-image-outback>img {
+  width: 176.52px;
+  height: 238px;
+}
+
+
+.nav-for-slider .swiper-slide {
+  height: auto;
+  width: auto;
+  cursor: pointer;
+
+}
+
+.swiper-wrapper {
+  height: auto;
+}
+
+.nav-for-slider .swiper-slide img {
+  border: 2px solid transparent;
+  border-radius: 10px;
+
+}
+
+.nav-for-slider .swiper-slide-thumb-active img {
+
+  border-color: rgb(79 70 229);
+}
+
+.pdi-info-item-img>svg {
+  width: 97.68px;
+  height: 97.74px;
 }

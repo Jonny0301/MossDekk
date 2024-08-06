@@ -1252,7 +1252,12 @@
         gap: 65px;
     }
 }
-
+@media (max-width:1340px){
+    .pdi-info-item-img > svg{
+        width: 79px !important;
+        height: 79px !important;
+    }
+}
 @media (max-width:1332px) {
     .header-nav-item {
         padding-right: 80px;
@@ -4113,7 +4118,12 @@ padding-bottom: 14px;
         width: 75%;
     }
 }
-
+@media (max-width:520px){
+    .pdi-info-item-img > svg{
+        width: 70px !important;
+        height: 70px !important;
+    }
+}
 @media (max-width:504px) {
     .about-founder-pan {
         margin-left: 10%;

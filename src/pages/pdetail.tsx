@@ -165,7 +165,7 @@ export default function Pricing() {
                                     <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#AAAAAA] max-[1340px]:px-[12px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[7.39px]">
                                         <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">Gå tilbake</p>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div className="pdi-category flex flex-row pt-[22px] gap-[7px] max-[1340px]:pt-[11px] max-[1340px]:gap-[5px] max-[520px]:pt-[11.79px]">
@@ -175,11 +175,11 @@ export default function Pricing() {
                             <div className="pdi-chare flex flex-row gap-[13px] pt-[6px] max-[520px]:pt-[5px+]">
                                 <p className="text-base font-medium text-[#000000] leading-5 max-[1340px]:text-sm">Share</p>
                                 <div className="flex flex-row gap-[20px] max-[1340px]:gap-[14px]">
-                                    <Dfacebook/>
-                                    <Dinstagram/>
-                                    <Dyoutube/>
-                                    <Dtwitter/>
-                                    <Dlinkedin/>
+                                    <Dfacebook />
+                                    <Dinstagram />
+                                    <Dyoutube />
+                                    <Dtwitter />
+                                    <Dlinkedin />
                                 </div>
                             </div>
                         </div>
@@ -190,11 +190,242 @@ export default function Pricing() {
                         </div>
                         <div className="pdd-content pt-[32px] max-[1450px]:pt-[15px]">
                             <p className="text-lg leading-7 font-normal font-['Inter'] text-black max-[1450px]:text-sm">Sorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur xcepteur sint occaecat cupidatat non proident, sunt.
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cdolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudinInteger in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper</p>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cdolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudinInteger in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper</p>
                         </div>
 
                     </div>
-                    
+                    <div className="product-detail-related flex flex-col gap-[33px] pl-[310px] pr-[206px] bg-white pb-[23px] max-[1846px]:px-[80px] max-[1024px]:pb-[82px] max-[1024px]:gap-[41px] max-[745px]:px-[16px] max-[643px]:items-center max-[400px]:gap-[25px] max-[1400px]:pb-[46px]">
+                        <div className="pdr-title w-full text-start max-[643px]:justify-center max-[643px]:flex max-[400px]:justify-start">
+                            <p className="text-2xl text-black font-semi-bold max-[1024px]:text-lg">Related products</p>
+                        </div>
+                        <div className="pdr-list grid grid-cols-4 gap-[28px] max-[948px]:grid-cols-3 max-[643px]:flex max-[643px]:flex-wrap max-[643px]:justify-center max-[400px]:gap-[14px]">
+                            <div className="pp-product-list-main-product-pan flex flex-col">
+                                <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
+                                    <div className="pp-product-list-mpp-image-outback absolute">
+                                        <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                    </div>
+                                </div>
+                                <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
+                                    <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
+                                        <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
+                                            <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                                        </div>
+                                    </div>
+                                    <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
+                                        <p className="text-lg leading-7 font-semi-bold text-black">Linglong</p>
+                                        <p className="text-lg leading-7 font-semi-bold text-black">Sport Master</p>
+                                        <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">205/55-16 91 V</p>
+                                    </div>
+                                    <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Info_first />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">C</p>
+                                            </div>
+                                        </div>
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Infor_second />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">68</p>
+                                            </div>
+                                        </div>
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Infor_third />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">A</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pp-product-list-mmp-price pt-[19px] flex flex-row justify-center">
+                                        <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK 944</span></p>
+                                    </div>
+                                    <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
+                                        <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018]">
+                                            <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                                        </div>
+                                        <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888]">
+                                            <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="pp-product-list-main-product-pan flex flex-col">
+                                <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
+                                    <div className="pp-product-list-mpp-image-outback absolute">
+                                        <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                    </div>
+                                </div>
+                                <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
+                                    <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
+                                        <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
+                                            <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                                        </div>
+                                    </div>
+                                    <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
+                                        <p className="text-lg leading-7 font-semi-bold text-black">Linglong</p>
+                                        <p className="text-lg leading-7 font-semi-bold text-black">Sport Master</p>
+                                        <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">205/55-16 91 V</p>
+                                    </div>
+                                    <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Info_first />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">C</p>
+                                            </div>
+                                        </div>
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Infor_second />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">68</p>
+                                            </div>
+                                        </div>
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Infor_third />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">A</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pp-product-list-mmp-price pt-[19px] flex flex-row justify-center">
+                                        <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK 944</span></p>
+                                    </div>
+                                    <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
+                                        <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018]">
+                                            <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                                        </div>
+                                        <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888]">
+                                            <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="pp-product-list-main-product-pan flex flex-col">
+                                <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
+                                    <div className="pp-product-list-mpp-image-outback absolute">
+                                        <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                    </div>
+                                </div>
+                                <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
+                                    <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
+                                        <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
+                                            <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                                        </div>
+                                    </div>
+                                    <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
+                                        <p className="text-lg leading-7 font-semi-bold text-black">Linglong</p>
+                                        <p className="text-lg leading-7 font-semi-bold text-black">Sport Master</p>
+                                        <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">205/55-16 91 V</p>
+                                    </div>
+                                    <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Info_first />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">C</p>
+                                            </div>
+                                        </div>
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Infor_second />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">68</p>
+                                            </div>
+                                        </div>
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Infor_third />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">A</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pp-product-list-mmp-price pt-[19px] flex flex-row justify-center">
+                                        <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK 944</span></p>
+                                    </div>
+                                    <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
+                                        <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018]">
+                                            <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                                        </div>
+                                        <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888]">
+                                            <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="pp-product-list-main-product-pan flex flex-col">
+                                <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
+                                    <div className="pp-product-list-mpp-image-outback absolute">
+                                        <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                    </div>
+                                </div>
+                                <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
+                                    <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
+                                        <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
+                                            <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                                        </div>
+                                    </div>
+                                    <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
+                                        <p className="text-lg leading-7 font-semi-bold text-black">Linglong</p>
+                                        <p className="text-lg leading-7 font-semi-bold text-black">Sport Master</p>
+                                        <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">205/55-16 91 V</p>
+                                    </div>
+                                    <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Info_first />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">C</p>
+                                            </div>
+                                        </div>
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Infor_second />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">68</p>
+                                            </div>
+                                        </div>
+                                        <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                                                <Tyre_Infor_third />
+                                            </div>
+                                            <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                                                <p className="uppercase text-sm leading-5 font-middle text-black">A</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pp-product-list-mmp-price pt-[19px] flex flex-row justify-center">
+                                        <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK 944</span></p>
+                                    </div>
+                                    <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
+                                        <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018]">
+                                            <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                                        </div>
+                                        <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888]">
+                                            <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                     <Partner />
 
                     <GetInTouch />

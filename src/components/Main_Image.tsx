@@ -70,7 +70,7 @@ const Main_Image = () => {
                             <p className="text-white text-lg font-medium leading-7 font-['Inter'] uppercase">DEKK RAPPORT</p>
                             <span className='w-[18px] h-[18px]'><Small_Right_arrow /></span>
                             <p className='text-[#73c018] text-lg font-medium leading-7 uppercase'>Details</p>
-                        </> : <p className="text-[#73c018] text-lg font-medium font-['Inter'] leading-7 uppercase">{pathname == "/aboutus" ? "about" : pathname == "/pricing" ? "pricing" : pathname == "/contact" ? "contact" : pathname=="/products"?"products":pathname=="/terms"||pathname=="/privacy"?"TERMS AND CONDITION":pathname=="/pdetail"?"products":pathname=="/cart"?"cart":""}</p>
+                        </> : <p className="text-[#73c018] text-lg font-medium font-['Inter'] leading-7 uppercase">{pathname == "/aboutus" ? "about" : pathname == "/pricing" ? "pricing" : pathname == "/contact" ? "contact" : pathname=="/products"?"products":pathname=="/terms"||pathname=="/privacy"?"TERMS AND CONDITION":pathname=="/pdetail"?"products":pathname=="/cart"?"cart":pathname=="/checkout"?"checkout":""}</p>
                     }
                 </div>
             </div>

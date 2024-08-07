@@ -56,7 +56,7 @@ const Main_Image = () => {
                 <div className='opacity-70 bg-black w-full h-full absolute top-0 z'></div>
             </div>
             <div className='flex flex-col justify-center items-center absolute gap-[26px] main-back-pan'>
-                <div><p className="text-white text-4xl font-semi-bold font-['Inter'] leading-10 main-back-title uppercase">{pathname == "/aboutus" ? "About Us" : pathname == "/report" ? "DEKK RAPPORT" : pathname == "/terms" || pathname == "/privacy"?"TERMS AND CONDITION":pathname=="/pdetail"?"product detail":renamePathname(pathname)}</p></div>
+                <div><p className="text-white text-4xl font-semi-bold font-['Inter'] leading-10 main-back-title uppercase">{pathname == "/aboutus" ? "About Us" : pathname == "/report" ? "DEKK RAPPORT" : pathname == "/terms" || pathname == "/privacy"?"TERMS AND CONDITION":pathname=="/pdetail"?"product detail":pathname=="/order"?"checkout":renamePathname(pathname)}</p></div>
                 <div className='flex flex-row gap-[4px] justify-center items-center mb-[58px] main-back-url-info'>
                     <p className="text-white text-lg font-medium leading-7 font-['Inter'] uppercase">HOME</p>
                     <span className='w-[18px] h-[18px]'><Small_Right_arrow /></span>
@@ -70,7 +70,12 @@ const Main_Image = () => {
                             <p className="text-white text-lg font-medium leading-7 font-['Inter'] uppercase">DEKK RAPPORT</p>
                             <span className='w-[18px] h-[18px]'><Small_Right_arrow /></span>
                             <p className='text-[#73c018] text-lg font-medium leading-7 uppercase'>Details</p>
-                        </> : <p className="text-[#73c018] text-lg font-medium font-['Inter'] leading-7 uppercase">{pathname == "/aboutus" ? "about" : pathname == "/pricing" ? "pricing" : pathname == "/contact" ? "contact" : pathname=="/products"?"products":pathname=="/terms"||pathname=="/privacy"?"TERMS AND CONDITION":pathname=="/pdetail"?"products":pathname=="/cart"?"cart":pathname=="/checkout"?"checkout":""}</p>
+                        </> : pathname=="/order"?<>
+                        <p className="text-white text-lg font-medium leading-7 font-['Inter'] uppercase">checkout</p>
+                            <span className='w-[18px] h-[18px]'><Small_Right_arrow /></span>
+                            <p className='text-[#73c018] text-lg font-medium leading-7 uppercase'>ORDER RECEIVED</p>
+                        </>:
+                         <p className="text-[#73c018] text-lg font-medium font-['Inter'] leading-7 uppercase">{pathname == "/aboutus" ? "about" : pathname == "/pricing" ? "pricing" : pathname == "/contact" ? "contact" : pathname=="/products"?"products":pathname=="/terms"||pathname=="/privacy"?"TERMS AND CONDITION":pathname=="/pdetail"?"products":pathname=="/cart"?"cart":pathname=="/checkout"?"checkout":""}</p>
                     }
                 </div>
             </div>

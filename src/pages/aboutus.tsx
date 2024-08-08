@@ -72,7 +72,7 @@ export default function About() {
                         <div className="w-[795px] about-choose-us-text"><p className="text-white text-lg font-normal leading-7">Moss Dekk is a leading provider of automotive preventive maintenance. With a national footprint of more than 2,000 franchisee owned service centers across the country, offers a range of services from oil changes and tire rotations, to everything in between. Donec quis justo ac arcu scelerisque dignissim. Nulla quis metus vulputate, convallis risus semper, iaculis augue. Duis pharetra laoreet orci non consectetur. Aenean iaculis diam fermentum mauris pulvinar feugiat. Nam maximus libero dui, non ultricies erat euismod quis. Sed venenatis elementum quam, vitae pellentesque enim euismod ornare. Curabitur lacinia dapibus justo. In semper, magna sed tincidunt vulputate, sapien orci tempor dolor, at dictum nisl ligula vitae diam. Pellentesque ultrices non velit vitae consequat. Sed et elit ut risus dignissim porttitor. </p></div>
                     </div>
                     <div className="about-feature-pan flex flex-row gap-[36px] pr-[232px] pl-[231px] pb-[64px]">
-                        <div className="flex flex-row flex-wrap gap-[36px] justify-center">
+                        <div className="flex flex-row gap-[36px] justify-center max-[1707px]:flex-wrap">
                             <div className="flex flex-col py-[56.05px] gap-[39px] px-[51px] w-[333px] afp-list bg-white rounded-lg">
                                 <div className="w-[100%] h-[75.90px] relative flex justify-center">
                                     <Quality />

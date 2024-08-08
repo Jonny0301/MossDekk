@@ -85,6 +85,7 @@ export default function About() {
                                     <div className="justify-start items-start gap-1.5 inline-flex">
                                         <div className="w-1.5 h-1.5 bg-[#aaaaaa] rounded-full"></div>
                                         <div className="w-1.5 h-1.5 bg-[#aaaaaa] rounded-full"></div>
+                                        
                                         <div className="w-1.5 h-1.5 bg-[#aaaaaa] rounded-full"></div>
                                     </div>
                                 </div>

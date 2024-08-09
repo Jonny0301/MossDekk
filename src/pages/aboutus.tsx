@@ -76,8 +76,6 @@ export default function About() {
                             <div className="flex flex-col py-[56.05px] gap-[39px] px-[51px] w-[333px] afp-list bg-white rounded-lg">
                                 <div className="w-[100%] h-[75.90px] relative flex justify-center">
                                     <Quality />
-
-                                    
                                 </div>
                                 <div className="flex-col justify-start items-center gap-[29px] flex">
                                     <div className="flex-col justify-start items-center gap-1.5 flex w-[100%]">

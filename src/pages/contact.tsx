@@ -27,13 +27,11 @@ export default function Contact() {
                     <Main_Image />
                     <div className="google-map w-full">
                         <div className='relative w-full h-[655px] top-0 right-0 google-image'>
-                            <Image
-                                alt="Background"
-                                src={Google_map}
-                                fill
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d8109.663153793965!2d10.6886197!3d59.4594927!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xf0c938655e220549!2sMoss%20Dekk%20AS!5e0!3m2!1sno!2sno!4v1591397614919!5m2!1sno!2sno"
                                 style={{ objectFit: 'cover' }}
                                 className='w-full h-full'
-                            />
+                            ></iframe>
 
                         </div>
                     </div>

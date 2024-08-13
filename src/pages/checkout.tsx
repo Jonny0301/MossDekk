@@ -232,7 +232,7 @@ export default function Pricing() {
                                                 <input type="radio" name="option1" value="yes" className="form-radio h-[24px] w-[24px] text-[#73C018] focus:ring-[#73C018] focus:outline-[#73C018]" />
                                             </label>
                                             <p className="text-lg text-[#787881] leading-7 font-medium w-[29px] max-[772px]:mr-[5px] max-[772px]:text-xs max-[772px]:w-[19px]">Ja </p>
-                                            <p className="text-lg text-[#787881] leading-7 font-medium  max-[772px]:text-xs">23&quot;</p>
+                                            <p className="text-lg text-[#787881] leading-7 font-medium  max-[772px]:text-xs">23&quot;   </p>
                                         </div>
                                     </div>
                                     <div className="relative w-[62px] pl-[40px] flex items-center  max-[772px]:pl-[12px]">

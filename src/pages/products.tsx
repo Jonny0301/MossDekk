@@ -9,7 +9,7 @@ import Tyre_Info_first from "@/svg/Tyre_Infor_first";
 import Tyre_Infor_second from "@/svg/Tyre_Infor_second";
 import Tyre_Infor_third from "@/svg/Tyre_Infor_third";
 import Tyre_22 from "../../public/image/tyre(22).png"
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,6 +39,18 @@ export default function Pricing() {
     //         addItem(inputValue);
     //     }
     // };
+    const [productdata, setProductData] = useState([]);
+    const fetchproduct  = async()=>{
+        const response = await fetch("http://localhost/admin/query.php?action=fetchFrontTyres")
+        const result = await response.json();
+        setProductData(result);
+        console.log(productdata
+
+        )
+    }
+    useEffect(()=>{
+        fetchproduct
+    })
     return (
         <div className="home-container flex flex-col">
             <Header />
@@ -664,8 +676,8 @@ export default function Pricing() {
                                                     <button className="text-red-500 hover:text-red-700">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                             <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#73C018" />
-                                                            <path d="M15 9L9 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M9 9L15 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <path d="M15 9L9 15" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M9 9L15 15" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                         </svg>
                                                     </button>
                                                     <span className="text-base leading-6 font-normal font-['Inter'] text-black">Winter</span>
@@ -684,8 +696,8 @@ export default function Pricing() {
                                         </div>
                                         <div className="cat-info-reset-btn py-[14px] px-[13px] rounded-[4px] bg-white">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M1 4V10H7" stroke="#6D6D6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M3.51 14.9999C4.15839 16.8403 5.38734 18.4201 7.01166 19.5013C8.63598 20.5825 10.5677 21.1065 12.5157 20.9944C14.4637 20.8823 16.3226 20.1401 17.8121 18.8797C19.3017 17.6193 20.3413 15.9089 20.7742 14.0063C21.2072 12.1037 21.0101 10.1119 20.2126 8.33105C19.4152 6.55019 18.0605 5.07674 16.3528 4.13271C14.6451 3.18868 12.6769 2.82521 10.7447 3.09707C8.81245 3.36892 7.02091 4.26137 5.64 5.63995L1 9.99995" stroke="#6D6D6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M1 4V10H7" stroke="#6D6D6D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M3.51 14.9999C4.15839 16.8403 5.38734 18.4201 7.01166 19.5013C8.63598 20.5825 10.5677 21.1065 12.5157 20.9944C14.4637 20.8823 16.3226 20.1401 17.8121 18.8797C19.3017 17.6193 20.3413 15.9089 20.7742 14.0063C21.2072 12.1037 21.0101 10.1119 20.2126 8.33105C19.4152 6.55019 18.0605 5.07674 16.3528 4.13271C14.6451 3.18868 12.6769 2.82521 10.7447 3.09707C8.81245 3.36892 7.02091 4.26137 5.64 5.63995L1 9.99995" stroke="#6D6D6D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                         </div>
                                     </div>

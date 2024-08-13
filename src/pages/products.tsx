@@ -40,17 +40,39 @@ export default function Pricing() {
     //     }
     // };
     const [productdata, setProductData] = useState([]);
-    const fetchproduct  = async()=>{
-        const response = await fetch("http://localhost/admin/query.php?action=fetchFrontTyres")
-        const result = await response.json();
-        setProductData(result);
-        console.log(productdata
-
-        )
-    }
+    const fetchproduct = async () => {
+        try {
+            const response = await fetch("http://localhost/admin/query.php?action=fetchFrontTyres", {
+                method: 'POST', // Ensure you're sending a POST request
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded', // Or 'application/json' if needed
+                },
+                body: new URLSearchParams({
+                    season: 'your_season_value',
+                    sizeOne: 'your_size_one_value',
+                    sizeTwo: 'your_size_two_value',
+                    sizeThree: 'your_size_three_value'
+                })
+            });
+    
+            // Check if the response is okay
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const text = await response.text(); // Get response as text
+            console.log("Response Text:", text); // Log the raw response
+    
+            const result = JSON.parse(text); // Parse the text as JSON
+            setProductData(result);
+            console.log(result);
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    };
     useEffect(()=>{
-        fetchproduct
-    })
+        fetchproduct();
+    }, [])
     return (
         <div className="home-container flex flex-col">
             <Header />

@@ -266,3 +266,4 @@ input::placeholder {
 .react-datepicker__day--selected:focus {
   background-color: #48bb78 !important; /* Tailwind green-400 */
 }
+

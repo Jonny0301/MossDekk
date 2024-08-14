@@ -93,7 +93,7 @@ export default function Report() {
                                         <Image alt="" src={N_image} className="n-letter" />
                                     </div>
                                     <div className="rounded-tr rounded-br licenseplate-input-pan w-[543px] pt-[31px] pl-[26px] pr-[37px] pb-[30px] relative h-[157px] flex justify-center items-center" >
-                                        <input className={`uppercase w-full h-full outline-none ${isValid ? "text-[#aaaaaa]" : "text-[#ff0000]"} text-[100px] font-normal z-10 font-['Inter'] leading-[96px]`} pattern="[a-zA-Z]{2}[0-9]{5}$" type="text" maxLength={7} autoFocus id="input-licensplate" name="input -licensplate" value={inputValue} onChange={handleChange} style={{ letterSpacing: "15px", fontFamily: "monospace" }} autoComplete="off" />
+                                        <input className={` uppercase w-full h-full boder-none border-0 focus:outline-none px-[0px] focus:ring-0 border-gray-300 border ${isValid ? "text-[#aaaaaa]" : "text-[#ff0000]"} text-[100px] font-normal z-10 font-['Inter'] leading-[96px]`} pattern="[a-zA-Z]{2}[0-9]{5}$" type="text" maxLength={7} autoFocus id="input-licensplate" name="input -licensplate" value={inputValue} onChange={handleChange} style={{ letterSpacing: "15px", fontFamily: "monospace" }} autoComplete="off" />
                                         {/* <div className="absolute w-[480px] custom-input"></div> */}
                                         <div className="absolute w-full h-full pl-[33px] pr-[37px] gap-[15px] flex items-end justify-center pb-[28px] licenseplate-border">
                                             <div className="flex-1 h-[2px] bg-[#000]"></div>

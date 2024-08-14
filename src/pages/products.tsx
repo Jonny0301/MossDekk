@@ -39,40 +39,38 @@ export default function Pricing() {
     //         addItem(inputValue);
     //     }
     // };
-    const [productdata, setProductData] = useState([]);
-    const fetchproduct = async () => {
-        try {
-            const response = await fetch("http://localhost/admin/query.php?action=fetchFrontTyres", {
-                method: 'POST', // Ensure you're sending a POST request
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded', // Or 'application/json' if needed
-                },
-                body: new URLSearchParams({
-                    season: 'your_season_value',
-                    sizeOne: 'your_size_one_value',
-                    sizeTwo: 'your_size_two_value',
-                    sizeThree: 'your_size_three_value'
-                })
-            });
-    
-            // Check if the response is okay
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-    
-            const text = await response.text(); // Get response as text
-            console.log("Response Text:", text); // Log the raw response
-    
-            const result = JSON.parse(text); // Parse the text as JSON
-            setProductData(result);
-            console.log(result);
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
-    };
-    useEffect(()=>{
-        fetchproduct();
-    }, [])
+    // const [tyres, setTyres] = useState<any>(null);
+    // const [error, setError] = useState<string | null>(null);
+
+    // const fetchTyres = async () => {
+    //     const season = 'summer'; // Example value, replace as needed
+    //     const sizeOne = '205'; // Example value, replace as needed
+    //     const sizeTwo = '55'; // Example value, replace as needed
+    //     const sizeThree = '16'; // Example value, replace as needed
+
+    //     try {
+    //         const response = await fetch('/api/fetchTyres', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ season, sizeOne, sizeTwo, sizeThree }),
+    //         });
+
+    //         const data = await response.json();
+    //         if (data[0] === 'success') {
+    //             setTyres(data);
+    //         } else {
+    //             setError('No tyres found');
+    //         }
+    //     } catch (err) {
+    //         console.error('Error fetching tyres:', err);
+    //         setError('Failed to fetch tyres');
+    //     }
+    // };
+    // useEffect(()=>{
+    //     fetchTyres();
+    // }, [])
     return (
         <div className="home-container flex flex-col">
             <Header />

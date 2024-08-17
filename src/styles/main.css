@@ -31,7 +31,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 10000;
+  z-index: 15;
 }
 
 .background-gradient {
@@ -267,3 +267,13 @@ input::placeholder {
   background-color: #48bb78 !important; /* Tailwind green-400 */
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

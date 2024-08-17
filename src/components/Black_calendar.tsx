@@ -64,7 +64,7 @@ const Calendar = () => {
         return (
             <div className="grid grid-cols-7 gap-[8px] max-[772px]:w-[334px]">
                 {weekdays.map((day) => (
-                    <div key={day} className="text-center text-sm leading-3 font-semi-bold font-['Inter'] text-black pb-[12px]">{day}</div>
+                    <div key={day} className="text-center text-sm leading-3 font-semi-bold font-['Inter'] text-[#B5BEC6] pb-[12px]">{day}</div>
                 ))}
                 {emptyDays.map((_, index) => (
                     <div key={index} className="text-center"></div>
@@ -88,7 +88,7 @@ const Calendar = () => {
     };
 
     return (
-        <div className="pt-[64px] pl-[14px] pr-[13px] pb-[18px] relative rounded max-[772px]:p-0">
+        <div className="pt-[64px] bg-[#1F1F1F] pl-[14px] pr-[13px] pb-[18px] relative rounded max-[772px]:p-0 bg-">
             <div className="grid grid-cols-2 gap-[56px] max-[772px]:grid-cols-1">
                 <div className='absolute top-[18px] right-[13px] max-[772px]:top-[-45px]'>
                     <Calendar_x/>
@@ -99,7 +99,7 @@ const Calendar = () => {
                         <button onClick={() => updateCalendars(-1)} className="p-[8px] text-white border-[#73C018] border-[1px] rounded">
                             <Calendar_rarrow />
                         </button>
-                        <h3 className="text-sm leading-5 text-[#4A5660] font-semi-bold">{months[(currentMonthIndex - 1 + 12) % 12]} {currentMonthIndex === 0 ? year - 1 : year}</h3>
+                        <h3 className="text-sm leading-5 text-white font-semi-bold">{months[(currentMonthIndex - 1 + 12) % 12]} {currentMonthIndex === 0 ? year - 1 : year}</h3>
                         <button onClick={() => updateCalendars(1)} className="p-[8px] text-white border-[#73C018] border-[1px] rounded hidden max-[772px]:block">
                             <Calendar_larrow />
                         </button>
@@ -112,7 +112,7 @@ const Calendar = () => {
                             <Calendar_larrow />
                         </button>
 
-                        <h3 className="text-sm leading-5 text-[#4A5660] font-semi-bold">{months[currentMonthIndex]} {year}</h3>
+                        <h3 className="text-sm leading-5 text-white font-semi-bold">{months[currentMonthIndex]} {year}</h3>
                     </div>
 
                     {renderDays(currentMonthIndex)}
@@ -125,15 +125,15 @@ const Calendar = () => {
             )}
             <TimeSlotSelector /> {/* Include the TimeSlotSelector here */}
             <div className='pt-[20px] flex flex-col max-[772px]:hidden'>
-                <p className='text-base leading-6 font-medium'>*Note:</p>
+                <p className='text-base leading-6 font-medium text-[#6D6D6D]'>*Note:</p>
                 <div className='flex flex-row gap-[4px] items-center pt-[10px]'>
                     <div className='w-[11px] h-[11px] bg-[#EF4225] rounded'></div>
-                    <p className='text-xs leading-4 font-normal font-["Inter"] text-black'>Time not available</p>
+                    <p className='text-xs leading-4 font-normal font-["Inter"] text-[#6D6D6D]'>Time not available</p>
                 </div>
                 
                 <div className='flex flex-row gap-[4px] items-center pt-[8px]'>
                     <div className='w-[11px] h-[11px] bg-[#73C018] rounded'></div>
-                    <p className='text-xs leading-4 font-normal font-["Inter"] text-black'>Available time</p>
+                    <p className='text-xs leading-4 font-normal font-["Inter"] text-[#6D6D6D]'>Available time</p>
                 </div>
             </div>
         </div>

@@ -17,7 +17,7 @@ const TimeSlotSelector = () => {
         {timeSlots.map((time) => (
           <button
             key={time}
-            className={`${selectedTimeSlot == time ? 'border-[#73C018] border-[1px] text-[#73C018] rounded-[8px]' : "border-[#787881] text-base leading-6 font-normal font-['Inter'] text-[#888888] border-[1px] py-[10px] px-[7.5px] rounded-[8px] "}`}
+            className={`${selectedTimeSlot == time ? 'border-[#73C018] border-[1px] text-[#73C018] rounded-[8px] text-base leading-6 font-normal font-["Inter"]' : "border-[#787881] text-base leading-6 font-normal font-['Inter'] text-[#888888] border-[1px] py-[10px] px-[7.5px] rounded-[8px] "}`}
             onClick={() => setSelectedTimeSlot(time)}
           >
             {time}

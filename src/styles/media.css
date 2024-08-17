@@ -1010,6 +1010,10 @@
         padding-right: 20px;
     }
 
+    .modal-report-licenseplate-title {
+        gap: 80px !important;
+    }
+
     .connection-info {
         padding-right: 120px;
     }
@@ -1917,7 +1921,7 @@
         padding-left: 44px;
     }
 
-    .fcip-item>svg path{
+    .fcip-item>svg path {
         /* stroke: #AAAAAA !important; */
         color: orange;
     }
@@ -2921,7 +2925,7 @@
     }
 
     .responsive-tire-change-human {
-        display: block;
+        display: block !important; 
     }
 
     .responsive-tire-change-human>img {

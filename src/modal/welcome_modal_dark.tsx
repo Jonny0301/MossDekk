@@ -1,6 +1,6 @@
 "use client";
 import Calendar from '@/components/calendar';
-import External_link_Mod from '@/svg/external_link_mod';
+import External_link_Mod from '@/svg/External_Link_Mod';
 import React, { useEffect, useRef, useState } from 'react';
 import Black_Calendar from '@/components/Black_calendar';
 interface ModalProps {

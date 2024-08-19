@@ -38,9 +38,11 @@ import Reg_Num_Modal from "@/modal/reg_num_modal";
 import Welcome_Modal from "@/modal/welcome_modal";
 import Welcome_Modal_Dark from "@/modal/welcome_modal_dark";
 import Welcome_Modal_Case from "@/modal/welcome_modal_case";
+import Menu_Popup from "@/modal/menu_popup";
 
 export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(true); // Open modal on page load
+    
 
     const closeModal = () => setIsModalOpen(false);
     return (
@@ -621,7 +623,8 @@ export default function Home() {
                 {/* <Reg_Num_Modal isOpen={isModalOpen} onClose={closeModal}/> */}
                 {/* <Welcome_Modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Welcome_Modal_Dark isOpen={isModalOpen} onClose={closeModal} /> */}
-                <Welcome_Modal_Case isOpen={isModalOpen} onClose={closeModal} />
+                {/* <Welcome_Modal_Case isOpen={isModalOpen} onClose={closeModal} /> */}
+                <Menu_Popup isOpen={isModalOpen} onClose={closeModal} />
             </main>
         </div>
     );

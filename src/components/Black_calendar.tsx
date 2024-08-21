@@ -1,9 +1,10 @@
 // components/Calendar.tsx
 import { useState, useEffect } from 'react';
-import TimeSlotSelector from './TimeSlotSelector'; // Import the TimeSlotSelector
+import TimeSlotSelector from './TimeSlotSelector';
 import Calendar_larrow from '@/svg/Calendar_larrow';
 import Calendar_rarrow from '@/svg/Calendar_rarrow';
 import Calendar_x from '@/svg/Calendar_x';
+
 const months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -15,49 +16,50 @@ const getDaysInMonth = (month: number, year: number) => {
     return new Date(year, month + 1, 0).getDate();
 };
 
-// Function to generate random disabled days
 const getRandomDisabledDays = (daysInMonth: number) => {
     const disabledDays = new Set<number>();
-    while (disabledDays.size < 5) { // Change the number to adjust how many days to disable
+    while (disabledDays.size < 5) {
         const randomDay = Math.floor(Math.random() * daysInMonth) + 1;
         disabledDays.add(randomDay);
     }
     return Array.from(disabledDays);
 };
 
-const Calendar = () => {
+interface CalendarProps {
+    onDateTimeSelected: (dateTime: string) => void; // Prop to handle selected date and time
+    closeCalendar: () => void; // Prop to close the calendar
+}
+
+const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }) => {
     const [currentMonthIndex, setCurrentMonthIndex] = useState(6); // July
     const [selectedDay, setSelectedDay] = useState<{ day: number; month: number } | null>(null);
     const [year, setYear] = useState(2024); // Start year
-    const [disabledDays, setDisabledDays] = useState<number[]>([]); // State for disabled days
+    const [disabledDays, setDisabledDays] = useState<number[]>([]);
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
 
     useEffect(() => {
-        // Initialize disabled days only once when the component mounts
         const daysInMonth = getDaysInMonth(currentMonthIndex, year);
         const randomDisabledDays = getRandomDisabledDays(daysInMonth);
         setDisabledDays(randomDisabledDays);
-    }, [currentMonthIndex, year]); // Only run when month or year changes
+    }, [currentMonthIndex, year]);
 
     const updateCalendars = (offset: number) => {
         setCurrentMonthIndex((prevIndex) => {
             const newIndex = prevIndex + offset;
-
-            // Adjust month and year based on the new index
             if (newIndex > 11) {
-                setYear((prevYear) => prevYear + 1); // Move to next year
-                return 0; // Reset to January
+                setYear((prevYear) => prevYear + 1);
+                return 0;
             } else if (newIndex < 0) {
-                setYear((prevYear) => prevYear - 1); // Move to previous year
-                return 11; // Reset to December
+                setYear((prevYear) => prevYear - 1);
+                return 11;
             }
-            return newIndex; // Return the new month index
+            return newIndex;
         });
     };
 
     const renderDays = (monthIndex: number) => {
         const daysInMonth = getDaysInMonth(monthIndex, year);
         const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-
         const firstDayOfMonth = new Date(year, monthIndex, 1).getDay();
         const emptyDays = Array.from({ length: firstDayOfMonth }, (_, i) => null);
 
@@ -75,9 +77,18 @@ const Calendar = () => {
                     return (
                         <div
                             key={day}
-                            className={`text-center cursor-pointer text-base leading-6 font-normal text-[#73C018] font-['Inter'] ${selectedDay?.day === day && selectedDay.month === monthIndex ? 'bg-blue-300' : ''
+                            className={`text-center cursor-pointer text-base leading-6 font-normal text-[#73C018] font-['Inter'] ${selectedDay?.day === day && selectedDay.month === monthIndex ? 'text-white' : ''
                                 } ${isWeekend ? 'text-[#E21632]' : ''} ${isDisabled ? 'text-[#888888] cursor-not-allowed' : ''}`}
-                            onClick={() => !isDisabled && setSelectedDay({ day, month: monthIndex })}
+                            onClick={() => {
+                                if (!isDisabled) {
+                                    setSelectedDay({ day, month: monthIndex });
+                                    if (selectedTimeSlot) {
+                                        const dateTime = `${year}/${monthIndex + 1}/${day} ${selectedTimeSlot}`;
+                                        onDateTimeSelected(dateTime); // Call the prop function with the formatted date
+                                        closeCalendar(); // Close the calendar after selection
+                                    }
+                                }
+                            }}
                         >
                             {day}
                         </div>
@@ -87,15 +98,23 @@ const Calendar = () => {
         );
     };
 
+    const handleTimeSlotSelection = (time: string) => {
+        setSelectedTimeSlot(time);
+        if (selectedDay) {
+            const dateTime = `${year}/${currentMonthIndex + 1}/${selectedDay.day} ${time}`;
+            onDateTimeSelected(dateTime); // Call the prop function with the formatted date
+            closeCalendar(); // Close the calendar after selection
+        }
+    };
+
     return (
-        <div className="pt-[64px] bg-[#1F1F1F] pl-[14px] pr-[13px] pb-[18px] relative rounded max-[772px]:p-0 bg-">
+        <div className="pt-[64px] bg-[#1F1F1F] pl-[14px] pr-[13px] pb-[18px] relative rounded max-[772px]:p-0 max-[772px]:py-[10px]">
+            <div className="absolute top-[18px] right-[13px] max-[772px]:hidden" onClick={closeCalendar}>
+                <Calendar_x />
+            </div>
             <div className="grid grid-cols-2 gap-[56px] max-[772px]:grid-cols-1">
-                <div className='absolute top-[18px] right-[13px] max-[772px]:top-[-45px]'>
-                    <Calendar_x/>
-                </div>
                 <div className="max-[772px]:flex max-[772px]:flex-col max-[772px]:items-center">
                     <div className='pb-[32px] flex flex-row gap-[84px] items-center max-[772px]:gap-0 max-[772px]:justify-between max-[772px]:w-[334px]'>
-
                         <button onClick={() => updateCalendars(-1)} className="p-[8px] text-white border-[#73C018] border-[1px] rounded">
                             <Calendar_rarrow />
                         </button>
@@ -111,26 +130,19 @@ const Calendar = () => {
                         <button onClick={() => updateCalendars(1)} className="p-[8px] text-white border-[#73C018] border-[1px] rounded">
                             <Calendar_larrow />
                         </button>
-
                         <h3 className="text-sm leading-5 text-white font-semi-bold">{months[currentMonthIndex]} {year}</h3>
                     </div>
-
                     {renderDays(currentMonthIndex)}
                 </div>
             </div>
-            {selectedDay && (
-                <div className="mt-4">
-                    <p className="text-green-600">Selected Day: {selectedDay.day} {months[selectedDay.month]} {year}</p>
-                </div>
-            )}
-            <TimeSlotSelector /> {/* Include the TimeSlotSelector here */}
+
+            <TimeSlotSelector onTimeSlotSelected={handleTimeSlotSelection} /> {/* Pass the handler */}
             <div className='pt-[20px] flex flex-col max-[772px]:hidden'>
                 <p className='text-base leading-6 font-medium text-[#6D6D6D]'>*Note:</p>
                 <div className='flex flex-row gap-[4px] items-center pt-[10px]'>
                     <div className='w-[11px] h-[11px] bg-[#EF4225] rounded'></div>
                     <p className='text-xs leading-4 font-normal font-["Inter"] text-[#6D6D6D]'>Time not available</p>
                 </div>
-                
                 <div className='flex flex-row gap-[4px] items-center pt-[8px]'>
                     <div className='w-[11px] h-[11px] bg-[#73C018] rounded'></div>
                     <p className='text-xs leading-4 font-normal font-["Inter"] text-[#6D6D6D]'>Available time</p>

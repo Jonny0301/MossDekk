@@ -25,11 +25,17 @@ const getRandomDisabledDays = (daysInMonth: number) => {
     return Array.from(disabledDays);
 };
 
-const Calendar = () => {
+interface CalendarProps {
+    onDateTimeSelected: (dateTime: string) => void; // Prop to handle selected date and time
+    closeCalendar: () => void; // Prop to close the calendar
+}
+
+const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }) => {
     const [currentMonthIndex, setCurrentMonthIndex] = useState(6); // July
     const [selectedDay, setSelectedDay] = useState<{ day: number; month: number } | null>(null);
     const [year, setYear] = useState(2024); // Start year
     const [disabledDays, setDisabledDays] = useState<number[]>([]); // State for disabled days
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
 
     useEffect(() => {
         // Initialize disabled days only once when the component mounts
@@ -86,11 +92,19 @@ const Calendar = () => {
             </div>
         );
     };
+    const handleTimeSlotSelection = (time: string) => {
+        setSelectedTimeSlot(time);
+        if (selectedDay) {
+            const dateTime = `${year}/${currentMonthIndex + 1}/${selectedDay.day} ${time}`;
+            onDateTimeSelected(dateTime); // Call the prop function with the formatted date
+            closeCalendar(); // Close the calendar after selection
+        }
+    };
 
     return (
         <div className="pt-[64px] pl-[14px] pr-[13px] pb-[18px] relative rounded max-[772px]:p-0">
             <div className="grid grid-cols-2 gap-[56px] max-[772px]:grid-cols-1">
-                <div className='absolute top-[18px] right-[13px] max-[772px]:top-[-45px]'>
+                <div className='absolute top-[18px] right-[13px] max-[772px]:top-[-45px]' onClick={closeCalendar}>
                     <Calendar_x/>
                 </div>
                 <div className="max-[772px]:flex max-[772px]:flex-col max-[772px]:items-center">
@@ -123,7 +137,7 @@ const Calendar = () => {
                     <p className="text-green-600">Selected Day: {selectedDay.day} {months[selectedDay.month]} {year}</p>
                 </div>
             )}
-            <TimeSlotSelector /> {/* Include the TimeSlotSelector here */}
+            <TimeSlotSelector onTimeSlotSelected={handleTimeSlotSelection}  /> {/* Include the TimeSlotSelector here */}
             <div className='pt-[20px] flex flex-col max-[772px]:hidden'>
                 <p className='text-base leading-6 font-medium'>*Note:</p>
                 <div className='flex flex-row gap-[4px] items-center pt-[10px]'>

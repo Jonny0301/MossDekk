@@ -59,6 +59,7 @@ export default function Pricing() {
     //     },
     //   });
     const [dateTime, setDateTime] = useState<string>('');
+    const [showCalendar, setShowCalendar] = useState(false);
 
     const handleDateTimeSelected = (dateTime: string) => {
       setDateTime(dateTime);

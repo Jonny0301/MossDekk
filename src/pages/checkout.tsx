@@ -58,6 +58,14 @@ export default function Pricing() {
     //       swiper: swiper_thumbs,
     //     },
     //   });
+    const [dateTime, setDateTime] = useState<string>('');
+
+    const handleDateTimeSelected = (dateTime: string) => {
+      setDateTime(dateTime);
+    };
+    const toggleCalendar = () => {
+        setShowCalendar(!showCalendar);
+      };
     return (
         <div className="home-container flex flex-col">
             <Header />
@@ -274,7 +282,7 @@ export default function Pricing() {
                                     <p className="text-4xl leading-10 font-semi-bold text-black max-[1024px]:text-2xl  max-[772px]:text-lg">Sellect time and date</p>
                                 </div>
                                 <div className="w-[599px] text-black shadow max-[772px]:shadow-none max-[772px]:w-[334px]">
-                                    <Calendar />
+                                    <Calendar   onDateTimeSelected={handleDateTimeSelected} closeCalendar={toggleCalendar}   />
                                 </div>
                             </div>
                             <div className="pt-[19px] max-[1024px]:pt-[15px]">

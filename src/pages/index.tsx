@@ -640,7 +640,7 @@ export default function Home() {
                 {/* <Faktura_Modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Debetaling_modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Faktura_Another_Modal isOpen={isModalOpen} onClose={closeModal} /> */}
-                <Popup_Modal isOpen={isModalOpen} onClose={closeModal} />
+                {/* <Popup_Modal isOpen={isModalOpen} onClose={closeModal} /> */}
 
             </main>
         </div>

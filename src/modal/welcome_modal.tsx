@@ -10,6 +10,7 @@ interface ModalProps {
 
 const Welcome_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     const modalRef = useRef<HTMLDivElement>(null);
+    const [dateTime, setDateTime] = useState<string>('');
     const [showCalendar, setShowCalendar]=useState(false);
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -37,7 +38,12 @@ const Welcome_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     const handleJaClick = () => {
         setShowCalendar(true); // Show the calendar when "Ja" is clicked
     };
-
+    const handleDateTimeSelected = (dateTime: string) => {
+        setDateTime(dateTime);
+      };
+      const toggleCalendar = () => {
+          setShowCalendar(!showCalendar);
+        };
     if (!isOpen) return null;
 
     return (
@@ -76,7 +82,7 @@ const Welcome_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                         <p className='text-lg leading-8 font-normal underline text-[#356EF1]'>Tire report</p>
                     </div>
                     <div className='shadow-2xl rounded-[15px] px-[5px] py-[10px]'>
-                        <Calendar />
+                        <Calendar   onDateTimeSelected={handleDateTimeSelected} closeCalendar={toggleCalendar}   />
                     </div>
                 </div>
 

@@ -40,8 +40,9 @@ import Welcome_Modal_Dark from "@/modal/welcome_modal_dark";
 import Welcome_Modal_Case from "@/modal/welcome_modal_case";
 import Menu_Popup from "@/modal/menu_popup";
 import Omlegg_modal from "@/modal/omlegg_modal";
-import Tire_Balancing_modal from "@/modal/tire_balancing_modal";
 import Customer_Registration_modal from "@/modal/customer_registration_modal";
+import Tire_Balancing_modal_another from "@/modal/tire_balancing_modal_another";
+import Tire_Balancing_modal from "@/modal/tire_balancing_modal";
 
 export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(true); // Open modal on page load
@@ -630,7 +631,8 @@ export default function Home() {
                 {/* <Menu_Popup isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Omlegg_modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Tire_Balancing_modal isOpen={isModalOpen} onClose={closeModal} /> */}
-                <Customer_Registration_modal isOpen={isModalOpen} onClose={closeModal} />
+                {/* <Customer_Registration_modal isOpen={isModalOpen} onClose={closeModal} /> */}
+                <Tire_Balancing_modal_another isOpen={isModalOpen} onClose={closeModal} />
 
             </main>
         </div>

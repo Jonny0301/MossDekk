@@ -11,6 +11,8 @@ interface ModalProps {
 const Welcome_Modal_Dark: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const [showCalendar, setShowCalendar] = useState(false);
+    const [dateTime, setDateTime] = useState<string>('');
+
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
@@ -37,7 +39,12 @@ const Welcome_Modal_Dark: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     const handleJaClick = () => {
         setShowCalendar(true); // Show the calendar when "Ja" is clicked
     };
-
+    const handleDateTimeSelected = (dateTime: string) => {
+        setDateTime(dateTime);
+      };
+      const toggleCalendar = () => {
+          setShowCalendar(!showCalendar);
+        };
     if (!isOpen) return null;
 
     return (
@@ -76,7 +83,7 @@ const Welcome_Modal_Dark: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                             <p className='text-lg leading-8 font-normal underline text-[#356EF1]'>Tire report</p>
                         </div>
                         <div className='shadow-2xl rounded-[15px] px-[5px] py-[10px]'>
-                            <Black_Calendar />
+                            <Black_Calendar   onDateTimeSelected={handleDateTimeSelected} closeCalendar={toggleCalendar}  />
                         </div>
                     </div>
 

@@ -43,10 +43,14 @@ import Omlegg_modal from "@/modal/omlegg_modal";
 import Customer_Registration_modal from "@/modal/customer_registration_modal";
 import Tire_Balancing_modal_another from "@/modal/tire_balancing_modal_another";
 import Tire_Balancing_modal from "@/modal/tire_balancing_modal";
+import Faktura_Modal from "@/modal/faktura_modal";
+import Debetaling_modal from "@/modal/debetaling_modal";
+import Faktura_Another_Modal from "@/modal/faktura_another_modal";
+import Popup_Modal from "@/modal/popup_modal";
+import axios from "axios";
 
 export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(true); // Open modal on page load
-    
 
     const closeModal = () => setIsModalOpen(false);
     return (
@@ -632,7 +636,11 @@ export default function Home() {
                 {/* <Omlegg_modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Tire_Balancing_modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Customer_Registration_modal isOpen={isModalOpen} onClose={closeModal} /> */}
-                <Tire_Balancing_modal_another isOpen={isModalOpen} onClose={closeModal} />
+                {/* <Tire_Balancing_modal_another isOpen={isModalOpen} onClose={closeModal} /> */}
+                {/* <Faktura_Modal isOpen={isModalOpen} onClose={closeModal} /> */}
+                {/* <Debetaling_modal isOpen={isModalOpen} onClose={closeModal} /> */}
+                {/* <Faktura_Another_Modal isOpen={isModalOpen} onClose={closeModal} /> */}
+                <Popup_Modal isOpen={isModalOpen} onClose={closeModal} />
 
             </main>
         </div>

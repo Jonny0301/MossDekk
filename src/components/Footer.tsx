@@ -7,6 +7,7 @@ import Twitter from '../svg/Twitter';
 import Youtube from '../svg/Youtube';
 import Globe from '../svg/Globe';
 import Image from 'next/image';
+import Link from 'next/link';
 export default function Footer() {
     return (
         <footer>
@@ -33,14 +34,14 @@ export default function Footer() {
                             <div className="text-white text-base font-semibold font-['Inter'] leading-normal management-title">Management</div>
                             <div className="w-[175px] h-7 justify-start items-center gap-3 inline-flex management-list">
                                 <div className="w-1 h-1 bg-[#73c018] rounded-full"></div>
-                                <div className="text-white text-lg font-normal font-['Inter'] leading-7 management-text">Portal Bedrift</div>
+                                <a className="text-white text-lg font-normal font-['Inter'] leading-7 management-text" href='http://bedrift.autobutler.no/'>Portal Bedrift</a>
                             </div>
                         </div>
                         <div className='dekkhotell flex flex-col gap-[24px] pr-[91px]'>
                             <div className="text-white text-base font-semibold font-['Inter'] leading-normal dekkhotell-title">Dekkhotell</div>
                             <div className="w-[175px] h-7 justify-start items-center gap-3 inline-flex dekkhotell-list">
                                 <div className="w-1 h-1 bg-[#73c018] rounded-full"></div>
-                                <div className="text-white text-lg font-normal font-['Inter'] leading-7 dekkhotell-text">Dekkhotell Bedrift</div>
+                                <a className="text-white text-lg font-normal font-['Inter'] leading-7 dekkhotell-text" href='http://bedrift.autobutler.no/'>Dekkhotell Bedrift</a>
                             </div>
                         </div>
                         <div className='tyre-shop flex flex-col gap-[24px] pr-[91px]'>
@@ -48,16 +49,16 @@ export default function Footer() {
                             <div className='flex flex-col gap-[11px]'>
                                 <div className="w-[175px] h-7 justify-start items-center gap-3 inline-flex tyre-shop-list">
                                     <div className="w-1 h-1 bg-[#73c018] rounded-full"></div>
-                                    <div className="text-white text-lg font-normal font-['Inter'] leading-7 tyre-shop-text">Hovedside</div>
+                                    <Link className="text-white text-lg font-normal font-['Inter'] leading-7 tyre-shop-text" href='/'>Hovedside</Link>
                                 </div>
 
                                 <div className="w-[175px] h-7 justify-start items-center gap-3 inline-flex tyre-shop-list">
                                     <div className="w-1 h-1 bg-[#73c018] rounded-full"></div>
-                                    <div className="text-white text-lg font-normal font-['Inter'] leading-7 tyre-shop-text">Personvern</div>
+                                    <Link className="text-white text-lg font-normal font-['Inter'] leading-7 tyre-shop-text" href='/privacy'>Personvern</Link>
                                 </div>
                                 <div className="w-[191px] h-7 justify-start items-center gap-3 inline-flex tyre-shop-list">
                                     <div className="w-1 h-1 bg-[#73c018] rounded-full"></div>
-                                    <div className="text-white text-lg font-normal font-['Inter'] leading-7 tyre-shop-text">Vilkår og betingelser</div>
+                                    <Link className="text-white text-lg font-normal font-['Inter'] leading-7 tyre-shop-text" href='/terms'>Vilkår og betingelser</Link>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +68,7 @@ export default function Footer() {
                         <div className='contact-info flex flex-col gap-[24px]'>
                             <div className="text-white text-base font-semibold font-['Inter'] leading-normal contact-info-title">Kontaktinfo</div>
                             <div className='flex flex-col gap-[11px]'>
-                                <div className="w-[300px] justify-start items-center gap-3 inline-flex contact-info-list">
+                                <div className="w-[285px] justify-start items-center gap-3 inline-flex contact-info-list">
                                     <div className="w-1 h-1 bg-[#73c018] rounded-full"></div>
                                     <div className="text-white text-lg font-normal font-['Inter'] leading-7 contact-info-text">Moss Dekk AS<br />Skredderveien 5, 1537 Moss</div>
                                 </div>

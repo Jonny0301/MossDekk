@@ -5,8 +5,8 @@
     }
 
     .it-service-pan-list {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 18px;
+        padding-right: 18px;
     }
 
     .it-service-cross-bar {
@@ -86,7 +86,7 @@
     }
 
     .tire-size-guide-pan {
-        padding-right: 150px;
+        padding-right: 135px;
     }
 }
 
@@ -130,7 +130,7 @@
     }
 
     .tire-size-guide-pan {
-        padding-right: 100px;
+        padding-right: 84px;
     }
 
     .service-cross-bar {
@@ -223,7 +223,7 @@
     }
 
     .tire-size-guide-pan {
-        padding-right: 80px;
+        padding-right: 55px;
     }
 
     .tsi-input-header {
@@ -1266,8 +1266,8 @@
 
 @media (max-width:1332px) {
     .header-nav-item {
-        padding-right: 80px;
-        padding-left: 75px;
+        padding-right: 65px;
+        padding-left: 60px;
     }
 
     .responsive-header {
@@ -1653,7 +1653,7 @@
     }
 
     .get-in-touch {
-        padding-left: 81px;
+        padding-left: 75px;
         padding-right: 81px;
         padding-top: 26px;
         padding-bottom: 26px;
@@ -1819,8 +1819,8 @@
     }
 
     .header-nav-item {
-        padding-right: 91px;
-        padding-left: 44px;
+        padding-right: 71px;
+        padding-left: 34px;
     }
 
     .header-nav-item>a {
@@ -1882,7 +1882,7 @@
 
     .main-footer {
         padding-top: 37px;
-        padding-left: 83px;
+        padding-left: 70px;
         padding-bottom: 62px;
     }
 
@@ -1974,7 +1974,7 @@
 
     .it-service-pan-list {
         padding-left: 80px;
-        padding-right: 80px;
+        padding-right: 70px;
     }
 
     .ispl-item-number>div {
@@ -2661,7 +2661,7 @@
     }
 
     .tire-size-guide-pan {
-        padding-right: 30px;
+        padding-right: 15px;
     }
 
     .tire-change-human {
@@ -2746,12 +2746,12 @@
     }
 
     .connection-info {
-        padding-right: 30px;
+        padding-right: 20px;
     }
 
     .main-footer {
         padding-top: 37px;
-        padding-left: 83px;
+        padding-left: 70px;
         padding-bottom: 62px;
     }
 
@@ -3022,7 +3022,7 @@
     }
 
     .get-in-touch {
-        padding-left: 20px;
+        padding-left: 10px;
         padding-right: 20px;
     }
 
@@ -3144,7 +3144,7 @@
     }
 
     .header-nav-item {
-        padding-right: 15px;
+        padding-right: 0px;
         padding-left: 10px;
     }
 
@@ -4729,7 +4729,7 @@
 
 @media (max-width:413px) {
     .testimonials-pan-list {
-        padding-left: 350px;
+        padding-left: 340px;
     }
 
     .main-footer {

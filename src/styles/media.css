@@ -89,18 +89,29 @@
         padding-right: 135px;
     }
 }
-
-@media (max-width:1824px) {
+@media (max-width:1844px) {
     .header-nav-item {
-        padding-right: 140px;
-        padding-left: 135px;
+        padding-right: 120px;
+        padding-left: 120px;
     }
+}
+@media (max-width:1824px) {
 
     .contact-pan {
         padding-left: 78px;
         padding-right: 78px;
     }
+    .header-nav-item {
+        padding-right: 105px;
+        padding-left: 105px;
+    }
+}
 
+@media (max-width:1800px) {
+    .header-nav-item {
+        padding-right: 90px;
+        padding-left: 90px;
+    }
 }
 
 @media(max-width:1788px) {
@@ -108,12 +119,16 @@
         padding-left: 130px;
         padding-right: 130px;
     }
+    .header-nav-item {
+        padding-right: 70px;
+        padding-left: 70px;
+    }
 }
 
-@media (max-width:1730px) {
+@media (max-width:1740px) {
     .header-nav-item {
-        padding-right: 100px;
-        padding-left: 95px;
+        padding-right: 90px;
+        padding-left: 90px;
     }
 
     .responsive-header {
@@ -209,9 +224,22 @@
         padding-right: 80px;
     }
 }
-
+@media(max-width:1703px){
+    .header-nav-item {
+        padding-right: 60px;
+        padding-left: 60px;
+    }
+}
 @media(max-width:1690px) {
     .show-tyre-status-pan {
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+    .header-nav-item {
+        padding-right: 90px;
+        padding-left: 90px;
+    }
+    .responsive-header{
         padding-left: 80px;
         padding-right: 80px;
     }
@@ -691,6 +719,20 @@
     }
 }
 
+@media (max-width:1680px) {
+    .header-nav-item {
+        padding-right: 70px;
+        padding-left: 70px;
+    }
+}
+
+@media (max-width:1640px) {
+    .header-nav-item {
+        padding-right: 50px;
+        padding-left: 50px;
+    }
+}
+
 @media (max-width:1520px) {
     .tsg-text {
         width: 550px;
@@ -725,19 +767,26 @@
     }
 }
 
-@media (max-width:1590px) {
+@media (max-width:1610px) {
     .header-nav-item {
-        padding-right: 100px;
-        padding-left: 95px;
+        padding-right: 70px;
+        padding-left: 70px;
     }
 
     .header-nav-item>a {
         font-size: 16px;
     }
 
+    .header-nav-item>div {
+        font-size: 16px;
+    }
+
     .responsive-header {
-        padding-right: 150px;
-        padding-left: 135px;
+        padding-right: 80px !important;
+        padding-left: 80px !important;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 
     .header-username {
@@ -1266,8 +1315,8 @@
 
 @media (max-width:1332px) {
     .header-nav-item {
-        padding-right: 65px;
-        padding-left: 60px;
+        padding-right: 40px;
+        padding-left: 40px;
     }
 
     .responsive-header {
@@ -1420,11 +1469,15 @@
     }
 
     .responsive-header {
-        padding-right: 93px;
-        padding-left: 58px;
+        padding-right: 50px !important;
+        padding-left: 50px !important;
     }
 
     .header-nav-item>a {
+        font-weight: 500;
+    }
+
+    .header-nav-item>div {
         font-weight: 500;
     }
 
@@ -1819,11 +1872,16 @@
     }
 
     .header-nav-item {
-        padding-right: 71px;
-        padding-left: 34px;
+        padding-right: 10px;
+        padding-left: 10px;
     }
 
     .header-nav-item>a {
+        font-size: 15px;
+        font-weight: 400;
+    }
+
+    .header-nav-item>div {
         font-size: 15px;
         font-weight: 400;
     }
@@ -1917,8 +1975,8 @@
 
 @media (max-width:1024px) {
     .header-nav-item {
-        padding-right: 40px;
-        padding-left: 40px;
+        padding-right: 30px;
+        padding-left: 30px;
     }
 
     .fcip-item>svg path {
@@ -2655,7 +2713,7 @@
     }
 }
 
-@media (max-width:990px) {
+@media (max-width:998px) {
     .tire-finder-pan {
         padding-left: 40px;
     }
@@ -2781,6 +2839,41 @@
 
     .tyre-shop-list {
         width: 107px;
+    }
+
+    .header-nav-item {
+        display: none;
+    }
+
+    .responsive-header {
+        padding-right: 130px;
+        padding-left: 105px;
+    }
+
+    .header-search-icon {
+        display: none;
+    }
+
+    .select-language {
+        display: none;
+    }
+
+    .responsive-language {
+        display: flex !important;
+        margin-right: 10px;
+    }
+
+    .header-username {
+        display: none;
+    }
+
+    .show-nav-bar {
+        display: flex !important;
+        margin-left: 5px;
+    }
+
+    .header-content {
+        justify-content: space-between;
     }
 }
 
@@ -2925,7 +3018,7 @@
     }
 
     .responsive-tire-change-human {
-        display: block !important; 
+        display: block !important;
     }
 
     .responsive-tire-change-human>img {
@@ -2980,6 +3073,11 @@
 
 @media (max-width:853px) {
     .header-nav-item>a {
+        font-size: 13px;
+        font-weight: 400;
+    }
+
+    .header-nav-item>div {
         font-size: 13px;
         font-weight: 400;
     }
@@ -3131,6 +3229,10 @@
 
 @media (max-width:796px) {
     .header-nav-item>a {
+        font-size: 11px;
+    }
+
+    .header-nav-item>div {
         font-size: 11px;
     }
 
@@ -3555,40 +3657,7 @@
 }
 
 @media (max-width:650px) {
-    .header-nav-item {
-        display: none;
-    }
 
-    .responsive-header {
-        padding-right: 130px;
-        padding-left: 105px;
-    }
-
-    .header-search-icon {
-        display: none;
-    }
-
-    .select-language {
-        display: none;
-    }
-
-    .responsive-language {
-        display: flex !important;
-        margin-right: 10px;
-    }
-
-    .header-username {
-        display: none;
-    }
-
-    .show-nav-bar {
-        display: flex !important;
-        margin-left: 5px;
-    }
-
-    .header-content {
-        justify-content: space-between;
-    }
 
     .responsive-tire-change-human>img {
         width: 300px;
@@ -4525,8 +4594,8 @@
 
 @media (max-width:442px) {
     .responsive-header {
-        padding-right: 50px;
-        padding-left: 35px;
+        padding-right: 50px !important;
+        padding-left: 35px !important;
     }
 
     .responsive-image-text-content {
@@ -4771,8 +4840,8 @@
 
 @media (max-width:375px) {
     .responsive-header {
-        padding-right: 13px;
-        padding-left: 16px;
+        padding-right: 13px !important;
+        padding-left: 16px !important;
     }
 
     .responsive-language {

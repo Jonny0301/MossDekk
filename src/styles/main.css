@@ -281,3 +281,6 @@ input:focus {
   outline: none; /* Remove default outline */
   box-shadow: none; /* Remove any box-shadow that may appear */
 }
+.nor-fl>svg{
+  border-radius: 50px;
+}

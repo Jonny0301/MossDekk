@@ -133,7 +133,7 @@ export default function Contact() {
                                             type="checkbox"
                                             className="form-checkbox h-5 w-5 text-blue-600"
                                         />
-                                        <div className="text-justify flex flex-row"><p className="text-[#6d6d6d] text-base font-normal font-['Inter'] leading-normal">I agree with the site’s <a className="text-[#6d6d6d] text-base font-normal font-['Inter'] underline leading-normal">privacy policy.</a></p></div>
+                                        <div className="text-justify flex flex-row"><p className="text-[#6d6d6d] text-base font-normal font-['Inter'] leading-normal">I agree with the site’s <a className="text-[#6d6d6d] text-base font-normal font-['Inter'] underline leading-normal" href="/privacy">privacy policy.</a></p></div>
                                     </div>
                                 </div>
                             </div>

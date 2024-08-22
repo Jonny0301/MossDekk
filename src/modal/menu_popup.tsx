@@ -1,7 +1,7 @@
 "use client";
 import Cancel from '@/svg/Cancel';
 import X_Cancel from '@/svg/X_cancel';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ArrowDropUp from '@/svg/ArrowDropUp';
 import ArrowDropDown_O from '@/svg/ArrowDropDown_O';
 import Arrow_Right from '@/svg/Arrow_Right';
@@ -9,6 +9,7 @@ import Omlegg_modal from "./omlegg_modal";
 import Reprasjon_modal from './reprasjon_modal';
 
 const MenuPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+    const modalRef = useRef<HTMLDivElement>(null);
     const [isDekkhotell, setIsDekkhotell] = useState(false);
     const [isNewCustomer, setIsNewCustomer] = useState(true);
     const [isDekkHotellCustomer, setIsDekkHotellCustomer] = useState(true);
@@ -18,10 +19,28 @@ const MenuPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
     const [isReprasjon, setIsReprasjon] = useState(false);
 
     const [isHandlingClick, setIsHandlingClick] = useState<boolean>(false);
-
     useEffect(() => {
-        console.log(`isOmlegg is now: ${isOmlegg}`);
-    }, [isOmlegg]);
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                onClose();
+            }
+        };
+
+        if (isOpen) {
+            window.addEventListener('keydown', handleKeyDown);
+            window.addEventListener('click', handleClickOutside);
+        }
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, [isOpen, onClose, isOmlegg]);
+    const handleClickOutside = (event: MouseEvent) => {
+        if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+            onClose();
+        }
+    };
 
     const handleToggleModal = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation(); // Prevent the event from bubbling up
@@ -38,7 +57,7 @@ const MenuPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
         // Reset the flag after a short delay
         setTimeout(() => setIsHandlingClick(false), 200); // Adjust delay as needed
     };
-    
+
     const handleReprasjonmodal = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation(); // Prevent the event from bubbling up
 
@@ -63,7 +82,7 @@ const MenuPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
 
     return (
         <div className="fixed inset-0 z-50 bg-white bg-opacity-30 flex justify-center items-center">
-            <div className="bg-[#101010] rounded-3xl w-[90%] md:w-[891px] max-w-full max-[590px]:rounded-[8px] max-[590px]:w-[95%]">
+            <div ref={modalRef} className="bg-[#101010] rounded-3xl w-[90%] md:w-[891px] max-w-full max-[590px]:rounded-[8px] max-[590px]:w-[95%]">
                 <div className="flex flex-row pt-[20px] pr-[39px] pb-[21px] pl-[10px] border-b-[2px] border-[#1F1D1D] items-center justify-between max-[590px]:p-[10px]">
                     <p className="text-xl leading-7 font-semi-bold text-[#73C018] ml-[10px] max-[590px]:text-base">Main Menu</p>
                     <div className='flex items-center gap-4'>

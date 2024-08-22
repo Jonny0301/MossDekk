@@ -50,9 +50,44 @@ import Popup_Modal from "@/modal/popup_modal";
 import axios from "axios";
 
 export default function Home() {
-    const [isModalOpen, setIsModalOpen] = useState(true); // Open modal on page load
+    const [isModalOpen, setIsModalOpen] = useState(false); // Open modal on page load
+    const [isHandlingClick, setIsHandlingClick] = useState<boolean>(false);
+    const [isMenuPopup, setIsMenuPopup]=useState(false);
+    const handleToggleModal = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation(); // Prevent the event from bubbling up
 
-    const closeModal = () => setIsModalOpen(false);
+        if (isHandlingClick) return; // Ignore if already handling
+
+        setIsHandlingClick(true);
+        setIsMenuPopup(prev => {
+            const newValue = !prev; // Toggle the state
+            console.log(`isOmlegg changed to: ${newValue}`);
+            return newValue;
+        });
+
+        // Reset the flag after a short delay
+        setTimeout(() => setIsHandlingClick(false), 200); // Adjust delay as needed
+    };
+    const handleCloseModal = () => {
+        setIsMenuPopup(false)
+    };
+    const [reviews, setReviews] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+        try {
+            const response = await axios.get<any[]>('https://api.apify.com/v2/datasets/2cG9DNsKjQJdMySfE/items?token=apify_api_5J3BU4R3hbY7dpBgawZ7O7qITakyJ51Pr7Kz');
+            setReviews(response.data);
+            console.log(response.data);
+            
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+        }
+        };
+
+        fetchReviews();
+    }, []);
+    
     return (
         <div className='home-container justify-around'>
             <Header />
@@ -67,7 +102,7 @@ export default function Home() {
                         <div className='absolute top-0 flex flex-col pt-[321px] pl-[208px] z-10 responsive-image-text-content'>
                             <div className="w-[608px] text-white text-6xl font-semi-bold leading-[60px] z-10 responsive-itc-ad">Norway&apos;s first fully automated tire sales</div>
                             <div className="w-[493px] text-[#73c018] text-lg font-medium leading-7 pt-[28px] pb-[44px] pl-[4px] z-10 responsive-itc-text">Order – Pay – Exchange with a few simple keystrokes.</div>
-                            <div className="py-[18.5px] w-[277px] bg-[#73c018] rounded-sm justify-center items-center inline-flex z-10 responsive-itc-button">
+                            <div className="py-[18.5px] w-[277px] bg-[#73c018] rounded-sm justify-center items-center inline-flex z-10 responsive-itc-button cursor-pointer" onClick={handleToggleModal}>
                                 <div className="text-center text-white text-lg font-semi-bold leading-7 z-10">SERVICE</div>
                             </div>
                         </div>
@@ -163,15 +198,15 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                        <div className='flex flex-col pt-[152px] w-full pr-[208px] tire-size-guide-pan'>
+                        <div className='flex flex-col pt-[152px] w-full pr-[190px] tire-size-guide-pan'>
                             <div className='flex flex-row justify-between tsg-text-pan'>
                                 <div className='flex flex-col tsgtp-pan'>
                                     <div className="w-[263px] ml-[35.4px] pb-[11px] text-white text-4xl font-semibold font-['Inter'] leading-10 tsg-title">Tire Size Guide</div>
                                     <div className="w-[717px] h-[84px] ml-[37.4px] text-white text-lg font-normal font-['Inter'] leading-7 tsg-text">Once you have determined it’s time to buy tires, you’ll need to know what size tires are correct for your vehicle. Depending on what you drive, you may be interested in how to find the right tire for your</div>
                                 </div>
-                                <div className="w-[151px] h-[65px] p-2.5 bg-[#3a6113] rounded-lg justify-center items-center gap-2.5 inline-flex tsg-help-btn">
+                                <Link href={"/guide"} className="w-[151px] h-[65px] p-2.5 bg-[#3a6113] rounded-lg justify-center items-center gap-2.5 inline-flex tsg-help-btn">
                                     <div className="text-center text-white text-lg font-semibold font-['Inter'] leading-7">GET HELP</div>
-                                </div>
+                                </Link>
                             </div>
                             <div className='pt-[59px] ml-[29.4px] tsg-image'>
                                 <Image alt="" className="w-[956px] h-[364px]" src={tires_guide_image} />
@@ -548,7 +583,45 @@ export default function Home() {
                                 <Right_arrow />
                             </div>
 
-                            <div className="w-[732px] h-[315px] px-[21px] py-[58px] bg-white rounded-[10px] flex-col justify-start items-start gap-2.5 inline-flex testimonials-pan-list-item">
+                            {
+                                reviews.length && reviews.map((review:any, i) => (
+                                    i < 2 && <div key={`review-${i}`} className="w-[732px] h-[315px] px-[21px] py-[58px] bg-white rounded-[10px] flex-col justify-start items-start gap-2.5 inline-flex testimonials-pan-list-item">
+                                        <div className="justify-start items-start gap-[23px] inline-flex tpli-content">
+                                            <div className="w-[199px] h-[199px] relative tplic-info">
+                                                <Image alt="reviewer-avatar" width={199} height={199} className="w-[199px] h-[199px] left-0 top-0 absolute rounded-full" src={review.reviewerPhotoUrl ? review.reviewerPhotoUrl : Ellipse} />
+                                                <div className="w-11 h-11 left-[4.23px] top-[7.62px] absolute">
+                                                    <div className="w-11 h-11 left-0 top-0 absolute bg-[#d6d6d6] rounded-full border-2 border-white tplic-info-tick-back"></div>
+                                                    <div className="w-[22.86px] h-[20.32px] left-[11.01px] top-[11.86px] absolute tplic-info-tick">
+                                                        <div className="w-[22.86px] h-[20.32px] left-0 top-0 absolute">
+                                                            <Comma />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex-col justify-start items-start gap-[22px] inline-flex">
+                                                <div className="justify-start items-center gap-1.5 inline-flex">
+                                                    <div className="text-[#73c018] text-xl font-normal font-['Inter'] leading-7">{review.stars}</div>
+                                                    <div className="justify-start items-start gap-[9px] flex">
+                                                        <div className="w-[15px] h-[15px] justify-center items-center flex"><Star /></div>
+                                                        <div className="w-[15px] h-[15px] justify-center items-center flex"><Star /></div>
+                                                        <div className="w-[15px] h-[15px] justify-center items-center flex"><Star /></div>
+                                                        <div className="w-[15px] h-[15px] justify-center items-center flex"><Star /></div>
+                                                        <div className="w-[15px] h-[15px] justify-center items-start gap-[0px] flex"><Star /></div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex-col justify-start items-start flex tpli-recommend-content">
+                                                    <div className="w-[428px] h-[78px] overflow-hidden text-black text-base font-normal font-['Inter'] leading-normal tplirc-text">{review.textTranslated}</div>
+                                                    <div className="flex-col justify-start items-start flex">
+                                                        <div className="text-black text-xl font-semibold font-['Inter'] leading-7">{review.name}</div>
+                                                        <div className="text-black text-base font-normal font-['Inter'] leading-normal">{review.title}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                            {/* <div className="w-[732px] h-[315px] px-[21px] py-[58px] bg-white rounded-[10px] flex-col justify-start items-start gap-2.5 inline-flex testimonials-pan-list-item">
                                 <div className="justify-start items-start gap-[23px] inline-flex tpli-content">
                                     <div className="w-[199px] h-[199px] relative tplic-info">
                                         <Image alt="" className="w-[199px] h-[199px] left-0 top-0 absolute rounded-full" src={Ellipse} />
@@ -615,7 +688,7 @@ export default function Home() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
                         </div>
                         <div className="h-[11px] pt-[20px] justify-center items-center gap-[13px] inline-flex testimonials">
@@ -632,7 +705,7 @@ export default function Home() {
                 {/* <Welcome_Modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Welcome_Modal_Dark isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Welcome_Modal_Case isOpen={isModalOpen} onClose={closeModal} /> */}
-                {/* <Menu_Popup isOpen={isModalOpen} onClose={closeModal} /> */}
+                <Menu_Popup isOpen={isMenuPopup} onClose={handleCloseModal} />
                 {/* <Omlegg_modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Tire_Balancing_modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Customer_Registration_modal isOpen={isModalOpen} onClose={closeModal} /> */}

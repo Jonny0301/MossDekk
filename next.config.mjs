@@ -1,5 +1,5 @@
 export default {
   images: {
-    domains: ['imagetolink.com'],
+    domains: ['imagetolink.com', 'lh3.googleusercontent.com'],
   },
 };

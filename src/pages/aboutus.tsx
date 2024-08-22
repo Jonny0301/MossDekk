@@ -12,9 +12,16 @@ import Quality from "@/svg/Quality";
 import Ensurance from "@/svg/Ensurance";
 import Experts from "@/svg/Experts";
 import Services from "@/svg/Services";
+import { SetStateAction, useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function About() {
+    const [activeButton, setActiveButton] = useState('Mission');
+
+    const handleButtonClick = (buttonName: SetStateAction<string>) => {
+        setActiveButton(buttonName);
+    };
+
     return (
         <div className="home-container flex flex-col">
             <Header />
@@ -22,9 +29,24 @@ export default function About() {
                 <div className="main-container flex flex-col justify-center w-[100%]">
                     <Main_Image />
                     <div className="flex flex-row gap-[8px] w-[100%] py-[31px] md:pt-[8px] md:pb-[23px] md:gap-[2px] justify-center about-us-title">
-                        <div className="w-[87px] flex p-[10px] border-b-2 border-[#73c018]"><a href="" className="text-[#73c018] text-lg font-medium">Mission</a></div>
-                        <div className="w-[87px] flex p-[10px]"><a href="" className="text-white text-lg font-medium">Vision</a></div>
-                        <div className="w-[87px] flex p-[10px]"><a href="" className="text-white text-lg font-medium">History</a></div>
+                        <div
+                            className={`w-[87px] flex p-[10px] border-b-2 justify-center items-center ${activeButton === 'Mission' ? 'border-[#73c018]' : 'border-transparent'}`}
+                            onClick={() => handleButtonClick('Mission')}
+                        >
+                            <a href="#" className={`${activeButton === 'Mission' ? 'text-[#73c018]' : 'text-white'} text-lg font-medium`}>Mission</a>
+                        </div>
+                        <div
+                            className={`w-[87px] flex p-[10px] border-b-2 justify-center items-center ${activeButton === 'Vision' ? 'border-[#73c018]' : 'border-transparent'}`}
+                            onClick={() => handleButtonClick('Vision')}
+                        >
+                            <a href="#" className={`${activeButton === 'Vision' ? 'text-[#73c018]' : 'text-white'} text-lg font-medium`}>Vision</a>
+                        </div>
+                        <div
+                            className={`w-[87px] flex p-[10px] border-b-2 justify-center items-center ${activeButton === 'History' ? 'border-[#73c018]' : 'border-transparent'}`}
+                            onClick={() => handleButtonClick('History')}
+                        >
+                            <a href="#" className={`${activeButton === 'History' ? 'text-[#73c018]' : 'text-white'} text-lg font-medium`}>History</a>
+                        </div>
                     </div>
                     <div className="about-us-text px-[208px] pb-[127px]">
                         <p className="text-white text-lg font-normal font-['Inter'] leading-7">
@@ -105,8 +127,8 @@ export default function About() {
                                     </div>
                                 </div>
                             </div>
-                        {/* </div> */}
-                        {/* <div className="flex flex-row gap-[36px] justify-between"> */}
+                            {/* </div> */}
+                            {/* <div className="flex flex-row gap-[36px] justify-between"> */}
                             <div className="flex flex-col py-[56.05px] gap-[39px] px-[51px] w-[333px] afp-list bg-white rounded-lg">
                                 <div className="w-[100%] h-[75.90px] relative flex justify-center">
                                     <Experts />

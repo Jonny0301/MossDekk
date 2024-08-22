@@ -15,6 +15,7 @@ import Input_pen from "@/svg/Input_pen";
 import Input_phone from "@/svg/Input_phone";
 import Send from "@/svg/Send";
 import { MdCheckBox } from "react-icons/md";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -133,7 +134,7 @@ export default function Contact() {
                                             type="checkbox"
                                             className="form-checkbox h-5 w-5 text-blue-600"
                                         />
-                                        <div className="text-justify flex flex-row"><p className="text-[#6d6d6d] text-base font-normal font-['Inter'] leading-normal">I agree with the site’s <a className="text-[#6d6d6d] text-base font-normal font-['Inter'] underline leading-normal" href="/privacy">privacy policy.</a></p></div>
+                                        <div className="text-justify flex flex-row"><p className="text-[#6d6d6d] text-base font-normal font-['Inter'] leading-normal">I agree with the site’s <Link className="text-[#6d6d6d] text-base font-normal font-['Inter'] underline leading-normal" href="/privacy">privacy policy.</Link></p></div>
                                     </div>
                                 </div>
                             </div>

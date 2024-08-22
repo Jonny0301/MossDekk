@@ -10,27 +10,27 @@ interface ResponsiveSidebarProps {
 }
 
 const Responsive_Sidebar: React.FC<ResponsiveSidebarProps> = ({ isOpen, onClose }) => {
-    if (!isOpen) return null; // Don't render if not open
-    const [isHandlingClick, setIsHandlingClick] = useState<boolean>(false);
+    const [isHandlingClick, setIsHandlingClick] = useState(false);
     const [isMenuPopup, setIsMenuPopup]=useState(false);
     const handleToggleModal = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation(); // Prevent the event from bubbling up
-
+        
         if (isHandlingClick) return; // Ignore if already handling
-
+        
         setIsHandlingClick(true);
         setIsMenuPopup(prev => {
             const newValue = !prev; // Toggle the state
             console.log(`isOmlegg changed to: ${newValue}`);
             return newValue;
         });
-
+        
         // Reset the flag after a short delay
         setTimeout(() => setIsHandlingClick(false), 200); // Adjust delay as needed
     };
     const handleCloseModal = () => {
         setIsMenuPopup(false)
     };
+    if (!isOpen) return null; // Don't render if not open
     return (
         <div className="fixed inset-0 z-40 bg-black bg-opacity-50" onClick={onClose}>
             <div className="flex flex-col w-56 bg-white rounded-r-3xl overflow-hidden h-svh" onClick={(e) => e.stopPropagation()}>

@@ -214,8 +214,8 @@ export default function Pricing() {
                             </div>
                         </div>
                         <div className="price-service-pan-image-back w-full h-full absolute top-0 left-0">
-                            <Image src={Price_service_1} alt="" className="w-full h-full z-1 first-price-service-image"></Image>
-                            <Image src={Price_service_2} alt="" className="w-full h-full z-1 second-price-service-image"></Image>
+                            <Image src={Price_service_1} alt="tire image" className="w-full h-full z-1 first-price-service-image"></Image>
+                            <Image src={Price_service_2} alt="tire image" className="w-full h-full z-1 second-price-service-image"></Image>
                             <div className="absolute top-0 left-0 w-full h-full">
                                 <div className="w-full h-full left-0 top-[0px] absolute opacity-30 bg-black"></div>
                                 <div className="w-full h-full left-0 top-0 absolute opacity-60 mix-blend-multiply bg-black"></div>

@@ -78,7 +78,7 @@ const Popup_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
                     <div className="report-info-logo">
                         <div className="ml-[85px] w-[295px] h-[161px]" style={{ width: "295px", height: "161px" }}>
-                            <Image src={Report_logo} alt="" width={295} height={161} />
+                            <Image src={Report_logo} alt="Moss Dekk logo" width={295} height={161} />
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@ const Popup_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                                     <p className="text-black text-lg font-normal leading-7 font-['Inter']">6.75</p>
                                 </div>
                                 <div className="tyre-exact-figures relative w-[365px] h-[145px] mb-[11px]">
-                                    <Image alt="" src={Tyre_Mask} width={365} height={145}></Image>
+                                    <Image alt="tire mask" src={Tyre_Mask} width={365} height={145}></Image>
                                     <div className="figures-tyre-width-pan absolute bottom-0 gap-[8px] flex flex-row left-0 py-[18px] px-[47px] bg-[#73C018] items-center">
                                         <p className="text-lg leading-7 font-normal font-['Inter']">Max <span className="text-xl leading-7 font-semi-bold">7.28</span> mm</p>
                                         <p className="text-lg leading-7 font-normal font-['Inter']">Min <span className="text-xl leading-7 font-semi-bold">7.03</span> mm</p>
@@ -148,7 +148,7 @@ const Popup_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                                     <p className="text-black text-lg font-normal leading-7 font-['Inter']">6.75</p>
                                 </div>
                                 <div className="tyre-exact-figures relative w-[365px] h-[145px] mb-[11px]">
-                                    <Image alt="" src={Tyre_Mask} width={365} height={145}></Image>
+                                    <Image alt="tire mask" src={Tyre_Mask} width={365} height={145}></Image>
                                     <div className="figures-tyre-width-pan absolute bottom-0 gap-[8px] flex flex-row left-0 py-[18px] px-[47px] bg-[#73C018] items-center">
                                         <p className="text-lg leading-7 font-normal font-['Inter']">Max <span className="text-xl leading-7 font-semi-bold">7.28</span> mm</p>
                                         <p className="text-lg leading-7 font-normal font-['Inter']">Min <span className="text-xl leading-7 font-semi-bold">7.03</span> mm</p>
@@ -194,7 +194,7 @@ const Popup_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                         </div>
                         <div className="real-pan-car-image pt-[152px] pb-[130px]">
                             <div className="w-[608.7px] h-[1036px]">
-                                <Image alt="" src={Car} width={608.7} height={1036}></Image>
+                                <Image alt="car image" src={Car} width={608.7} height={1036}></Image>
 
                             </div>
                         </div>
@@ -207,7 +207,7 @@ const Popup_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                                     <p className="text-black text-lg font-normal leading-7 font-['Inter']">6.75</p>
                                 </div>
                                 <div className="tyre-exact-figures relative w-[365px] h-[145px] mb-[11px]">
-                                    <Image alt="" src={Tyre_Mask} width={365} height={145}></Image>
+                                    <Image alt="tire mask" src={Tyre_Mask} width={365} height={145}></Image>
                                     <div className="figures-tyre-width-pan absolute bottom-0 gap-[8px] flex flex-row left-0 py-[18px] px-[47px] bg-[#73C018] items-center">
                                         <p className="text-lg leading-7 font-normal font-['Inter']">Max <span className="text-xl leading-7 font-semi-bold">7.28</span> mm</p>
                                         <p className="text-lg leading-7 font-normal font-['Inter']">Min <span className="text-xl leading-7 font-semi-bold">7.03</span> mm</p>
@@ -258,7 +258,7 @@ const Popup_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                                     <p className="text-black text-lg font-normal leading-7 font-['Inter']">6.75</p>
                                 </div>
                                 <div className="tyre-exact-figures relative w-[365px] h-[145px] mb-[11px]">
-                                    <Image alt="" src={Tyre_Mask} width={365} height={145}></Image>
+                                    <Image alt="tire mask" src={Tyre_Mask} width={365} height={145}></Image>
                                     <div className="figures-tyre-width-pan absolute bottom-0 gap-[8px] flex flex-row left-0 py-[18px] px-[47px] bg-[#73C018] items-center">
                                         <p className="text-lg leading-7 font-normal font-['Inter']">Max <span className="text-xl leading-7 font-semi-bold">7.28</span> mm</p>
                                         <p className="text-lg leading-7 font-normal font-['Inter']">Min <span className="text-xl leading-7 font-semi-bold">7.03</span> mm</p>

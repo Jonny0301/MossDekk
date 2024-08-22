@@ -98,7 +98,7 @@ export default function Order() {
                     <div className="flex flex-row justify-between w-[260px] max-[1250px]:w-auto max-[1250px]:gap-[11px]">
                       <div className="flex justify-center items-center w-[93px] h-[93px] bg-[#D9D9D9] rounded-lg max-[1250px]:w-[68px] max-[1250px]:h-[68px] max-[700px]:w-[52px] max-[700px]:h-[52px]">
                         <Image
-                          alt=""
+                          alt=" product image"
                           src={Product}
                           className="w-[52px] h-[82px] max-[1250px]:w-10 max-[1250px]:h-[61px] max-[700px]:w-[31px] max-[700px]:h-[48px]"
                         ></Image>

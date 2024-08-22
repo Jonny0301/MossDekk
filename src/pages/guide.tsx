@@ -92,7 +92,7 @@ export default function Guide() {
                                 <p className="text-white text-3xl font-medium font-['Inter'] leading-9">Sidewall explained</p>
                             </div>
                             <div className="gpc-image w-[629px] h-[315px] mb-[37px]">
-                                <Image alt="" src={Sidewall_explain} />
+                                <Image alt="Image to find the tire detail" src={Sidewall_explain} />
                             </div>
                             <div className="gpc-text gap-[16px] flex flex-col">
                                 <p className="gpc-main-text w-[728px] text-white text-2xl font-medium font-['Inter'] leading-loose">As seen on the image , the sidewall of a tire includes numbers and letters, which perform the below tire information:</p>

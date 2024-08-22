@@ -71,8 +71,8 @@ const Reg_Num_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 </div>
                 <div className="report-licenseplate-content flex flex-row shadow">
                     <div className="report-licenseplate-content-header w-[93px] flex flex-col gap-[26px] px-[20px] py-[23px] bg-[#3e61a5] rounded-tl rounded-bl justify-center items-center">
-                        <Image alt="" src={Norway_flag} className="norway-flag" />
-                        <Image alt="" src={N_image} className="n-letter" />
+                        <Image alt="Norway flag" src={Norway_flag} className="norway-flag" />
+                        <Image alt="N" src={N_image} className="n-letter" />
                     </div>
                     <div className="rounded-tr rounded-br licenseplate-input-pan w-[543px] pt-[31px] pl-[26px] pr-[37px] pb-[30px] relative h-[157px] flex justify-center items-center bg-white">
                         <input

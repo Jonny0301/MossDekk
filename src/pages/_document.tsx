@@ -17,9 +17,9 @@ export default function Document() {
             },
           })}
         </script>
-        <title>Moss Dekk</title>
-        <meta name="description" content="Welcome to Moss Dekk AS" />
-        <meta name="keywords" content="Tires, website, nextjs, Tire sales company, High quality" />
+        <title>Moss Dekk AS Tire Sales Company</title>
+        <meta name="description" content="Welcome to Moss Dekk AS. Norway's first fully automated tire sales. Order - Pay - Exchange with a few simple keystrokes." />
+        <meta name="keywords" content="Tires, website, nextjs, Tire sales company, High quality,Moss Dekk AS,  Tyre Services Moss, Tyre Shop Moss" />
         {/* <link rel="canonical" href="https://www.mywebsite.com/" /> */}
         <link rel="canonical" href="http://www.boltz.no/" />
         {/* <meta property="og:title" content={title} />

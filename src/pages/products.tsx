@@ -101,7 +101,7 @@ export default function Pricing() {
                                     <div className="pp-product-list-main-product-pan flex flex-col">
                                         <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                             <div className="pp-product-list-mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Tire image of Moss Dekk AS" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -157,7 +157,7 @@ export default function Pricing() {
                                     <div className="pp-product-list-main-product-pan flex flex-col">
                                         <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                             <div className="pp-product-list-mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Tire image of Moss Dekk AS" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -213,7 +213,7 @@ export default function Pricing() {
                                     <div className="pp-product-list-main-product-pan flex flex-col">
                                         <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                             <div className="pp-product-list-mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Tire image of Moss Dekk AS" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -269,7 +269,7 @@ export default function Pricing() {
                                     <div className="pp-product-list-main-product-pan flex flex-col">
                                         <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                             <div className="pp-product-list-mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Tire image of Moss Dekk AS" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -325,7 +325,7 @@ export default function Pricing() {
                                     <div className="pp-product-list-main-product-pan flex flex-col">
                                         <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                             <div className="pp-product-list-mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Tire image of Moss Dekk AS" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -381,7 +381,7 @@ export default function Pricing() {
                                     <div className="pp-product-list-main-product-pan flex flex-col">
                                         <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                             <div className="pp-product-list-mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Tire image of Moss Dekk AS" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -437,7 +437,7 @@ export default function Pricing() {
                                     <div className="pp-product-list-main-product-pan flex flex-col">
                                         <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                             <div className="pp-product-list-mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Tire image of Moss Dekk AS" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -493,7 +493,7 @@ export default function Pricing() {
                                     <div className="pp-product-list-main-product-pan flex flex-col">
                                         <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                             <div className="pp-product-list-mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Tire image of Moss Dekk AS" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -549,7 +549,7 @@ export default function Pricing() {
                                     <div className="pp-product-list-main-product-pan flex flex-col">
                                         <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                             <div className="pp-product-list-mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Tire image of Moss Dekk AS" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">

@@ -10,22 +10,22 @@ export default function Partner() {
     return (
     <div className='w-full flex flex-row items-center px-[216px] py-[49px] gap-[19px] bg-[#F7F7F7] partner-brand'>
         <div className='partner-brand-img'>
-            <Image src={Partner_logo} alt="" />
+            <Image src={Partner_logo} alt="Moss Dekk's partner" />
         </div>
         <div className='partner-brand-img'>
-            <Image src={Partner_continental} alt="" />
+            <Image src={Partner_continental} alt="Moss Dekk's partner" />
         </div>
         <div className='partner-brand-img'>
-            <Image src={Partner_dunlop} alt="" />
+            <Image src={Partner_dunlop} alt="Moss Dekk's partner" />
         </div>
         <div className='partner-brand-img'>
-            <Image src={Partner_firestone} alt="" />
+            <Image src={Partner_firestone} alt="Moss Dekk's partner" />
         </div>
         <div className='partner-brand-img'>
-            <Image src={Partner_goodyear} alt="" />
+            <Image src={Partner_goodyear} alt="Moss Dekk's partner" />
         </div>
         <div className='partner-brand-img'>
-            <Image src={Partner_yokohama} alt="" />
+            <Image src={Partner_yokohama} alt="Moss Dekk's partner" />
         </div>
 
     </div>

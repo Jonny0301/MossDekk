@@ -95,12 +95,12 @@ export default function Home() {
                 <div className='main-container'>
                     <div className='w-full relative'>
                         <div className='relative w-full h-[801px] top-[0px] right-[0px] responsive-tire-image'>
-                            <Image alt="" src={background_image} className='w-full h-full' style={{ zIndex: -10 }} />
-                            <Image alt="" src={responsive_tire_image} className='w-full h-full responsive-rti-image' style={{ zIndex: -10 }} />
+                            <Image alt="Tire image" src={background_image} className='w-full h-full' style={{ zIndex: -10 }} />
+                            <Image alt="Tire image for the responsive" src={responsive_tire_image} className='w-full h-full responsive-rti-image' style={{ zIndex: -10 }} />
                             <div className='background-gradient'></div>
                         </div>
                         <div className='absolute top-0 flex flex-col pt-[321px] pl-[208px] z-10 responsive-image-text-content'>
-                            <div className="w-[608px] text-white text-6xl font-semi-bold leading-[60px] z-10 responsive-itc-ad">Norway&apos;s first fully automated tire sales</div>
+                            <h1 className="w-[608px] text-white text-6xl font-semi-bold leading-[60px] z-10 responsive-itc-ad">Norway&apos;s first fully automated tire sales</h1>
                             <div className="w-[493px] text-[#73c018] text-lg font-medium leading-7 pt-[28px] pb-[44px] pl-[4px] z-10 responsive-itc-text">Order – Pay – Exchange with a few simple keystrokes.</div>
                             <div className="py-[18.5px] w-[277px] bg-[#73c018] rounded-sm justify-center items-center inline-flex z-10 responsive-itc-button cursor-pointer" onClick={handleToggleModal}>
                                 <div className="text-center text-white text-lg font-semi-bold leading-7 z-10">SERVICE</div>
@@ -209,7 +209,7 @@ export default function Home() {
                                 </Link>
                             </div>
                             <div className='pt-[59px] ml-[29.4px] tsg-image'>
-                                <Image alt="" className="w-[956px] h-[364px]" src={tires_guide_image} />
+                                <Image alt="Guide image for the Tire information" className="w-[956px] h-[364px]" src={tires_guide_image} />
                             </div>
                         </div>
                     </div>
@@ -260,7 +260,7 @@ export default function Home() {
                         <div className="w-[467px] text-white text-4xl font-semibold font-['Inter'] leading-10 tcp-title">Our routines for tire changes</div>
                         <div className="w-[752px] pt-[57px] pb-[15px] text-white text-lg font-normal font-['Inter'] leading-7 tcp-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nibh ipsum, tempor vitae sem vel, consectetur facilisis risus. Donec sodales ex ex, ac tempor massa viverra eu.</div>
                         <div className='responsive-tire-change-human'>
-                            <Image alt="" className="w-[613px] h-[877px]" src={Human} />
+                            <Image alt="Tire changer man image" className="w-[613px] h-[877px]" src={Human} />
                         </div>
                         <div className="w-[750px] h-7 mt-[56px] relative flex flex row tire-change-pan-list-first">
                             <div className="w-2.5 h-2.5 left-0 top-[11px] mt-[5px] bg-[#73c018] rounded-full tcpl-item"></div>
@@ -291,7 +291,7 @@ export default function Home() {
                             <div className="w-[732px] h-14 left-[18px] top-0 pl-[8px] text-white text-lg font-normal font-['Inter'] leading-7 tcpl-text-big">Remember to re-tighten the bolts after 60km or visit us and we will re-tighten them at no charge.<br /></div>
                         </div>
                         <div className='absolute bottom-0 right-[184px] tire-change-human'>
-                            <Image alt="" className="w-[613px] h-[877px]" src={Human} />
+                            <Image alt="Tire changer man image" className="w-[613px] h-[877px]" src={Human} />
                         </div>
                     </div>
                     <div className='it-service-pan flex flex-col items-center pt-[91px] grow pb-[29px]'>
@@ -388,7 +388,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Tpms} />
+                                            <Image alt="Product image related to the Car" className="" src={Tpms} />
                                         </div>
                                     </div>
 
@@ -406,7 +406,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Nh220} />
+                                            <Image alt="Product image related to the Car" className="" src={Nh220} />
                                         </div>
                                     </div>
 
@@ -424,7 +424,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Nuts} />
+                                            <Image alt="Product image related to the Car" className="" src={Nuts} />
                                         </div>
                                     </div>
 
@@ -442,7 +442,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Rings} />
+                                            <Image alt="Product image related to the Car" className="" src={Rings} />
                                         </div>
                                     </div>
 
@@ -460,7 +460,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Felg} />
+                                            <Image alt="Product image related to the Car" className="" src={Felg} />
                                         </div>
                                     </div>
 
@@ -478,7 +478,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Tpms} />
+                                            <Image alt="Product image related to the Car" className="" src={Tpms} />
                                         </div>
                                     </div>
 
@@ -496,7 +496,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Nh220} />
+                                            <Image alt="Product image related to the Car" className="" src={Nh220} />
                                         </div>
                                     </div>
 
@@ -514,7 +514,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Nuts} />
+                                            <Image alt="Product image related to the Car" className="" src={Nuts} />
                                         </div>
                                     </div>
 
@@ -532,7 +532,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Rings} />
+                                            <Image alt="Product image related to the Car" className="" src={Rings} />
                                         </div>
                                     </div>
 
@@ -550,7 +550,7 @@ export default function Home() {
                                 <div className="justify-start items-start gap-2.5 relative inline-flex">
                                     <div className="w-[303px] h-[303px] bg-[#e3e3e3] flex justify-center items-center">
                                         <div className="grow shrink basis-0 self-stretch justify-center items-center flex">
-                                            <Image alt="" className="" src={Felg} />
+                                            <Image alt="Product image related to the Car" className="" src={Felg} />
                                         </div>
                                     </div>
 

@@ -89,8 +89,8 @@ export default function Report() {
                                 <div className="report-licenseplate-title mt-[-7.5px]"><p className="text-black text-2xl font-normal font-['Inter'] leading-loose">Tast inn ditt RegNr</p></div>
                                 <div className="report-licenseplate-content flex flex-row shadow">
                                     <div className="report-licenseplate-content-header w-[93px] flex flex-col gap-[26px] px-[20px] py-[23px] bg-[#3e61a5] rounded-tl rounded-bl justify-center items-center">
-                                        <Image alt="" src={Norway_flag} className="norway-flag" />
-                                        <Image alt="" src={N_image} className="n-letter" />
+                                        <Image alt="Norway flag" src={Norway_flag} className="norway-flag" />
+                                        <Image alt="N letter" src={N_image} className="n-letter" />
                                     </div>
                                     <div className="rounded-tr rounded-br licenseplate-input-pan w-[543px] pt-[31px] pl-[26px] pr-[37px] pb-[30px] relative h-[157px] flex justify-center items-center" >
                                         <input className={` uppercase w-full h-full boder-none border-0 focus:outline-none px-[0px] focus:ring-0 border-gray-300 border ${isValid ? "text-[#aaaaaa]" : "text-[#ff0000]"} text-[100px] font-normal z-10 font-['Inter'] leading-[96px]`} pattern="[a-zA-Z]{2}[0-9]{5}$" type="text" maxLength={7} autoFocus id="input-licensplate" name="input -licensplate" value={inputValue} onChange={handleChange} style={{ letterSpacing: "15px", fontFamily: "monospace" }} autoComplete="off" />
@@ -109,7 +109,7 @@ export default function Report() {
                             </div>
                             <div className="report-info-logo">
                                 <div className="ml-[85px] w-[295px] h-[161px]" style={{ width: "295px", height: "161px" }}>
-                                    <Image src={Report_logo} alt="" width={295} height={161} />
+                                    <Image src={Report_logo} alt="Moss Dekk logo" width={295} height={161} />
                                 </div>
                             </div>
                         </div>
@@ -131,7 +131,7 @@ export default function Report() {
                                             <p className="text-black text-lg font-normal leading-7 font-['Inter']">6.75</p>
                                         </div>
                                         <div className="tyre-exact-figures relative w-[365px] h-[145px] mb-[11px]">
-                                            <Image alt="" src={Tyre_Mask} width={365} height={145}></Image>
+                                            <Image alt="Tyre mask" src={Tyre_Mask} width={365} height={145}></Image>
                                             <div className="figures-tyre-width-pan absolute bottom-0 gap-[8px] flex flex-row left-0 py-[18px] px-[47px] bg-[#73C018] items-center">
                                                 <p className="text-lg leading-7 font-normal font-['Inter']">Max <span className="text-xl leading-7 font-semi-bold">7.28</span> mm</p>
                                                 <p className="text-lg leading-7 font-normal font-['Inter']">Min <span className="text-xl leading-7 font-semi-bold">7.03</span> mm</p>
@@ -182,7 +182,7 @@ export default function Report() {
                                             <p className="text-black text-lg font-normal leading-7 font-['Inter']">6.75</p>
                                         </div>
                                         <div className="tyre-exact-figures relative w-[365px] h-[145px] mb-[11px]">
-                                            <Image alt="" src={Tyre_Mask} width={365} height={145}></Image>
+                                            <Image alt="tyre mask" src={Tyre_Mask} width={365} height={145}></Image>
                                             <div className="figures-tyre-width-pan absolute bottom-0 gap-[8px] flex flex-row left-0 py-[18px] px-[47px] bg-[#73C018] items-center">
                                                 <p className="text-lg leading-7 font-normal font-['Inter']">Max <span className="text-xl leading-7 font-semi-bold">7.28</span> mm</p>
                                                 <p className="text-lg leading-7 font-normal font-['Inter']">Min <span className="text-xl leading-7 font-semi-bold">7.03</span> mm</p>
@@ -228,7 +228,7 @@ export default function Report() {
                                 </div>
                                 <div className="real-pan-car-image pt-[152px] pb-[130px]">
                                     <div className="w-[608.7px] h-[1036px]">
-                                        <Image alt="" src={Car} width={608.7} height={1036}></Image>
+                                        <Image alt="Car image" src={Car} width={608.7} height={1036}></Image>
 
                                     </div>
                                 </div>
@@ -241,7 +241,7 @@ export default function Report() {
                                             <p className="text-black text-lg font-normal leading-7 font-['Inter']">6.75</p>
                                         </div>
                                         <div className="tyre-exact-figures relative w-[365px] h-[145px] mb-[11px]">
-                                            <Image alt="" src={Tyre_Mask} width={365} height={145}></Image>
+                                            <Image alt="car image" src={Tyre_Mask} width={365} height={145}></Image>
                                             <div className="figures-tyre-width-pan absolute bottom-0 gap-[8px] flex flex-row left-0 py-[18px] px-[47px] bg-[#73C018] items-center">
                                                 <p className="text-lg leading-7 font-normal font-['Inter']">Max <span className="text-xl leading-7 font-semi-bold">7.28</span> mm</p>
                                                 <p className="text-lg leading-7 font-normal font-['Inter']">Min <span className="text-xl leading-7 font-semi-bold">7.03</span> mm</p>
@@ -292,7 +292,7 @@ export default function Report() {
                                             <p className="text-black text-lg font-normal leading-7 font-['Inter']">6.75</p>
                                         </div>
                                         <div className="tyre-exact-figures relative w-[365px] h-[145px] mb-[11px]">
-                                            <Image alt="" src={Tyre_Mask} width={365} height={145}></Image>
+                                            <Image alt="tyre mask" src={Tyre_Mask} width={365} height={145}></Image>
                                             <div className="figures-tyre-width-pan absolute bottom-0 gap-[8px] flex flex-row left-0 py-[18px] px-[47px] bg-[#73C018] items-center">
                                                 <p className="text-lg leading-7 font-normal font-['Inter']">Max <span className="text-xl leading-7 font-semi-bold">7.28</span> mm</p>
                                                 <p className="text-lg leading-7 font-normal font-['Inter']">Min <span className="text-xl leading-7 font-semi-bold">7.03</span> mm</p>
@@ -389,7 +389,7 @@ export default function Report() {
 
                                     </div>
                                     <div className="din-color-bar pr-[50px]">
-                                        <Image alt="" src={Color_bar_first}></Image>
+                                        <Image alt="Color bar" src={Color_bar_first}></Image>
                                     </div>
                                     <div className="ideal-distance-title pt-[8px]">
                                         <p className="text-lg leading-7 font-normal font-['Inter'] text-[#6D6D6D]">Ideel Distanse:</p>
@@ -495,7 +495,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-first flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="Color bar" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -551,7 +551,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-second flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -607,7 +607,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-third flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -663,7 +663,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-fourth flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -719,7 +719,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-fifth flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_22} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -782,7 +782,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-first flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_23} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_23} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -838,7 +838,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-second flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_23} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_23} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -894,7 +894,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-third flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_23} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_23} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -950,7 +950,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-fourth flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_23} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_23} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -1006,7 +1006,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-fifth flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_23} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_23} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -1069,7 +1069,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-first flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_24} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_24} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -1125,7 +1125,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-second flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_24} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_24} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -1181,7 +1181,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-third flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_24} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_24} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -1237,7 +1237,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-fourth flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_24} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_24} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">
@@ -1293,7 +1293,7 @@ export default function Report() {
                                     <div className="main-product-pan  mmp-product-show-fifth flex flex-col">
                                         <div className="mpp-image bg-[#F5F5F5] w-[276px] h-[312px] relative flex justify-center items-center">
                                             <div className="mpp-image-outback absolute">
-                                                <Image alt="" src={Tyre_24} width={176.52} height={238}></Image>
+                                                <Image alt="tire image" src={Tyre_24} width={176.52} height={238}></Image>
                                             </div>
                                         </div>
                                         <div className="mpp-main-info w-[276px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px]">

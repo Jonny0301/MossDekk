@@ -37,7 +37,7 @@ const Responsive_Sidebar: React.FC<ResponsiveSidebarProps> = ({ isOpen, onClose 
                 <div className="flex items-center justify-center h-20 shadow-md px-4">
                     <div className='w-32 header-logo flex justify-center items-center' style={{ "height": "69.54px" }}>
                         <Link href='/'>
-                            <Image alt="" src={Report_logo} width={128} height={69.54} />
+                            <Image alt="Moss Dekk logo" src={Report_logo} width={128} height={69.54} />
                         </Link>
                     </div>
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-800">

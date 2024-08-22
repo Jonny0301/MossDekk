@@ -70,7 +70,7 @@ export default function Header() {
             <div className='py-3 flex flex-row header-content w-full justify-between'>
                 <div className='w-32 header-logo' style={{ "height": "69.54px" }}>
                     <Link href='/'>
-                        <Image alt="" src={logo_image} width={128} height={69.54} />
+                        <Image alt="Moss Dekk logo" src={logo_image} width={128} height={69.54} />
 
                     </Link>
                 </div>

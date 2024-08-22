@@ -56,14 +56,14 @@ export default function About() {
                     <div className="about-founder-pan block flex-row justify-end relative mr-[208px] ml-[207px] w-[full] h-[532px]">
                         <div className="absolute afp-outback z-0 top-[0px] left-[0px]">
                             <div className="abp-background-color absolute top-[0px] left-[0px] w-[1505px] h-[532px] opacity-60 bg-[#101010]">
-                                <Image src={Founder_image} alt="" height={532} className="rounded-lg"></Image>
+                                <Image src={Founder_image} alt="Woman founder Of the Moss Dekk" height={532} className="rounded-lg"></Image>
                             </div>
                         </div>
                         <div className="relative flex flex-row justify-end afp-main-out">
                             <div className="afp-wo-image pl-[104px] pr-[123px] absolute h-[592px] bottom-[0px] left-[0px]">
                                 <div className="w-[404px] h-[592px] relative afpwi-pan">
                                     <div className="w-[404px] h-[592px] left-0 top-0 absolute bg-[#d9d9d9] rounded-[33px] border-4 border-[#17c964]"></div>
-                                    <Image alt="" className="w-[395px] h-[583px] left-[5px] top-[4px] absolute rounded-[28px]" src={Founder_woman_img} />
+                                    <Image alt="Moss Dekk Founder and Creator" className="w-[395px] h-[583px] left-[5px] top-[4px] absolute rounded-[28px]" src={Founder_woman_img} />
                                 </div>
                             </div>
                             <div className="flex flex-col pt-[61px] pr-[79px] pb-[47px] afp-content">
@@ -78,7 +78,7 @@ export default function About() {
                                 </div>
                                 <div className="justify-start items-center gap-[15px] inline-flex z-10">
                                     <div className="w-[68px] h-[68px]">
-                                        <Image className="rounded-[64px]" src={Founder_info_ava} alt="" />
+                                        <Image className="rounded-[64px]" src={Founder_info_ava} alt=" Moss Dekk Founder and Creator" />
                                     </div>
                                     <div className="flex-col justify-start items-start inline-flex">
                                         <div className="text-justify text-white text-2xl font-semibold font-['Inter'] leading-loose">Danial H. Smith</div>

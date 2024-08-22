@@ -51,7 +51,7 @@ export default function Pricing() {
                             <div className="pm-minfo flex flex-row gap-[279px] items-center max-[1774px]:gap-[50px] max-[1227px]:gap-[65px] max-[834px]:gap-[7px] max-[572px]:flex-col ">
                                 <div className="flex flex-row gap-[26px] max-[1227px]:gap-[15px] max-[834px]:gap-[14px] max-[572px]:items-start">
                                     <div className="pm-minfo-image w-[161px] h-[161px] flex justify-center items-center bg-[#F7F7F7] max-[1227px]:w-[109px] max-[1227px]:h-[110px] max-[834px]:w-[69px] max-[834px]:h-[69px]">
-                                        <Image src={Product_detail} alt="" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
+                                        <Image src={Product_detail} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
                                     </div>
                                     <div className="pm-minfo-text gap-[20px] flex flex-col justify-center max-[1227px]:gap-[3px] max-[446px]:h-[57px] max-[446px]:w-[161px]">
                                         <p className=" text-3xl leading-10 font-semi-bold text-black max-[1227px]:text-xl max-[834px]:text-sm">SAILUN - ATREZZO ELITE - V</p>

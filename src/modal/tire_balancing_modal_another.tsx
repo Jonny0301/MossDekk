@@ -341,7 +341,7 @@
                                                     </div>
                                                 </div>
                                                 <div className="">
-                                                    <Image src={Vipps} alt=""></Image>
+                                                    <Image src={Vipps} alt="card image"></Image>
                                                 </div>
                                             </div>
 
@@ -354,8 +354,8 @@
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-row gap-[5px]">
-                                                    <Image src={Visa} alt="" className="w-[43px] h-[28px]"></Image>
-                                                    <Image src={Kort} alt="" className="w-[43px] h-[28px]"></Image>
+                                                    <Image src={Visa} alt="card image" className="w-[43px] h-[28px]"></Image>
+                                                    <Image src={Kort} alt="card image" className="w-[43px] h-[28px]"></Image>
                                                 </div>
                                             </div>
                                             <div className="w-full px-[22px] pt-[28.5px] h-[90px] bg-[#1F1F1F] rounded-[4px] flex flex-row justify-between max-[590px]:px-[11px] max-[590px]:pt-[25px] max-[590px]:h-[70px]">
@@ -367,7 +367,7 @@
                                                     </div>
                                                 </div>
                                                 <div className="">
-                                                    <Image src={Walley} alt=""></Image>
+                                                    <Image src={Walley} alt="card image"></Image>
                                                 </div>
                                             </div>
                                             <div className="w-full px-[22px] pt-[28.5px] h-[90px] bg-[#1F1F1F] rounded-[4px] flex flex-row justify-between max-[590px]:px-[11px] max-[590px]:pt-[25px] max-[590px]:h-[70px]">
@@ -379,7 +379,7 @@
                                                     </div>
                                                 </div>
                                                 <div className="">
-                                                    <Image src={Walley} alt=""></Image>
+                                                    <Image src={Walley} alt="card image"></Image>
                                                 </div>
                                             </div>
                                         </div>

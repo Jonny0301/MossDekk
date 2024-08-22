@@ -16,7 +16,7 @@ export default function Footer() {
                     <div className='responsive-footer-header'>
                         <div className='connection-info flex flex-col gap-[11px] pr-[181px]'>
                             <div className='w-[128px] h-[69.54px]'>
-                                <Image src={logo_image} width={128} height={69.54} alt="" />
+                                <Image src={logo_image} width={128} height={69.54} alt="Moss Dekk logo" />
                             </div>
                             <div className="h-7 justify-start items-center gap-3 inline-flex info-item">
                                 <div className="w-4 h-4"> <Mail /></div>

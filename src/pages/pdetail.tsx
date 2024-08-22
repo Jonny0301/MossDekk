@@ -66,20 +66,20 @@ export default function Pricing() {
                     <div className="product-detail-pan flex flex-row pt-[24px] pl-[309px] pr-[389px] pb-[91px] gap-[105px] bg-[#F7F7F7] max-[1848px]:px-[80px] max-[1848px]:justify-center max-[1340px]:gap-[6px] max-[1340px]:pt-[35px] max-[1340px]:pb-[68px] max-[900px]:flex-col max-[900px]:items-center max-[900px]:px-[16px] max-[900px]:pt-[13px] max-[900px]:gap-[22px] max-[900px]:pb-[19px]">
                         <div className="product-detail-image-pan flex flex-col gap-[13px] max-[1340px]:gap-[6px] max-[520px]:gap-[4px]">
                             <div className="pd-image w-[640px] h-[700px] flex justify-center items-center bg-white max-[1340px]:w-[474px] max-[1340px]:h-[519px] max-[520px]:w-[343px] max-[520px]:h-[375px]">
-                                <Image src={Product_detail} alt="" className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
+                                <Image src={Product_detail} alt="Car accessories image" className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
                             </div>
                             <div className="pd-carsouel flex flex-row gap-[12px] justify-between max-[520px]:gap-[8px]">
                                 <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                                    <Image src={Product_detail} alt="" className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                                    <Image src={Product_detail} alt="Car accessories image" className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
                                 </div>
                                 <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                                    <Image src={Product_detail} alt="" className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                                    <Image src={Product_detail} alt="Car accessories image" className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
                                 </div>
                                 <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                                    <Image src={Product_detail} alt="" className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                                    <Image src={Product_detail} alt="Car accessories image" className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
                                 </div>
                                 <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                                    <Image src={Product_detail} alt="" className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                                    <Image src={Product_detail} alt="Car accessories image" className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
                                 </div>
                             </div>
                         </div>
@@ -202,7 +202,7 @@ export default function Pricing() {
                             <div className="pp-product-list-main-product-pan flex flex-col">
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                     <div className="pp-product-list-mpp-image-outback absolute">
-                                        <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                        <Image alt="Car accessories image" src={Tyre_22} width={176.52} height={238}></Image>
                                     </div>
                                 </div>
                                 <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -258,7 +258,7 @@ export default function Pricing() {
                             <div className="pp-product-list-main-product-pan flex flex-col">
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                     <div className="pp-product-list-mpp-image-outback absolute">
-                                        <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                        <Image alt="Car accessories image" src={Tyre_22} width={176.52} height={238}></Image>
                                     </div>
                                 </div>
                                 <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -314,7 +314,7 @@ export default function Pricing() {
                             <div className="pp-product-list-main-product-pan flex flex-col">
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                     <div className="pp-product-list-mpp-image-outback absolute">
-                                        <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                        <Image alt="Car accessories image" src={Tyre_22} width={176.52} height={238}></Image>
                                     </div>
                                 </div>
                                 <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
@@ -370,7 +370,7 @@ export default function Pricing() {
                             <div className="pp-product-list-main-product-pan flex flex-col">
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                     <div className="pp-product-list-mpp-image-outback absolute">
-                                        <Image alt="" src={Tyre_22} width={176.52} height={238}></Image>
+                                        <Image alt="Car accessories image" src={Tyre_22} width={176.52} height={238}></Image>
                                     </div>
                                 </div>
                                 <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">

@@ -12,16 +12,30 @@ import { useState, useEffect } from 'react';
 import Responsive_Sidebar from './Responsive_Sidebar';
 import MenuPopup from '@/modal/menu_popup';
 import CountryNO from '@/svg/CountryNO';
+import ResponsiveSidebar from './Responsive_Sidebar';
 export default function Header() {
     const [isToggleSidebar, setIsToggleSidebar] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [languageOpen, setLanguageOpen] = useState(false);
-
-    const toggleSidebar = () => {
-        setIsOpen((prev) => !prev);
-    };
+    const [isResponsiveBarVisible, setIsResponsiveBarVisible] = useState(false);
+    const [language, setLanguage] = useState('English');
+    const [flag, setFlag] = useState(<CountryUS />); // Default flag for English
     const [isHandlingClick, setIsHandlingClick] = useState<boolean>(false);
     const [isMenuPopup, setIsMenuPopup] = useState(false);
+    const [isSearchVisible, setIsSearchVisible] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const toggleSidebar = () => {
+        // Close the MenuPopup if it's open
+        if (isMenuPopup) {
+            setIsMenuPopup(false);
+        }
+        // Toggle the sidebar
+        setIsOpen((prev) => !prev);
+    };
+    // const handleSidebarClose = () => {
+    //     setIsSidebarOpen(false);
+    // };
+
     const handleToggleModal = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation(); // Prevent the event from bubbling up
 
@@ -43,13 +57,12 @@ export default function Header() {
     const toCartPage = () => {
         window.location.href = "/cart"
     };
-    const [isSearchVisible, setIsSearchVisible] = useState(false);
+
 
     const toggleSearchBar = () => {
         setIsSearchVisible((prev) => !prev);
     };
-    const [language, setLanguage] = useState('English');
-    const [flag, setFlag] = useState(<CountryUS />); // Default flag for English
+
 
     const toggleDropdown = () => {
         setIsOpen((prev) => !prev);
@@ -58,13 +71,25 @@ export default function Header() {
         setLanguageOpen((prev) => !prev);
 
     }
-
     const handleLanguageChange = (lang: string, flagComponent: JSX.Element) => {
         setLanguage(lang);
         setFlag(flagComponent);
         setIsOpen(false); // Close dropdown after selection
     };
+    // const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isMenuPopupOpen, setIsMenuPopupOpen] = useState(false);
 
+    const handleSidebarClose = () => {
+        setIsSidebarOpen(false);
+    };
+
+    const handleOpenMenuPopup = () => {
+        setIsMenuPopupOpen(true);
+    };
+
+    const handleCloseMenuPopup = () => {
+        setIsMenuPopupOpen(false);
+    };
     return (
         <header className="flex flex-row pl-[200px] pr-[200px] responsive-header w-full justify-between">
             <div className='py-3 flex flex-row header-content w-full justify-between'>
@@ -150,7 +175,7 @@ export default function Header() {
                     <div className='mr-[21px] relative header-shopping-cart w-[24px] h-[24px] cursor-pointer' onClick={() => toCartPage()}>
                         <ShoppingCart />
                         {/* <ShoppingCart width="24px" height="24px" /> */}
-                        <div className='absolute rounded-full bg-[#e21632] w-[16px] h-[16px] flex items-center justify-center top-[-3px] right-[-6px]'><span className='text-white text-xs font-medium leading-none'>2</span></div>
+                        {/* <div className='absolute rounded-full bg-[#e21632] w-[16px] h-[16px] flex items-center justify-center top-[-3px] right-[-6px]'><span className='text-white text-xs font-medium leading-none'>2</span></div> */}
                     </div>
                     <div className='pr-[18px] text-white text-lg font-semi-bold leading-7 header-username'>
                         Hanh BV
@@ -182,7 +207,7 @@ export default function Header() {
                                         onClick={() => handleLanguageChange('Norwegian', <CountryNO />)}
                                     >
                                         <div className='mr-[5px] w-[20px] h-[20px] nor-fl'>
-                                            <CountryNO  />
+                                            <CountryNO />
                                         </div>
                                         Norwegian
                                     </div>
@@ -191,13 +216,20 @@ export default function Header() {
                         )}
                     </div>
 
-                    <div className='show-nav-bar' onClick={toggleSidebar}>
+                    <div className='show-nav-bar' onClick={() => setIsSidebarOpen(true)}>
                         <Menu />
                     </div>
                 </div>
             </div>
-            <Responsive_Sidebar isOpen={isOpen} onClose={toggleSidebar} />
-            <MenuPopup isOpen={isMenuPopup} onClose={handleCloseModal} />
+            <ResponsiveSidebar
+                isOpen={isSidebarOpen}
+                onClose={handleSidebarClose}
+                onOpenMenuPopup={handleOpenMenuPopup} // Pass the handler
+            />
+            <MenuPopup
+                isOpen={isMenuPopupOpen}
+                onClose={handleCloseMenuPopup}
+            />
         </header>
     );
 };

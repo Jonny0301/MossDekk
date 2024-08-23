@@ -1,41 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo_image from '../../public/image/autobutler.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import Report_logo from "../../public/image/report_logo.png"
+import Report_logo from "../../public/image/report_logo.png";
 import MenuPopup from '@/modal/menu_popup';
+
 interface ResponsiveSidebarProps {
     isOpen: boolean;
     onClose: () => void;
+    onOpenMenuPopup: () => void; // New prop to handle opening the menu popup
 }
 
-const Responsive_Sidebar: React.FC<ResponsiveSidebarProps> = ({ isOpen, onClose }) => {
-    const [isHandlingClick, setIsHandlingClick] = useState(false);
-    const [isMenuPopup, setIsMenuPopup]=useState(false);
-    const handleToggleModal = (event: React.MouseEvent<HTMLDivElement>) => {
-        event.stopPropagation(); // Prevent the event from bubbling up
-        
-        if (isHandlingClick) return; // Ignore if already handling
-        
-        setIsHandlingClick(true);
-        setIsMenuPopup(prev => {
-            const newValue = !prev; // Toggle the state
-            console.log(`isOmlegg changed to: ${newValue}`);
-            return newValue;
-        });
-        
-        // Reset the flag after a short delay
-        setTimeout(() => setIsHandlingClick(false), 200); // Adjust delay as needed
+const ResponsiveSidebar: React.FC<ResponsiveSidebarProps> = ({ isOpen, onClose, onOpenMenuPopup }) => {
+
+    const handleServiceClick = () => {
+        onClose(); // Close the sidebar
+        onOpenMenuPopup(); // Open the menu popup
     };
-    const handleCloseModal = () => {
-        setIsMenuPopup(false)
-    };
-    if (!isOpen) return null; // Don't render if not open
+
+    if (!isOpen) return null;   // const [isHandlingClick, setIsHandlingClick] = useState(false);
+    // const [isMenuPopupOpen, setIsMenuPopupOpen] = useState(false);
+
+    // const handleToggleModal = (event: React.MouseEvent<HTMLDivElement>) => {
+    //     event.stopPropagation(); // Prevent the event from bubbling up
+
+    //     if (isHandlingClick) return; // Ignore if already handling
+
+    //     setIsHandlingClick(true);
+    //     setIsMenuPopupOpen(prev => {
+    //         const newValue = !prev; // Toggle the state
+    //         if (newValue) {
+    //             onClose(); // Hide the sidebar when showing the menu popup
+    //         }
+    //         return newValue;
+    //     });
+
+    //     // Reset the flag after a short delay
+    //     setTimeout(() => setIsHandlingClick(false), 200); // Adjust delay as needed
+    // };
+
+    // const handleCloseModal = () => {
+    //     setIsMenuPopupOpen(false);
+    // };
+
+    // // Close the menu popup when the responsive bar becomes visible
+    // useEffect(() => {
+    //     if (isResponsiveBarVisible) {
+    //         handleCloseModal();
+    //     }
+    // }, [isResponsiveBarVisible]);
+
+    // if (!isOpen) return null; // Don't render if not open
+
     return (
         <div className="fixed inset-0 z-40 bg-black bg-opacity-50" onClick={onClose}>
             <div className="flex flex-col w-56 bg-white rounded-r-3xl overflow-hidden h-svh" onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-center h-20 shadow-md px-4">
-                    <div className='w-32 header-logo flex justify-center items-center' style={{ "height": "69.54px" }}>
+                    <div className='w-32 header-logo flex justify-center items-center' style={{ height: "69.54px" }}>
                         <Link href='/'>
                             <Image alt="Moss Dekk logo" src={Report_logo} width={128} height={69.54} />
                         </Link>
@@ -52,7 +73,7 @@ const Responsive_Sidebar: React.FC<ResponsiveSidebarProps> = ({ isOpen, onClose 
                         </Link>
                     </li>
                     <li>
-                        <div onClick={handleToggleModal} className="flex cursor-pointer flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
+                        <div onClick={handleServiceClick} className="flex cursor-pointer flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
                             <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i className="bx bx-music"></i></span>
                             <span className="text-sm font-medium">Service</span>
                         </div>
@@ -87,18 +108,11 @@ const Responsive_Sidebar: React.FC<ResponsiveSidebarProps> = ({ isOpen, onClose 
                             <span className="text-sm font-medium">Contact</span>
                         </Link>
                     </li>
-                    <li>
-                        <Link href="#" className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
-                            <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i className="bx bx-log-out"></i></span>
-                            <span className="text-sm font-medium">Logout</span>
-                        </Link>
-                    </li>
                 </ul>
             </div>
-        <MenuPopup isOpen={isMenuPopup} onClose={handleCloseModal} />
-
+            {/* <MenuPopup isOpen={isMenuPopupOpen} onClose={handleCloseModal} /> */}
         </div>
     );
 };
 
-export default Responsive_Sidebar;
+export default ResponsiveSidebar;

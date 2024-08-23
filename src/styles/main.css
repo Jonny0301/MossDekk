@@ -284,3 +284,69 @@ input:focus {
 .nor-fl>svg{
   border-radius: 50px;
 }
+/* In your CSS file (e.g., styles/globals.css) */
+@keyframes slide {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.slider {
+  display: flex;
+  animation: slide 20s linear infinite;
+}
+
+@media (max-width:1024px) {
+  @keyframes slide {
+    0% {
+      transform: translateX(60%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .slider {
+    display: flex;
+    animation: slide 40s linear infinite;
+  }
+}
+.partner-brand-img {
+  flex-shrink: 0;
+  width: auto; /* Adjust this as needed */
+  margin-right: 20px; /* Adjust spacing between images */
+
+}
+
+.y-scrollbar-hide {
+  overflow-y: hidden; /* Ensure vertical scrolling */
+}
+.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal{
+  position: unset;
+  margin-top: 20px;
+}
+.swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet{
+  border-radius: 50px;
+  width: 11px;
+  height: 11px;
+  /* background-color: white!important; */
+  background-color: #73c018 !important;
+}
+.swiper-pagination-bullet-active{
+}
+.swiper-pagination-bullet{
+  background-color: white !important;
+}
+.swiper-button-next:after, .swiper-rtl .swiper-button-prev:after{
+  max-width: 24px !important;
+  max-height: 24px !important;
+  color: #FFFFFF;
+}
+.swiper-button-prev, .swiper-button-next{
+  color: #FFFFFF;
+  min-width: 24px;
+  min-height:  24px;
+}

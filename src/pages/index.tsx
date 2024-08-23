@@ -6,6 +6,13 @@ import Partner from '../components/Partner';
 import GetInTouch from '../components/GetInTouch';
 import Footer from "../components/Footer"
 import React, { ChangeEvent, useEffect, useState, useRef } from 'react';
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+
 import background_image from "../../public/image/Backgroun_image(tire).png"
 import responsive_tire_image from "../../public/image/responsive_tire_image.png"
 import tires_guide_image from "../../public/image/Tires guide 1.png"
@@ -48,11 +55,16 @@ import Debetaling_modal from "@/modal/debetaling_modal";
 import Faktura_Another_Modal from "@/modal/faktura_another_modal";
 import Popup_Modal from "@/modal/popup_modal";
 import axios from "axios";
+import X_Cancel from "@/svg/X_cancel";
+import Cancel from "@/svg/Cancel";
 
 export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false); // Open modal on page load
     const [isHandlingClick, setIsHandlingClick] = useState<boolean>(false);
-    const [isMenuPopup, setIsMenuPopup]=useState(false);
+    const [isMenuPopup, setIsMenuPopup] = useState(false);
+    // const [reviews, setReviews] = useState<any[]>([]);
+    const [reviews, setReviews] = useState<any[]>([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
+
     const handleToggleModal = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation(); // Prevent the event from bubbling up
 
@@ -71,23 +83,92 @@ export default function Home() {
     const handleCloseModal = () => {
         setIsMenuPopup(false)
     };
-    const [reviews, setReviews] = useState<any[]>([]);
+    const [showPopup, setShowPopup] = useState(false);
+
+    const handleButtonClick: React.MouseEventHandler<HTMLDivElement> = () => {
+        setShowPopup(!showPopup); // Toggle the popup visibility
+    };
+    const handleOutsideClick = () => {
+        setShowPopup(false); // Close the popup when clicking outside
+    };
 
     useEffect(() => {
         const fetchReviews = async () => {
-        try {
-            const response = await axios.get<any[]>('https://api.apify.com/v2/datasets/2cG9DNsKjQJdMySfE/items?token=apify_api_5J3BU4R3hbY7dpBgawZ7O7qITakyJ51Pr7Kz');
-            setReviews(response.data);
-            console.log(response.data);
-            
-        } catch (error) {
-            console.error('Error fetching reviews:', error);
-        }
+            try {
+                const response = await axios.get<any[]>('https://api.apify.com/v2/datasets/2cG9DNsKjQJdMySfE/items?token=apify_api_5J3BU4R3hbY7dpBgawZ7O7qITakyJ51Pr7Kz');
+                setReviews(response.data);
+                console.log(response.data);
+
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+            }
         };
 
         fetchReviews();
     }, []);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [secondIndex, setSecondIndex] = useState(0);
     
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const secondScrollRef = useRef<HTMLDivElement>(null);
+  
+    // Function to handle scrolling to a specific section
+    const scrollTo = (index: number, ref: React.RefObject<HTMLDivElement>) => {
+        if (ref.current) {
+          const scrollAmount = ref.current.scrollWidth / 3; // Adjust based on the number of sections
+          ref.current.scrollTo({
+            left: scrollAmount * index,
+            behavior: 'smooth',
+          });
+        }
+      };
+      secondIndex
+    // Function to handle dot click
+    const handleDotClick = (index: number) => {
+        setCurrentIndex(index);
+        scrollTo(index, scrollRef);
+      };
+      
+      // Function to handle dot click for the second set
+      const handleSecondDotClick = (index: number) => {
+        setSecondIndex(index);
+        scrollTo(index, secondScrollRef);
+      };
+      
+  
+    // Effect to update currentIndex based on scroll position
+    useEffect(() => {
+        const handleScroll = () => {
+          if (scrollRef.current) {
+            const scrollAmount = scrollRef.current.scrollWidth / 3;
+            const newIndex = Math.round(scrollRef.current.scrollLeft / scrollAmount);
+            setCurrentIndex(newIndex);
+          }
+        };
+      
+        const scrollElement = scrollRef.current;
+        scrollElement?.addEventListener('scroll', handleScroll);
+      
+        return () => {
+          scrollElement?.removeEventListener('scroll', handleScroll);
+        };
+      }, []);
+      useEffect(() => {
+        const handleSecondScroll = () => {
+          if (secondScrollRef.current) {
+            const scrollAmount = secondScrollRef.current.scrollWidth / 3;
+            const newIndex = Math.round(secondScrollRef.current.scrollLeft / scrollAmount);
+            setSecondIndex(newIndex);
+          }
+        };
+      
+        const secondScrollElement = secondScrollRef.current;
+        secondScrollElement?.addEventListener('scroll', handleSecondScroll);
+      
+        return () => {
+          secondScrollElement?.removeEventListener('scroll', handleSecondScroll);
+        };
+      }, []);
     return (
         <div className='home-container justify-around'>
             <Header />
@@ -192,10 +273,29 @@ export default function Home() {
                                 </div>
                             </div>
                             <div className='flex flex-row justify-between w-[518.62px] tsi-footer'>
-                                <div className="cursor-pointer text-center text-white text-xs font-normal font-['Inter'] underline leading-7">Help with ordering?</div>
+                                <div className="cursor-pointer text-center text-white text-xs font-normal font-['Inter'] underline leading-7" onClick={handleButtonClick}>Help with ordering?</div>
                                 <div className="tsi-footer-go-btn cursor-pointer w-[163px] h-[65px] p-2.5 bg-[#73c018] rounded-sm justify-center items-center gap-2.5 inline-flex">
                                     <div className="text-center text-white text-lg font-semibold font-['Inter'] leading-7">GO</div>
                                 </div>
+
+                                {showPopup && (
+                                    <div
+                                        className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-[100]"
+                                        onClick={handleOutsideClick} // Handle clicks on the backdrop
+                                    >
+                                        <div
+                                            className="bg-white p-6 flex flex-col items-center relative rounded shadow-lg w-[600px]"
+                                            onClick={(e) => e.stopPropagation()} // Prevent clicks inside the modal from closing it
+                                        >
+                                            <div onClick={handleButtonClick} className="absolute right-[15px] top-[10px]">
+                                                <Cancel />
+                                            </div>
+                                            <h2 className="text-lg font-bold text-black">Popup Modal</h2>
+                                            <p className="text-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nibh ipsum, tempor vitae sem vel, consectetur facilisis risus. Donec sodales ex ex, ac tempor massa viverra eu.
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className='flex flex-col pt-[152px] w-full pr-[190px] tire-size-guide-pan'>
@@ -216,44 +316,63 @@ export default function Home() {
                     <div className='service-pan flex flex-col items-center pt-[67px] pb-[113px]'>
                         <div className="w-[223px] text-white text-3xl font-semibold font-['Inter'] leading-9 service-title">OUR SERVICES</div>
                         <div className="text-white text-lg font-normal font-['Inter'] leading-7 pb-[57px] pt-[24px] service-text">Premium long lasting performance for your car</div>
-                        <div className='flex relative flex-row w-full justify-between pl-[304px] pr-[276px] service-item'>
+                        <div className='relative flex flex-row w-full justify-between pl-[304px] pr-[276px] service-item y-scrollbar-hide' ref={scrollRef}>
+                            {/* Service 1 */}
                             <div className='flex flex-col justify-center items-center z-10 service-item-tag'>
                                 <div className="sit-tag w-[84px] h-[84px] bg-[#f6f6f6] flex flex-row justify-center items-center rounded-full">
                                     <Hjulksift />
                                 </div>
                                 <div className="pt-[10px] text-[#73c018] text-lg font-semibold font-['Inter'] leading-7">Hjulskift</div>
                             </div>
+
+                            {/* Service 2 */}
                             <div className='flex flex-col justify-center items-center z-10 service-item-tag'>
                                 <div className="sit-tag w-[84px] h-[84px] bg-[#f6f6f6] flex flex-row justify-center items-center rounded-full">
                                     <Dekkmlegg />
                                 </div>
                                 <div className="pt-[10px] text-[#73c018] text-lg font-semibold font-['Inter'] leading-7">Dekkomlegg</div>
                             </div>
+
+                            {/* Service 3 */}
                             <div className='flex flex-col justify-center items-center z-10 service-item-tag'>
                                 <div className="sit-tag w-[84px] h-[84px] bg-[#f6f6f6] flex flex-row justify-center items-center rounded-full">
                                     <Avbalansering />
                                 </div>
                                 <div className="pt-[10px] text-[#73c018] text-lg font-semibold font-['Inter'] leading-7">Avbalansering</div>
                             </div>
+
+                            {/* Service 4 */}
                             <div className='flex flex-col justify-center items-center z-10 service-item-tag'>
                                 <div className="sit-tag w-[84px] h-[84px] bg-[#f6f6f6] flex flex-row justify-center items-center rounded-full">
                                     <Reperasjon />
                                 </div>
                                 <div className="pt-[10px] text-[#73c018] text-lg font-semibold font-['Inter'] leading-7">Reperasjon av dekk</div>
                             </div>
+
+                            {/* Service 5 */}
                             <div className='flex flex-col justify-center items-center z-10 service-item-tag'>
                                 <div className="sit-tag w-[84px] h-[84px] bg-[#f6f6f6] flex flex-row justify-center items-center rounded-full">
                                     <Dekkhotell />
                                 </div>
                                 <div className="pt-[10px] text-[#73c018] text-lg font-semibold font-['Inter'] leading-7">Dekkhotell</div>
                             </div>
-                            <div className="w-[65%] left-[371px] top-[41px] h-[0px] z-0 border border-[#aaaaaa] absolute service-cross-bar"></div>
 
+                            <div className="w-[65%] left-[371px] top-[41px] h-[0px] z-0 border border-[#aaaaaa] absolute service-cross-bar"></div>
                         </div>
+
                         <div className="h-[11px] pt-[21.84px] justify-center items-center gap-[13px] inline-flex service-pan-slide-item">
-                            <div className="w-[11px] h-[11px] bg-[#73c018] rounded-full"></div>
-                            <div className="w-[11px] h-[11px] bg-white rounded-full"></div>
-                            <div className="w-[11px] h-[11px] bg-white rounded-full"></div>
+                            <div
+                                className={`w-[11px] h-[11px] rounded-full cursor-pointer ${currentIndex === 0 ? 'bg-[#73c018]' : 'bg-white'}`}
+                                onClick={() => handleDotClick(0)}
+                            ></div>
+                            <div
+                                className={`w-[11px] h-[11px] rounded-full cursor-pointer ${currentIndex === 1 ? 'bg-[#73c018]' : 'bg-white'}`}
+                                onClick={() => handleDotClick(1)}
+                            ></div>
+                            <div
+                                className={`w-[11px] h-[11px] rounded-full cursor-pointer ${currentIndex === 2 ? 'bg-[#73c018]' : 'bg-white'}`}
+                                onClick={() => handleDotClick(2)}
+                            ></div>
                         </div>
                     </div>
                     <div className='bg-[#101010] flex flex-col pt-[126px] pl-[108px] pb-[32px] relative tire-change-pan'>
@@ -297,7 +416,7 @@ export default function Home() {
                     <div className='it-service-pan flex flex-col items-center pt-[91px] grow pb-[29px]'>
                         <div className="w-[228px] text-white text-3xl font-semibold font-['Inter'] leading-9 it-service-title">HOW IT WORK?</div>
                         <div className="text-white pt-[7px] text-lg font-normal font-['Inter'] leading-7 it-service-text">Simple process with 6 steps</div>
-                        <div className='flex flex-row pl-[190px] pr-[195px] pt-[56px] relative it-service-pan-list'>
+                        <div className='flex flex-row pl-[190px] pr-[195px] pt-[56px] relative it-service-pan-list y-scrollbar-hide' ref={secondScrollRef}>
                             <div className="h-[197px] pr-[60px] flex-col justify-start items-start gap-6 inline-flex z-10 ispl-item">
                                 <div className="justify-start items-start gap-2.5 inline-flex ispl-item-number">
                                     <div className="w-14 h-14 bg-[#f6f6f6] rounded-full flex align-center items-center justify-center text-[#6d6d6d] text-3xl font-semi-bold">1</div>
@@ -373,9 +492,18 @@ export default function Home() {
                             <div className="w-[63%] top-[84px] left-[241px] z-0 h-[0px] border border-[#aaaaaa] absolute it-service-cross-bar"></div>
                         </div>
                         <div className="h-[11px] pt-[21.84px] justify-center items-center gap-[13px] inline-flex service-pan-slide-item it-service-pan-slide-item">
-                            <div className="w-[11px] h-[11px] bg-[#73c018] rounded-full"></div>
-                            <div className="w-[11px] h-[11px] bg-white rounded-full"></div>
-                            <div className="w-[11px] h-[11px] bg-white rounded-full"></div>
+                        <div
+                                className={`w-[11px] h-[11px] rounded-full cursor-pointer ${secondIndex === 0 ? 'bg-[#73c018]' : 'bg-white'}`}
+                                onClick={() => handleSecondDotClick(0)}
+                            ></div>
+                            <div
+                                className={`w-[11px] h-[11px] rounded-full cursor-pointer ${secondIndex === 1 ? 'bg-[#73c018]' : 'bg-white'}`}
+                                onClick={() => handleSecondDotClick(1)}
+                            ></div>
+                            <div
+                                className={`w-[11px] h-[11px] rounded-full cursor-pointer ${secondIndex === 2 ? 'bg-[#73c018]' : 'bg-white'}`}
+                                onClick={() => handleSecondDotClick(2)}
+                            ></div>
                         </div>
                     </div>
                     <div className='passenger-tire bg-[#151515] pt-[8px] pb-[53px] flex flex-col items-center justify-center'>
@@ -577,14 +705,14 @@ export default function Home() {
                         <div className="w-[532px] pt-[14px] text-center text-white text-base font-normal font-['Inter'] testimonials-pan-text leading-normal">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. </div>
                         <div className='testimonials-pan-list gap-[40px] relative flex flex-row justify-center items-center mt-[40px] w-[1504px]'>
                             <div className='tetp-left-arrow absolute left-[-53px]'>
-                                <Left_arrow />
+                                <Left_arrow />  
                             </div>
                             <div className='tetp-right-arrow absolute right-[-53px]'>
                                 <Right_arrow />
                             </div>
 
                             {
-                                reviews.length && reviews.map((review:any, i) => (
+                                reviews.length && reviews.map((review: any, i) => (
                                     i < 2 && <div key={`review-${i}`} className="w-[732px] h-[315px] px-[21px] py-[58px] bg-white rounded-[10px] flex-col justify-start items-start gap-2.5 inline-flex testimonials-pan-list-item">
                                         <div className="justify-start items-start gap-[23px] inline-flex tpli-content">
                                             <div className="w-[199px] h-[199px] relative tplic-info">
@@ -610,7 +738,7 @@ export default function Home() {
                                                     </div>
                                                 </div>
                                                 <div className="flex-col justify-start items-start flex tpli-recommend-content">
-                                                    <div className="w-[428px] h-[78px] overflow-hidden text-black text-base font-normal font-['Inter'] leading-normal tplirc-text">{review.textTranslated}</div>
+                                                    <div className="w-[428px] h-[78px] overflow-hidden text-black text-base font-normal font-['Inter'] leading-normal tplirc-text line-clamp-3">{review.textTranslated}</div>
                                                     <div className="flex-col justify-start items-start flex">
                                                         <div className="text-black text-xl font-semibold font-['Inter'] leading-7">{review.name}</div>
                                                         <div className="text-black text-base font-normal font-['Inter'] leading-normal">{review.title}</div>

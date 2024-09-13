@@ -4,8 +4,8 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <script type="application/ld+json">
-          {JSON.stringify({
+        {/* <script type="application/ld+json"> */}
+          {/* {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Business",
             "headline": "Moss Dekk AS",
@@ -15,8 +15,8 @@ export default function Document() {
               "@type": "Person",
               "name": "Moss Dekk AS",
             },
-          })}
-        </script>
+          })} */}
+        {/* </script> */}
         <title>Moss Dekk AS Tire Sales Company</title>
         <meta name="description" content="Welcome to Moss Dekk AS. Norway's first fully automated tire sales. Order - Pay - Exchange with a few simple keystrokes." />
         <meta name="keywords" content="Tires, website, nextjs, Tire sales company, High quality,Moss Dekk AS,  Tyre Services Moss, Tyre Shop Moss" />

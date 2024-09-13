@@ -16,10 +16,93 @@ import Input_phone from "@/svg/Input_phone";
 import Send from "@/svg/Send";
 import { MdCheckBox } from "react-icons/md";
 import Link from "next/link";
+import Union from "@/svg/Paymethod";
 
+import axios from "axios";
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { log } from "console";
 const inter = Inter({ subsets: ["latin"] });
+interface FormData {
+    name: string;
+    email: string;
+    phone: string;
+    sub: string;
+    msg: string;
+    regNr: string;
+    location: string;
+}
+const Contact: React.FC = () => {
+    const [isNewCustomer, setIsNewCustomer] = useState<boolean>(false);
 
-export default function Contact() {
+    const [formData, setFormData] = useState<FormData>({
+        name: '',
+        email: '',
+        phone: '',
+        sub: '',
+        msg: '',
+        regNr: '',
+        location: '',
+    });
+    const handleCheckboxChange = () => {
+        setIsNewCustomer((prevState) => !prevState); // Toggle the state
+    };
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+
+        });
+        console.log(formData);
+
+    };
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+    
+        if (!isNewCustomer) {
+            alert("You have to agree to the Privacy and Policy!");
+            return;
+        }
+    
+        try {
+            // Convert formData object into URLSearchParams format for URL encoding
+            const formDataParams = new URLSearchParams();
+            formDataParams.append('method', 'saveContact');
+            formDataParams.append('name', formData.name);
+            formDataParams.append('email', formData.email);
+            formDataParams.append('phone', formData.phone);
+            formDataParams.append('sub', formData.sub);
+            formDataParams.append('msg', formData.msg);
+            formDataParams.append('regNr', formData.regNr);
+            formDataParams.append('location', "Moss Dekk AS"); // Optional field
+    
+            // Make the POST request
+            const response = await axios.post(
+                'https://dev.mossdekk.no/query.php', // Ensure this URL is correct
+                formDataParams, // Pass URLSearchParams directly, no need for .toString()
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }
+            );
+    
+            if (response.data === 'success') {
+                console.log(response.data);
+                
+                alert('Contact saved successfully!');
+            } else if (response.data === 'empty fields') {
+                alert('Please fill in all fields.');
+            } else {
+                console.log(response.data);
+                alert('Failed to save contact.');
+            }
+        } catch (error) {
+            console.error('Error while sending data:', error);
+            alert('An error occurred. Please try again.');
+        }
+    };
     return (
         <div className="home-container flex flex-col">
             <Header />
@@ -73,8 +156,10 @@ export default function Contact() {
                                             <input
                                                 type="text"
                                                 placeholder="Name"
-                                                className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none placeholder-[#6d6d6d]"
+                                                name="name"
+                                                className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none focus:ring-0 placeholder-[#6d6d6d]"
                                                 required={true}
+                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="flex w-[334px] gap-[19px] items-center border-b border-[#aaaaaa] pb-[17px]">
@@ -82,8 +167,10 @@ export default function Contact() {
                                             <input
                                                 type="email"
                                                 placeholder="Email Address"
-                                                className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none placeholder-[#6d6d6d]"
+                                                name="email"
+                                                className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none focus:ring-0 placeholder-[#6d6d6d]"
                                                 required={true}
+                                                onChange={handleChange}
                                             />
                                         </div>
                                     </div>
@@ -93,8 +180,10 @@ export default function Contact() {
                                             <input
                                                 type="tel"
                                                 placeholder="Phone"
-                                                className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none placeholder-[#6d6d6d] placeholder-text"
+                                                name="phone"
+                                                className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none focus:ring-0 placeholder-[#6d6d6d] placeholder-text"
                                                 required={true}
+                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="flex w-[334px] gap-[19px] items-center border-b border-[#aaaaaa] pb-[17px]">
@@ -102,10 +191,26 @@ export default function Contact() {
                                             <input
                                                 type="text"
                                                 placeholder="Subject"
-                                                className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none placeholder-[#6d6d6d]"
+                                                name="sub"
+                                                className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none focus:ring-0 placeholder-[#6d6d6d]"
                                                 required={true}
+                                                onChange={handleChange}
                                             />
                                         </div>
+                                    </div>
+                                    <div className="cpc-iip-list flex flex-row gap-[28px]">
+                                        <div className="flex w-full gap-[19px] items-center border-b border-[#aaaaaa] pb-[17px]">
+                                            <Input_alert />
+                                            <input
+                                                type="text"
+                                                placeholder="RegNr"
+                                                name="regNr"
+                                                className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none focus:ring-0 placeholder-[#6d6d6d] placeholder-text"
+                                                required={true}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+
                                     </div>
                                     <div className="cpc-iip-list responsive-cpc-iip-list flex flex-row gap-[28px]">
                                         <div className="flex flex-col w-full responsive-cpc-iip-list-item">
@@ -116,26 +221,54 @@ export default function Contact() {
                                             <div className="flex w-full gap-[19px] items-center border-b border-[#aaaaaa] py-[17px]">
                                                 <input
                                                     type="text"
-                                                    placeholder=""
-                                                    className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none placeholder-[#6d6d6d]"
+                                                    placeholder="Message"
+                                                    name="msg"
+                                                    className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none focus:ring-0 placeholder-[#6d6d6d]"
                                                     required={true}
+                                                    onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="cpc-infor-confirm-btn flex items-center flex-row gap-[48px]">
-                                    <div className="w-[235px] h-[61px] p-2.5 bg-[#73c018] justify-center items-center gap-2.5 inline-flex">
+                                    <div className="w-[235px] h-[61px] p-2.5 bg-[#73c018] justify-center items-center gap-2.5 inline-flex cursor-pointer" onClick={handleSubmit}>
                                         <div className="w-6 h-6 relative"><Send /></div>
                                         <p className="text-justify text-white text-lg font-normal font-['Inter'] leading-7">GET IN TOUCH</p>
                                     </div>
-                                    <div className="h-6 flex flex-row items-center gap-[7px]">
-                                        <input
+                                    <label className="h-6 flex flex-row items-center gap-[7px]">
+                                        {/* <input
                                             type="checkbox"
                                             className="form-checkbox h-5 w-5 text-blue-600"
+                                        /> */}
+                                        <input
+                                            type="checkbox"
+                                            checked={isNewCustomer}
+                                            onChange={handleCheckboxChange} // Use the correct handler
+                                            className="hidden form-checkbox h-5 w-5 text-blue-600"
                                         />
+                                        <span
+                                            className={`w-5 h-5 inline-block mr-[6px] border-2 rounded-[4px] ${isNewCustomer ? 'bg-[#73C018] border-[#73C018]' : 'border-gray-300'
+                                                } transition-colors`}
+                                        // onClick={handleCheckboxChange} // Toggle when span is clicked
+                                        >
+                                            {isNewCustomer && (
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="text-white"
+                                                    viewBox="0 0 20 20"
+                                                    fill="currentColor"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M6 10.293l1.293-1.293 3 3 7-7L18.707 5 10 13.707l-4-4z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            )}
+                                        </span>
                                         <div className="text-justify flex flex-row"><p className="text-[#6d6d6d] text-base font-normal font-['Inter'] leading-normal">I agree with the site’s <Link className="text-[#6d6d6d] text-base font-normal font-['Inter'] underline leading-normal" href="/privacy">privacy policy.</Link></p></div>
-                                    </div>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -146,3 +279,4 @@ export default function Contact() {
         </div>
     );
 }
+export default Contact;

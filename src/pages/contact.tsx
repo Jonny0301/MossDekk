@@ -208,6 +208,7 @@ const Contact: React.FC = () => {
                                                 className="appearance-none bg-transparent border-none w-full text-[#6d6d6d] text-lg font-['Inter'] leading-tight focus:outline-none focus:ring-0 placeholder-[#6d6d6d] placeholder-text"
                                                 required={true}
                                                 onChange={handleChange}
+                                                maxLength={7}
                                             />
                                         </div>
 

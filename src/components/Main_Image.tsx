@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Small_Right_arrow from '../svg/Small_right_arrow';
 import path from 'path';
+import Main_back from "../../public/image/main-back.png"
 
 const sections: Record<string, string> = {
     section1: 'How to find my tire size?',
@@ -48,7 +49,7 @@ const Main_Image = () => {
             <div className='relative w-full min-h-[200px] md:min-h-[300px] lg:h-[424px] top-0 right-0 main-background-image'>
                 <Image
                     alt="Background"
-                    src="https://imagetolink.com/ib/hLW89ZZuk0.png"
+                    src={Main_back}
                     fill
                     style={{ objectFit: 'cover' }}
                     className='w-full h-full'

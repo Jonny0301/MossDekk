@@ -79,7 +79,7 @@ const Contact: React.FC = () => {
     
             // Make the POST request
             const response = await axios.post(
-                'https://dev.mossdekk.no/query.php', // Ensure this URL is correct
+                'http://dev.mossdekk.no/query.php', // Ensure this URL is correct
                 formDataParams, // Pass URLSearchParams directly, no need for .toString()
                 {
                     headers: {
@@ -92,7 +92,9 @@ const Contact: React.FC = () => {
                 console.log(response.data);
                 
                 alert('Contact saved successfully!');
+                window.location.reload();
             } else if (response.data === 'empty fields') {
+                console.log(response.data);
                 alert('Please fill in all fields.');
             } else {
                 console.log(response.data);

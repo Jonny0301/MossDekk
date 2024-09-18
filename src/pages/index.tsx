@@ -57,41 +57,155 @@ import Popup_Modal from "@/modal/popup_modal";
 import axios from "axios";
 import X_Cancel from "@/svg/X_cancel";
 import Cancel from "@/svg/Cancel";
-
+import { HtmlContext } from "next/dist/server/future/route-modules/app-page/vendored/contexts/entrypoints";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 export default function Home() {
-    const [isModalOpen, setIsModalOpen] = useState(false); // Open modal on page load
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isHandlingClick, setIsHandlingClick] = useState<boolean>(false);
     const [isMenuPopup, setIsMenuPopup] = useState(false);
-    // const [reviews, setReviews] = useState<any[]>([]);
     const [reviews, setReviews] = useState<any[]>([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [secondIndex, setSecondIndex] = useState(0);
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const secondScrollRef = useRef<HTMLDivElement>(null);
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectseason, setSelectSeason] = useState<string | null>(null);
+    const [selectedWidth, setSelectedWidth] = useState<string | null>(null);
+    const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
+    const [selectedDimension, setSelectedDimension] = useState<string | null>(null);
 
+    useEffect(() => {
+        if (selectseason) localStorage.setItem('selectSeason', selectseason);
+    }, [selectseason]);
+
+    useEffect(() => {
+        if (selectedWidth) localStorage.setItem('selectedWidth', selectedWidth);
+    }, [selectedWidth]);
+
+    useEffect(() => {
+        if (selectedProfile) localStorage.setItem('selectedProfile', selectedProfile);
+    }, [selectedProfile]);
+
+    useEffect(() => {
+        if (selectedDimension) localStorage.setItem('selectedDimension', selectedDimension);
+    }, [selectedDimension]);
+
+    const handleSeasonChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectSeason(event.target.value);
+    }
+    const handleWidthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedWidth(event.target.value);
+    };
+
+    const handleProfileChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedProfile(event.target.value);
+    };
+
+    const handleDimensionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedDimension(event.target.value);
+    };
     const handleToggleModal = (event: React.MouseEvent<HTMLDivElement>) => {
-        event.stopPropagation(); // Prevent the event from bubbling up
-
-        if (isHandlingClick) return; // Ignore if already handling
+        event.stopPropagation();
+        ``
+        if (isHandlingClick) return;
 
         setIsHandlingClick(true);
         setIsMenuPopup(prev => {
-            const newValue = !prev; // Toggle the state
+            const newValue = !prev;
             console.log(`isOmlegg changed to: ${newValue}`);
             return newValue;
         });
-
-        // Reset the flag after a short delay
-        setTimeout(() => setIsHandlingClick(false), 200); // Adjust delay as needed
+        setTimeout(() => setIsHandlingClick(false), 200);
     };
     const handleCloseModal = () => {
         setIsMenuPopup(false)
     };
-    const [showPopup, setShowPopup] = useState(false);
 
     const handleButtonClick: React.MouseEventHandler<HTMLDivElement> = () => {
-        setShowPopup(!showPopup); // Toggle the popup visibility
+        setShowPopup(!showPopup);
     };
     const handleOutsideClick = () => {
-        setShowPopup(false); // Close the popup when clicking outside
+        setShowPopup(false);
     };
 
+
+    const scrollTo = (index: number, ref: React.RefObject<HTMLDivElement>) => {
+        if (ref.current) {
+            const scrollAmount = ref.current.scrollWidth / 3;
+            ref.current.scrollTo({
+                left: scrollAmount * index,
+                behavior: 'smooth',
+            });
+        }
+    };
+    secondIndex
+    const handleDotClick = (index: number) => {
+        setCurrentIndex(index);
+        scrollTo(index, scrollRef);
+    };
+
+    const handleSecondDotClick = (index: number) => {
+        setSecondIndex(index);
+        scrollTo(index, secondScrollRef);
+    };
+
+    const generateOptions = (start: number, end: number, step: number = 1): JSX.Element[] => {
+        const options = [];
+        for (let i = start; i <= end; i += step) {
+            options.push(
+                <option key={i} value={i} className='text-black text-lg font-medium leading-7 text-start'>
+                    {i}
+                </option>
+            );
+        }
+        return options;
+    };
+    const [tyres, setTyres] = useState<any[]>([])
+    const goToProductPage = async () => {
+        const selectSeason = localStorage.getItem("selectSeason") || '';
+        const selectWidth = localStorage.getItem("selectedWidth") || '';
+        const selectProfile = localStorage.getItem("selectedProfile") || '';
+        const selectDimension = localStorage.getItem("selectedDimension") || '';
+        try {
+            const formDataParams = new URLSearchParams();
+            formDataParams.append('method', 'fetchFrontTyres');
+            formDataParams.append('season', selectSeason);
+            formDataParams.append('sizeOne', selectWidth);
+            formDataParams.append('sizeTwo', selectProfile);
+            formDataParams.append('sizeThree', selectDimension);
+            const response = await axios.post(
+                'http://dev.mossdekk.no/query.php',
+                formDataParams,
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }
+            );
+
+            if (
+                (response.data[1] && response.data[1].length > 0) ||
+                (response.data[2] && response.data[2].length > 0) ||
+                (response.data[3] && response.data[3].length > 0)
+              ) {
+                window.location.href = "/products";
+              } else {
+                toast("Tires not found", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    type: "warning", // Changed to warning or error if more appropriate
+                  });
+              }
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
     useEffect(() => {
         const fetchReviews = async () => {
             try {
@@ -106,69 +220,39 @@ export default function Home() {
 
         fetchReviews();
     }, []);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [secondIndex, setSecondIndex] = useState(0);
-    
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const secondScrollRef = useRef<HTMLDivElement>(null);
-  
-    // Function to handle scrolling to a specific section
-    const scrollTo = (index: number, ref: React.RefObject<HTMLDivElement>) => {
-        if (ref.current) {
-          const scrollAmount = ref.current.scrollWidth / 3; // Adjust based on the number of sections
-          ref.current.scrollTo({
-            left: scrollAmount * index,
-            behavior: 'smooth',
-          });
-        }
-      };
-      secondIndex
-    // Function to handle dot click
-    const handleDotClick = (index: number) => {
-        setCurrentIndex(index);
-        scrollTo(index, scrollRef);
-      };
-      
-      // Function to handle dot click for the second set
-      const handleSecondDotClick = (index: number) => {
-        setSecondIndex(index);
-        scrollTo(index, secondScrollRef);
-      };
-      
-  
-    // Effect to update currentIndex based on scroll position
     useEffect(() => {
         const handleScroll = () => {
-          if (scrollRef.current) {
-            const scrollAmount = scrollRef.current.scrollWidth / 3;
-            const newIndex = Math.round(scrollRef.current.scrollLeft / scrollAmount);
-            setCurrentIndex(newIndex);
-          }
+            if (scrollRef.current) {
+                const scrollAmount = scrollRef.current.scrollWidth / 3;
+                const newIndex = Math.round(scrollRef.current.scrollLeft / scrollAmount);
+                setCurrentIndex(newIndex);
+            }
         };
-      
+
         const scrollElement = scrollRef.current;
         scrollElement?.addEventListener('scroll', handleScroll);
-      
+
         return () => {
-          scrollElement?.removeEventListener('scroll', handleScroll);
+            scrollElement?.removeEventListener('scroll', handleScroll);
         };
-      }, []);
-      useEffect(() => {
+    }, []);
+    useEffect(() => {
         const handleSecondScroll = () => {
-          if (secondScrollRef.current) {
-            const scrollAmount = secondScrollRef.current.scrollWidth / 3;
-            const newIndex = Math.round(secondScrollRef.current.scrollLeft / scrollAmount);
-            setSecondIndex(newIndex);
-          }
+            if (secondScrollRef.current) {
+                const scrollAmount = secondScrollRef.current.scrollWidth / 3;
+                const newIndex = Math.round(secondScrollRef.current.scrollLeft / scrollAmount);
+                setSecondIndex(newIndex);
+            }
         };
-      
+
         const secondScrollElement = secondScrollRef.current;
         secondScrollElement?.addEventListener('scroll', handleSecondScroll);
-      
+
         return () => {
-          secondScrollElement?.removeEventListener('scroll', handleSecondScroll);
+            secondScrollElement?.removeEventListener('scroll', handleSecondScroll);
         };
-      }, []);
+    }, []);
+
     return (
         <div className='home-container justify-around'>
             <Header />
@@ -198,15 +282,14 @@ export default function Home() {
                                     <div className="tsi-input-header w-[81px] h-16 px-8 py-2.5 bg-[#d6d6d6] rounded-tl-lg rounded-bl-lg flex-col justify-center items-start gap-2.5 inline-flex">
                                         <div className="text-center text-black text-lg font-semibold font-['Inter'] leading-7">1.</div>
                                     </div>
-                                    <div className="w-[445px] absolute left-[77px] tsi-input-tag">
+                                    <div className="w-[445px] absolute left-[75px] tsi-input-tag">
                                         <select
-                                            className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:border-indigo-0 rounded-tr-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
+                                            className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:ring-0 focus:border-0 rounded-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
+                                            onChange={handleSeasonChange}
                                         >
-                                            <option value="usa" className='text-black text-lg font-medium leading-7'>SUMMER TIRES</option>
-                                            <option value="canada" className='text-black text-lg font-medium leading-7'>Canada</option>
-                                            <option value="uk" className='text-black text-lg font-medium leading-7'>UK</option>
-                                            <option value="australia" className='text-black text-lg font-medium leading-7'>Australia</option>
-                                            <option value="germany" className='text-black text-lg font-medium leading-7'>Germany</option>
+                                            <option value="summer" className='text-black text-lg font-medium leading-7'>Sommerdekk</option>
+                                            <option value="winter" className='text-black text-lg font-medium leading-7'>Vinterdekk - piggfrie</option>
+                                            <option value="winterStudded" className='text-black text-lg font-medium leading-7'>Vinterdekk - piggdekk</option>
                                         </select>
 
                                     </div>
@@ -218,64 +301,56 @@ export default function Home() {
                                     <div className="tsi-input-header w-[81px] h-16 px-8 py-2.5 bg-[#d6d6d6] rounded-tl-lg rounded-bl-lg flex-col justify-center items-start gap-2.5 inline-flex">
                                         <div className="text-center text-black text-lg font-semibold font-['Inter'] leading-7">2.</div>
                                     </div>
-                                    <div className="w-[445px] absolute left-[77px] tsi-input-tag">
+                                    <div className="w-[445px] absolute left-[75px] tsi-input-tag">
                                         <select
-                                            className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:border-indigo-0 rounded-tr-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
+                                            className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:ring-0 focus:border-0 rounded-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
+                                            onChange={handleWidthChange}
                                         >
-                                            <option value="usa" className='text-black text-lg font-medium leading-7'>145</option>
-                                            <option value="canada" className='text-black text-lg font-medium leading-7'>Canada</option>
-                                            <option value="uk" className='text-black text-lg font-medium leading-7'>UK</option>
-                                            <option value="australia" className='text-black text-lg font-medium leading-7'>Australia</option>
-                                            <option value="germany" className='text-black text-lg font-medium leading-7'>Germany</option>
+                                            {generateOptions(145, 355, 10)}
                                         </select>
-
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Profile Select */}
                             <div className='flex flex-col pb-[17px] tire-style-input'>
                                 <div className="text-white text-xl font-normal font-['Inter'] leading-7 mb-[5px] tsi-header">Profile</div>
                                 <div className='flex flex-row relative'>
                                     <div className="tsi-input-header w-[81px] h-16 px-8 py-2.5 bg-[#d6d6d6] rounded-tl-lg rounded-bl-lg flex-col justify-center items-start gap-2.5 inline-flex">
                                         <div className="text-center text-black text-lg font-semibold font-['Inter'] leading-7">3.</div>
                                     </div>
-                                    <div className="w-[445px] absolute left-[77px] tsi-input-tag">
+                                    <div className="w-[445px] absolute left-[75px] tsi-input-tag">
                                         <select
-                                            className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:border-indigo-0 rounded-tr-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
+                                            className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:ring-0 focus:border-0 rounded-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
+                                            onChange={handleProfileChange}
                                         >
-                                            <option value="usa" className='text-black text-lg font-medium leading-7'>145</option>
-                                            <option value="canada" className='text-black text-lg font-medium leading-7'>Canada</option>
-                                            <option value="uk" className='text-black text-lg font-medium leading-7'>UK</option>
-                                            <option value="australia" className='text-black text-lg font-medium leading-7'>Australia</option>
-                                            <option value="germany" className='text-black text-lg font-medium leading-7'>Germany</option>
+                                            {generateOptions(30, 90, 5)}
                                         </select>
-
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Dimension Select */}
                             <div className='flex flex-col pb-[17px] tire-style-input'>
-                                <div className="text-white text-xl font-normal font-['Inter'] leading-7 mb-[5px] tsi-header">Demension</div>
+                                <div className="text-white text-xl font-normal font-['Inter'] leading-7 mb-[5px] tsi-header">Dimension</div>
                                 <div className='flex flex-row relative'>
                                     <div className="tsi-input-header w-[81px] h-16 px-8 py-2.5 bg-[#d6d6d6] rounded-tl-lg rounded-bl-lg flex-col justify-center items-start gap-2.5 inline-flex">
                                         <div className="text-center text-black text-lg font-semibold font-['Inter'] leading-7">4.</div>
                                     </div>
-                                    <div className="w-[445px] absolute left-[77px] tsi-input-tag">
+                                    <div className="w-[445px] absolute left-[75px] tsi-input-tag">
                                         <select
-                                            className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:border-indigo-0 rounded-tr-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
+                                            className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:ring-0 focus:border-0 rounded-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
+                                            onChange={handleDimensionChange}
                                         >
-                                            <option value="usa" className='text-black text-lg font-medium leading-7'>13</option>
-                                            <option value="canada" className='text-black text-lg font-medium leading-7'>Canada</option>
-                                            <option value="uk" className='text-black text-lg font-medium leading-7'>UK</option>
-                                            <option value="australia" className='text-black text-lg font-medium leading-7'>Australia</option>
-                                            <option value="germany" className='text-black text-lg font-medium leading-7'>Germany</option>
+                                            {generateOptions(13, 27)}
                                         </select>
-
                                     </div>
                                 </div>
                             </div>
                             <div className='flex flex-row justify-between w-[518.62px] tsi-footer'>
                                 <div className="cursor-pointer text-center text-white text-xs font-normal font-['Inter'] underline leading-7" onClick={handleButtonClick}>Help with ordering?</div>
-                                <div className="tsi-footer-go-btn cursor-pointer w-[163px] h-[65px] p-2.5 bg-[#73c018] rounded-sm justify-center items-center gap-2.5 inline-flex">
-                                    <div className="text-center text-white text-lg font-semibold font-['Inter'] leading-7">GO</div>
+                                <div className="tsi-footer-go-btn cursor-pointer w-[163px] h-[65px] p-2.5 bg-[#73c018] rounded-sm justify-center items-center gap-2.5 inline-flex" onClick={goToProductPage}>
+                                    <div className="text-center text-white text-lg font-semibold font-['Inter'] leading-7">GO</div><ToastContainer />
                                 </div>
 
                                 {showPopup && (
@@ -492,7 +567,7 @@ export default function Home() {
                             <div className="w-[63%] top-[84px] left-[241px] z-0 h-[0px] border border-[#aaaaaa] absolute it-service-cross-bar"></div>
                         </div>
                         <div className="h-[11px] pt-[21.84px] justify-center items-center gap-[13px] inline-flex service-pan-slide-item it-service-pan-slide-item">
-                        <div
+                            <div
                                 className={`w-[11px] h-[11px] rounded-full cursor-pointer ${secondIndex === 0 ? 'bg-[#73c018]' : 'bg-white'}`}
                                 onClick={() => handleSecondDotClick(0)}
                             ></div>
@@ -705,7 +780,7 @@ export default function Home() {
                         <div className="w-[532px] pt-[14px] text-center text-white text-base font-normal font-['Inter'] testimonials-pan-text leading-normal">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. </div>
                         <div className='testimonials-pan-list gap-[40px] relative flex flex-row justify-center items-center mt-[40px] w-[1504px]'>
                             <div className='tetp-left-arrow absolute left-[-53px]'>
-                                <Left_arrow />  
+                                <Left_arrow />
                             </div>
                             <div className='tetp-right-arrow absolute right-[-53px]'>
                                 <Right_arrow />

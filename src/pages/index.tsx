@@ -175,7 +175,7 @@ export default function Home() {
             formDataParams.append('sizeTwo', selectProfile);
             formDataParams.append('sizeThree', selectDimension);
             const response = await axios.post(
-                'http://dev.mossdekk.no/query.php',
+                'https://dev.mossdekk.no/query.php',
                 formDataParams,
                 {
                     headers: {

@@ -79,7 +79,7 @@ const Contact: React.FC = () => {
     
             // Make the POST request
             const response = await axios.post(
-                'http://dev.mossdekk.no/query.php', // Ensure this URL is correct
+                'https://dev.mossdekk.no/query.php', // Ensure this URL is correct
                 formDataParams, // Pass URLSearchParams directly, no need for .toString()
                 {
                     headers: {

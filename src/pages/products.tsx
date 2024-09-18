@@ -181,7 +181,7 @@ const ProductList: React.FC = ({ }) => {
                                             </h1>
 
                                             <div className={`pp-product-list flex flex-row flex-wrap grid grid-cols-3 gap-x-[38px] gap-y-[35px] justify-center ${clickedCategories.Budget ? "hidden" : "flex"}`}>
-                                                {budgetarray.map((tyre) => (
+                                                {budgetarray.map(tyre => (
                                                     isSpeedGreaterOrEqual(selectedSpeed, tyre.speed) &&
                                                         tyre.load > selectedLoad &&
                                                         (
@@ -258,7 +258,7 @@ const ProductList: React.FC = ({ }) => {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        ) : <div className="pp-product-list flex flex-row flex-wrap grid grid-cols-3 gap-x-[38px] gap-y-[35px]"></div>
+                                                        ) : <></>
                                                 ))}
                                             </div>
                                         </>
@@ -346,7 +346,7 @@ const ProductList: React.FC = ({ }) => {
                                             </h1>
 
                                             <div className={`pp-product-list flex flex-row flex-wrap grid grid-cols-3 gap-x-[38px] gap-y-[35px] justify-center ${clickedCategories.Quality ? "hidden" : "flex"}`}>
-                                                {qualityarray.map((tyre) => (
+                                                {qualityarray.map(tyre => (
                                                     isSpeedGreaterOrEqual(selectedSpeed, tyre.speed) &&
                                                         tyre.load > selectedLoad &&
                                                         (
@@ -453,7 +453,7 @@ const ProductList: React.FC = ({ }) => {
                                             </h1>
 
                                             <div className={`pp-product-list flex flex-row flex-wrap grid grid-cols-3 gap-x-[38px] gap-y-[35px] justify-center ${clickedCategories.Premium ? "hidden" : "flex"}`}>
-                                                {premiumarray.map((tyre) => (
+                                                {premiumarray.map(tyre => (
                                                     isSpeedGreaterOrEqual(selectedSpeed, tyre.speed) &&
                                                         tyre.load > selectedLoad &&
                                                         (

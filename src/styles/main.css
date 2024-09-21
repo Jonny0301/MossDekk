@@ -354,3 +354,26 @@ input:focus {
   width: 176.52px;
   height: 238px;
 }
+
+
+.swiper-wrapper {
+  height: max-content !important;
+ 
+  width: max-content;
+}
+
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after {
+  content: "" !important;
+}
+
+.swiper-button-next:after,
+.swiper-rtl .swiper-button-prev:after {
+  content: "" !important;
+
+}
+
+.product-thumb .swiper-slide.swiper-slide-thumb-active>.slide\:border-indigo-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(79 70 229 / var(--tw-border-opacity));
+}

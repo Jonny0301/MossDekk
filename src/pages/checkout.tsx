@@ -22,51 +22,45 @@ import Dlinkedin from "@/svg/Dlinkedin";
 import Dtwitter from "@/svg/Dtwitter";
 import Dyoutube from "@/svg/Dyoutube";
 import Calendar from "@/components/calendar";
+import axios from "axios";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Pricing() {
-    // Swiper.use([Navigation, Thumbs]);  
-    //     useEffect(() => {  
-    //           const swiperThumbs = new Swiper('.nav-for-slider', {  
-    //               loop: true,  
-    //               spaceBetween: 30,  
-    //               slidesPerView: 5,  
-    //             });  
-
-    //             const swiper = new Swiper('.main-slide-carousel', {  
-    //             slidesPerView: 1,  
-    //             thumbs: {  
-    //                 swiper: swiperThumbs,  
-    //             },  
-    //         });  
-
-    //         // Cleanup function to destroy swipers on component unmount  
-    //         return () => {  
-    //             swiper.destroy();  
-    //             swiperThumbs.destroy();  
-    //         };  
-    //     }, []); 
-    // var swiper_thumbs = new swiper(".nav-for-slider", {
-    //     loop: true,
-    //     spaceBetween: 30,
-    //     slidesPerView: 5,
-    //   });
-    //   var swiper = new swiper(".main-slide-carousel", {
-    //     slidesPerView: 1,
-    //     thumbs: {
-    //       swiper: swiper_thumbs,
-    //     },
-    //   });
     const [dateTime, setDateTime] = useState<string>('');
     const [showCalendar, setShowCalendar] = useState(false);
 
     const handleDateTimeSelected = (dateTime: string) => {
-      setDateTime(dateTime);
+        setDateTime(dateTime);
     };
     const toggleCalendar = () => {
         setShowCalendar(!showCalendar);
-      };
+    };
+    const getServices =async (value:any) => {
+        if(value=="none"){
+            return;
+        }
+        try {
+            const formDataParams = new URLSearchParams();
+            formDataParams.append('method', 'getServices');
+            formDataParams.append('type', 'dekk');
+            formDataParams.append('workType', 'New Tyre');
+            formDataParams.append('locationID', '18');
+            const response = await axios.post(
+                'http://localhost/query.php',
+                formDataParams,
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }
+            );
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <div className="home-container flex flex-col">
             <Header />
@@ -121,14 +115,12 @@ export default function Pricing() {
                                 <div className="relative w-[392px] max-[772px]:w-[343px]">
 
                                     <select
+                                        onClick={(e)=>getServices(e.target.value)}
                                         className="h-[56px] block w-[392px] px-[10px] py-[18px] text-black text-sm text-lg font-normal font-['Inter'] leading-5 rounded-none border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018] max-[772px]:w-[343px]"
                                         style={{ outline: "#73C018" }}
                                     >
-                                        <option value="usa" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Moss dekk AS</option>
-                                        <option value="canada" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Canada</option>
-                                        <option value="uk" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">UK</option>
-                                        <option value="australia" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Australia</option>
-                                        <option value="germany" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Germany</option>
+                                        <option value="none" selected className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Select a location</option>
+                                        <option value="moss" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Moss Dekk AS</option>
                                     </select>
                                     <div className="pointer-events-none absolute inset-y-0 right-[11px] flex items-center pl-3">
                                         <svg
@@ -203,11 +195,10 @@ export default function Pricing() {
                                             className="h-[34px] block w-[62px] rounded-[4px] px-[10px] py-[5px] text-black text-sm text-base font-normal font-['Inter'] leading-6 border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
                                             style={{ outline: "#73C018" }}
                                         >
-                                            <option value="usa" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">1</option>
-                                            <option value="canada" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Canada</option>
-                                            <option value="uk" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">UK</option>
-                                            <option value="australia" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Australia</option>
-                                            <option value="germany" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Germany</option>
+                                            <option value="1" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">1</option>
+                                            <option value="2" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">2</option>
+                                            <option value="3" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">3</option>
+                                            <option value="4" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">4</option>
                                         </select>
                                         {/* <div className="pointer-events-none absolute inset-y-0 right-[11px] flex items-center pl-3">
                                         <svg
@@ -250,11 +241,10 @@ export default function Pricing() {
                                             className="h-[34px] block w-[62px] rounded-[4px] px-[10px] py-[5px] text-black text-sm text-base font-normal font-['Inter'] leading-6 border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
                                             style={{ outline: "#73C018" }}
                                         >
-                                            <option value="usa" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">1</option>
-                                            <option value="canada" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Canada</option>
-                                            <option value="uk" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">UK</option>
-                                            <option value="australia" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Australia</option>
-                                            <option value="germany" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">Germany</option>
+                                            <option value="1" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">1</option>
+                                            <option value="2" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">2</option>
+                                            <option value="3" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">3</option>
+                                            <option value="4" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">4</option>
                                         </select>
                                         {/* <div className="pointer-events-none absolute inset-y-0 right-[11px] flex items-center pl-3">
                                         <svg
@@ -280,10 +270,10 @@ export default function Pricing() {
                             </div>
                             <div className="pt-[20px] flex flex-col gap-[18px] max-[1024px]:pt-[5px]">
                                 <div className="">
-                                    <p className="text-4xl leading-10 font-semi-bold text-black max-[1024px]:text-2xl  max-[772px]:text-lg">Sellect time and date</p>
+                                    <p className="text-4xl leading-10 font-semi-bold text-black max-[1024px]:text-2xl  max-[772px]:text-lg">Select time and date</p>
                                 </div>
                                 <div className="w-[599px] text-black shadow max-[772px]:shadow-none max-[772px]:w-[334px]">
-                                    <Calendar   onDateTimeSelected={handleDateTimeSelected} closeCalendar={toggleCalendar}   />
+                                    <Calendar onDateTimeSelected={handleDateTimeSelected} closeCalendar={toggleCalendar} />
                                 </div>
                             </div>
                             <div className="pt-[19px] max-[1024px]:pt-[15px]">

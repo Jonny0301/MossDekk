@@ -175,7 +175,7 @@ export default function Home() {
             formDataParams.append('sizeTwo', selectProfile);
             formDataParams.append('sizeThree', selectDimension);
             const response = await axios.post(
-                'https://dev.mossdekk.no/query.php',
+                'http://localhost/query.php',
                 formDataParams,
                 {
                     headers: {
@@ -211,7 +211,7 @@ export default function Home() {
             try {
                 const response = await axios.get<any[]>('https://api.apify.com/v2/datasets/2cG9DNsKjQJdMySfE/items?token=apify_api_5J3BU4R3hbY7dpBgawZ7O7qITakyJ51Pr7Kz');
                 setReviews(response.data);
-                console.log(response.data);
+                // console.log(response.data);
 
             } catch (error) {
                 console.error('Error fetching reviews:', error);

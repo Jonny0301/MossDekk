@@ -24,6 +24,8 @@ export default function Header() {
     const [isMenuPopup, setIsMenuPopup] = useState(false);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isMenuPopupOpen, setIsMenuPopupOpen] = useState(false);
+
     const toggleSidebar = () => {
         // Close the MenuPopup if it's open
         if (isMenuPopup) {
@@ -42,7 +44,7 @@ export default function Header() {
         if (isHandlingClick) return; // Ignore if already handling
 
         setIsHandlingClick(true);
-        setIsMenuPopup(prev => {
+        setIsMenuPopupOpen(prev => {
             const newValue = !prev; // Toggle the state
             console.log(`isOmlegg changed to: ${newValue}`);
             return newValue;
@@ -77,7 +79,6 @@ export default function Header() {
         setIsOpen(false); // Close dropdown after selection
     };
     // const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [isMenuPopupOpen, setIsMenuPopupOpen] = useState(false);
 
     const handleSidebarClose = () => {
         setIsSidebarOpen(false);

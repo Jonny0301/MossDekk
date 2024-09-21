@@ -1,17 +1,18 @@
 // components/TimeSlotSelector.tsx
 import React, { useState } from 'react';
 
-const timeSlots = [
-  "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM",
-  "11:00 AM", "1:00 PM", "2:00 PM", "3:00 PM",
-  "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM"
-];
 
+// const timeSlots = [
+//   "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM",
+//   "11:00 AM", "1:00 PM", "2:00 PM", "3:00 PM",
+//   "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM"
+// ];
 interface TimeSlotSelectorProps {
+  timeSlots:string[];
   onTimeSlotSelected: (time: string) => void; // New prop to handle time slot selection
 }
 
-const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({ onTimeSlotSelected }) => {
+const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({timeSlots, onTimeSlotSelected }) => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
 
   const handleTimeSelect = (time: string) => {
@@ -26,7 +27,7 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({ onTimeSlotSelected 
         {timeSlots.map((time) => (
           <button
             key={time}
-            className={`${selectedTimeSlot == time ? 'border-[#73C018] border-[1px] text-[#73C018] rounded-[8px] text-base leading-6 font-normal font-["Inter"]' : "border-[#787881] text-base leading-6 font-normal font-['Inter'] text-[#888888] border-[1px] py-[10px] px-[7.5px] rounded-[8px] "}`}
+            className={`h-[46px] ${selectedTimeSlot == time ? 'border-[#73C018] border-[1px] text-[#73C018] rounded-[8px] text-base leading-6 font-normal font-["Inter"]' : "border-[#787881] text-base leading-6 font-normal font-['Inter'] text-[#888888] border-[1px] py-[10px] px-[7.5px] rounded-[8px] "}`}
             onClick={() => handleTimeSelect(time)}
           >
             {time}

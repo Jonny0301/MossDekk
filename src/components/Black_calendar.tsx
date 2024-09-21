@@ -128,10 +128,10 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
         </div>
       </div>
 
-      {
+      {/* {
         selectedDay &&
         (<TimeSlotSelector onTimeSlotSelected={handleTimeSlotSelection} />)
-      }
+      } */}
       <div className='pt-[20px] flex flex-col max-[772px]:hidden'>
         <p className='text-base leading-6 font-medium text-[#6D6D6D]'>*Note:</p>
         <div className='flex flex-row gap-[4px] items-center pt-[10px]'>

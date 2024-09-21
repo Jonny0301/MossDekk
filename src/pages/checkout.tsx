@@ -106,11 +106,15 @@ export default function Pricing() {
   useEffect(() => {
     const savedCount = localStorage.getItem('stockCount');
     const initialPrice = localStorage.getItem('initialpricce');
+    
     if (savedCount) {
       const initialCount = parseInt(savedCount, 10);
-      const initProductPrice = parseInt(initialPrice, 10);
+      
+      // Ensure a default value of '0' if initialPrice is null
+      const initProductPrice = parseInt(initialPrice ?? '0', 10);
+      
       setCount(initialCount);
-      setFirstProductPrice(initProductPrice)
+      setFirstProductPrice(initProductPrice);
     }
   }, []);
 
@@ -183,7 +187,11 @@ export default function Pricing() {
                 <div className="relative w-[392px] max-[772px]:w-[343px]">
 
                   <select
-                    onClick={(e) => { getServices(e.target.value); setLocation(e.target.value) }}
+                      onClick={(e) => {
+                        const target = e.target as HTMLSelectElement; // Cast e.target to HTMLSelectElement
+                        getServices(target.value);
+                        setLocation(target.value);
+                      }}
                     className="h-[56px] block w-[392px] px-[10px] py-[18px] text-black text-sm text-lg font-normal font-['Inter'] leading-5 rounded-none border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018] max-[772px]:w-[343px]"
                     style={{ outline: "#73C018" }}
                   >

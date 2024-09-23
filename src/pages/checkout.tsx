@@ -142,6 +142,7 @@ export default function Pricing() {
           <div className="checkout-pan flex flex-col bg-white pt-[66px] pb-[84px] pl-[306px] pr-[255px] max-[1650px]:px-[80px] max-[1650px]:pt-[44px] max-[1650px]:pb-[45px] max-[1650px]:items-center max-[772px]:px-[16px] max-[772px]:pt-[24px] max-[772px]:pb-[26px]">
             <div className="flex flex-col">
 
+
               <div className="checkout-pan-title">
                 <p className="text-4xl leading-10 font-semi-bold text-black max-[1024px]:text-2xl">Kjøp dekk</p>
               </div>
@@ -176,7 +177,7 @@ export default function Pricing() {
                 <div className="flex flex-row">
                   <p className="w-[90px] text-lg leading-7 font-normal font-['Inter'] text-[#6D6D6D]">Email</p>
                   <p className="text-lg leading-7 font-normal font-['Inter'] text-[#E21632]">*</p>
-                </div>
+                </div> 
                 <input className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"></input>
               </div>
               <div className="pt-[14px] flex flex-col gap-[2px]">

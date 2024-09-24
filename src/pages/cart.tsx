@@ -16,8 +16,7 @@ import Help_circle from "@/svg/Help_circle";
 import Help_circle_one from "@/svg/Help_circle_one";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useCart } from '../components/CartContext';
-
+import { useSelector } from 'react-redux';
 
 interface Product {
   id: number;
@@ -41,6 +40,9 @@ interface Product {
   category: string;
 }
 const Cart = ()=>{
+  const cartItems = useSelector((state) => state.items);
+console.log(cartItems);
+
   const [product, setProduct] = useState<Product | null>(null);
   const [productprice, setProductPrice] = useState<number>(1);
   const [count, setCount] = useState<number>(1); // Default count is 1
@@ -111,9 +113,7 @@ const Cart = ()=>{
       setCount(prevCount => prevCount - 1); 
     }
   };
-  const { cart } = useCart();
-    console.log(useCart());
-    console.log('Cart items:', cart);
+
   // Fetch product data when the product ID changes
   useEffect(() => {
     if (productid) {

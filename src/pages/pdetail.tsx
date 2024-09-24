@@ -24,7 +24,8 @@ import Dyoutube from "@/svg/Dyoutube";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
-
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../store/cartSlice';
 const inter = Inter({ subsets: ["latin"] });
 
 interface Product {
@@ -63,7 +64,11 @@ const ProductDetail = ({ pID }: { pID: number }) => {
     }
     return 4; // Fallback default value
   });
+  const dispatch = useDispatch();
 
+  const handleAddToCart = (Product) => {
+    dispatch(addToCart(Product));  // Dispatch product to be added to the cart
+  };
   // Update localStorage whenever count changes
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -277,7 +282,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                   </div>
                 </div>
                 <div className="choose-amount-btn-group flex flex-row gap-[11px] max-[1340px]:gap-[6px] max-[520px]:gap-[5.35px]">
-                  <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#73C018] max-[1340px]:px-[15px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[9.18px] cursor-pointer" onClick={productPurchasePage}>
+                  <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#73C018] max-[1340px]:px-[15px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[9.18px] cursor-pointer" onClick={()=>{productPurchasePage(),handleAddToCart(product)}}>
                     <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">KJØP DEKK</p>
                   </div>
                   <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#AAAAAA] max-[1340px]:px-[12px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[7.39px] cursor-pointer" onClick={backProductpage}>
@@ -376,7 +381,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                       <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK {relateproduct.price}</span></p>
                     </div>
                     <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
-                      <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => productPurchasePage()}>
+                      <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => {productPurchasePage(),handleAddToCart(relateproduct)}}>
                         <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
                       </div>
                       <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(relateproduct.id)}>

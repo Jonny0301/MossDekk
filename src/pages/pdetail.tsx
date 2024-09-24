@@ -51,69 +51,9 @@ interface Product {
 }
 
 const ProductDetail = ({ pID }: { pID: number }) => {
-  // Swiper.use([Navigation, Thumbs]);  
-  //     useEffect(() => {  
-  //           const swiperThumbs = new Swiper('.nav-for-slider', {  
-  //               loop: true,  
-  //               spaceBetween: 30,  
-  //               slidesPerView: 5,  
-  //             });  
-
-  //             const swiper = new Swiper('.main-slide-carousel', {  
-  //             slidesPerView: 1,  
-  //             thumbs: {  
-  //                 swiper: swiperThumbs,  
-  //             },  
-  //         });  
-
-  //         // Cleanup function to destroy swipers on component unmount  
-  //         return () => {  
-  //             swiper.destroy();  
-  //             swiperThumbs.destroy();  
-  //         };  
-  //     }, []); 
-  // var swiper_thumbs = new swiper(".nav-for-slider", {
-  //     loop: true,
-  //     spaceBetween: 30,
-  //     slidesPerView: 5,
-  //   });
-  //   var swiper = new swiper(".main-slide-carousel", {
-  //     slidesPerView: 1,
-  //     thumbs: {
-  //       swiper: swiper_thumbs,
-  //     },
-  //   });
-
-  // const [pdctImgs, setPdctImgs] = useState<string[]>([
-  //     "https://b2b.norgesdekk.no/nd-webshop/images/product/6aedafca-9ea9-4492-8145-4378b10b7fad/Minerva-F209.png",
-  //     "https://b2b.norgesdekk.no/nd-webshop/images/product/088ec688-f744-4783-b649-918a40007f3b/Vredestein-Ultrac.png",
-  //     "https://b2b.norgesdekk.no/nd-webshop/images/product/3dadf91a-4914-4b8f-b6e0-251d3683888f/PC7.png",
-  //     "https://b2b.norgesdekk.no/nd-webshop/images/product/c6f4ccf9-8f13-48ff-8872-8e177689c78b/econcontact-6.png",
-  //     "https://b2b.norgesdekk.no/nd-webshop/images/product/85495fe0-bd85-456d-9997-d26afc045050/Goodyear-EfficientGrip-Performance-2.png",
-  //     "https://b2b.norgesdekk.no/nd-webshop/images/product/a7271edf-3d02-4d0e-b711-6647974a66e1/Primacy-4+.png",
-  //     "https://b2b.norgesdekk.no/nd-webshop/images/product/16e4024c-c1a7-4108-9f79-e92ff658cae2/Michelin-Energy-Saver.png"
-  // ]);
-
-  // const [pdctImgsData, setPdctImgsData] = useState<string[]>([]);
-  // const [indexOfImg, setIndexOfImg] = useState<number>(0);
-
-  // const selectIndex = (index:number) => {
-
-  // }
-
-  // const next = () => {
-
-  // }
-
-  // const preview = () => {
-
-  // }
-
-  // useEffect(() => {
-
-  // }, [indexOfImg])
   const [product, setProduct] = useState<Product | null>(null);
   const [reproduct, setReProduct] = useState<any[]>([])
+  const [productDescription, setProductDescription] = useState<any[]>([]);
   const router = useRouter();
   const { id } = router.query; // Extract `id` from the query object
   const [count, setCount] = useState(() => {
@@ -176,6 +116,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
         }
       );
       setReProduct(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error(error);
     }
@@ -184,15 +125,13 @@ const ProductDetail = ({ pID }: { pID: number }) => {
   // const tyreSize = "225/45-17";
 
   // const parts = tyreSize.split(/\/|-/);
-  
+
   // console.log(parts); 
   // const [width, profile, inches] = parts.map(Number);
-
 
   useEffect(() => {
     fetchTyres()
     fetchProduct();
-
   }, [id]);
   return product ? (
     <div className="home-container flex flex-col">
@@ -202,32 +141,49 @@ const ProductDetail = ({ pID }: { pID: number }) => {
           <Main_Image />
           <div className="product-detail-pan flex flex-row pt-[24px] pl-[309px] pr-[389px] pb-[91px] gap-[105px] bg-[#F7F7F7] max-[1848px]:px-[80px] max-[1848px]:justify-center max-[1340px]:gap-[6px] max-[1340px]:pt-[35px] max-[1340px]:pb-[68px] max-[900px]:flex-col max-[900px]:items-center max-[900px]:px-[16px] max-[900px]:pt-[13px] max-[900px]:gap-[22px] max-[900px]:pb-[19px]">
             <div className="product-detail-image-pan flex flex-col gap-[13px] max-[1340px]:gap-[6px] max-[520px]:gap-[4px]">
+              {product?.image && product.image.length > 30 ?
+              <>
               <div className="pd-image w-[640px] h-[700px] flex justify-center items-center bg-white max-[1340px]:w-[474px] max-[1340px]:h-[519px] max-[520px]:w-[343px] max-[520px]:h-[375px]">
-                <Image src={product.image} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
-              </div>
+                    <Image src={product.image} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
+                  </div>
+                  <div className="pd-carsouel flex flex-row gap-[12px] justify-between max-[520px]:gap-[8px]">
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    </div>
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    </div>
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    </div>
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    </div>
+                  </div>
+              </>
+                :
+                <>
+                  <div className="pd-image w-[640px] h-[700px] flex justify-center items-center bg-white max-[1340px]:w-[474px] max-[1340px]:h-[519px] max-[520px]:w-[343px] max-[520px]:h-[375px]">
+                    <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
+                  </div>
+                  <div className="pd-carsouel flex flex-row gap-[12px] justify-between max-[520px]:gap-[8px]">
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    </div>
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    </div>
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    </div>
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    </div>
+                  </div>
+                </>
+                }
               {/* <div className="pd-carsouel-item w-[20px] h-[50px] bg-[red]">Prev</div>
                             <div className="pd-carsouel-item w-[20px] h-[50px] bg-[green]">Next</div> */}
-              <div className="pd-carsouel flex flex-row gap-[12px] justify-between max-[520px]:gap-[8px]">
-                <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                  <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
-                </div>
-                <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                  <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
-                </div>
-                <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                  <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
-                </div>
-                <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                  <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
-                </div>
-                {/* {
-                                    pdctImgs.map((pdctImg) => (
-                                        <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                                            <Image src={pdctImg} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
-                                        </div>
-                                    ))
-                                } */}
-              </div>
             </div>
             <div className="product-detail-infor-pan flex flex-col w-[475px] max-[1340px]:w-[384px] max-[520px]:w-[342px]">
               <div className="pdi-title pt-[42px] max-[1340px]:pt-[0px]">
@@ -360,7 +316,8 @@ const ProductDetail = ({ pID }: { pID: number }) => {
               <p className="text-2xl text-black font-semi-bold max-[1024px]:text-lg">Related products</p>
             </div>
             <div className="pdr-list grid grid-cols-4 gap-[28px] max-[948px]:grid-cols-3 max-[643px]:flex max-[643px]:flex-wrap max-[643px]:justify-center max-[400px]:gap-[14px]">
-              {reproduct.length > 0 ? reproduct.map(relateproduct => (
+              {reproduct.length > 0 ? reproduct.map((relateproduct, i) => (
+                i < 4 &&
                 <div className="pp-product-list-main-product-pan flex flex-col" key={relateproduct.id}>
                   <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                     <div className="pp-product-list-mpp-image-outback absolute">
@@ -382,12 +339,11 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                     </div>
                     <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
                       <p className="text-lg leading-7 font-semi-bold text-black">{relateproduct.brand}</p>
-                      <p className="text-lg leading-7 font-semi-bold text-black">{relateproduct.model}</p>
-                      {relateproduct.size == "" && relateproduct.size == null ?
+                      <p className="text-lg leading-7 font-semi-bold text-black line-clamp-1">{relateproduct.model}</p>
+                      {relateproduct.size == "" || relateproduct.size == null ?
                         <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.width}/{relateproduct.profile}-{relateproduct.inches} {relateproduct.load} {relateproduct.speed}</p>
                         :
                         <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.size} {relateproduct.load} {relateproduct.speed}</p>
-
                       }
                     </div>
                     <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
@@ -444,7 +400,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
     </div>
 
   ) : (
-    <div>No product data available</div>
+    <></>
   );
 }
 export default ProductDetail;

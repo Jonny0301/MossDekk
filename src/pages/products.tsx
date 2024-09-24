@@ -13,6 +13,9 @@ import { SetStateAction, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useCart } from '../components/CartContext';
+import { useRouter } from 'next/router';
+import { Product } from '../types/Product';
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -192,6 +195,32 @@ const ProductList: React.FC = ({ }) => {
     }
     return options;
   };
+  const { addToCart, cart } = useCart();
+  const router = useRouter();
+
+  const handleAddToCart = (tyre: {    
+     id: number;
+    brand: string;
+    model: string;
+    size: string;
+    price: number;
+    stock: number;
+    season: string;
+    fuel: string;
+    speed: string;
+    grip: string;
+    noise: string;
+    image: string;
+    width: number;
+    profile: number;
+    inches: number;
+    load: string;
+    euClass: string;
+    delay: number;
+    description: string;
+    category: string; }) => {
+    addToCart(tyre);
+  };
   return (
     <div className="home-container flex flex-col">
       <Header />
@@ -326,7 +355,7 @@ const ProductList: React.FC = ({ }) => {
                                     <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK {tyre.price}</span></p>
                                   </div>
                                   <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
-                                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={()=>productPurchasePage(tyre.id)}>
+                                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={()=>{productPurchasePage(tyre.id),handleAddToCart(tyre)}}>
                                       <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
                                     </div>
                                     <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(tyre.id)}>

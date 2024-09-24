@@ -1,4 +1,4 @@
-"use client"
+" use client"
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import Header from "@/components/Header";
@@ -6,23 +6,9 @@ import Footer from "@/components/Footer";
 import Partner from "@/components/Partner";
 import GetInTouch from "@/components/GetInTouch";
 import Main_Image from "@/components/Main_Image";
-import Tyre_Info_first from "@/svg/Tyre_Infor_first";
-import Tyre_Infor_second from "@/svg/Tyre_Infor_second";
-import Tyre_Infor_third from "@/svg/Tyre_Infor_third";
-import Tyre_22 from "../../public/image/tyre(22).png"
-import Product_detail from "../../public/image/product_detail.png"
 import { SetStateAction, useState } from "react";
 import { useEffect } from 'react';
-import Swiper from 'swiper';
-import { Navigation } from "swiper/modules";
-import { Thumbs } from "swiper/modules";
 import 'swiper/swiper-bundle.css';
-import Dfacebook from "@/svg/Dfacebook";
-import Dinstagram from "@/svg/Dinstagram";
-import Dlinkedin from "@/svg/Dlinkedin";
-import Dtwitter from "@/svg/Dtwitter";
-import Dyoutube from "@/svg/Dyoutube";
-import Left_arrow from "@/svg/Left_arrow";
 import Small_Left_arrow from "@/svg/Small_left_arrow";
 import Cancel from "@/svg/Cancel";
 import External_link from "@/svg/External_link";
@@ -30,8 +16,9 @@ import Help_circle from "@/svg/Help_circle";
 import Help_circle_one from "@/svg/Help_circle_one";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useCart } from '../components/CartContext';
 
-const inter = Inter({ subsets: ["latin"] });
+
 interface Product {
   id: number;
   brand: string;
@@ -124,12 +111,15 @@ const Cart = ()=>{
       setCount(prevCount => prevCount - 1); 
     }
   };
-
+  const { cart } = useCart();
+    console.log(useCart());
+    console.log('Cart items:', cart);
   // Fetch product data when the product ID changes
   useEffect(() => {
     if (productid) {
       fetchProduct();
     }
+    
   }, [productid]);
   return product? (
     <div className="home-container flex flex-col">

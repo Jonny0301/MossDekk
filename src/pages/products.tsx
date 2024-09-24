@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 const inter = Inter({ subsets: ["latin"] });
 
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../store/cartSlice';
+import { addToCart, Products } from '../store/cartSlice';
 
 const ProductList: React.FC = ({ }) => {
   const [tyres, setTyres] = useState<any[]>([])
@@ -199,7 +199,7 @@ const ProductList: React.FC = ({ }) => {
 
   const dispatch = useDispatch();
 
-  const handleAddToCart = (Product) => {
+  const handleAddToCart = (Product:Products) => {
     dispatch(addToCart(Product));  // Dispatch product to be added to the cart
   };
   return (

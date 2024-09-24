@@ -25,7 +25,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../store/cartSlice';
+import { addToCart,Products } from '../store/cartSlice';
 const inter = Inter({ subsets: ["latin"] });
 
 interface Product {
@@ -48,6 +48,7 @@ interface Product {
   euClass: string;
   delay: number;
   description: string;
+  recommended:number;
   category: string;
 }
 
@@ -66,8 +67,8 @@ const ProductDetail = ({ pID }: { pID: number }) => {
   });
   const dispatch = useDispatch();
 
-  const handleAddToCart = (Product) => {
-    dispatch(addToCart(Product));  // Dispatch product to be added to the cart
+  const handleAddToCart = (product:Products) => {
+    dispatch(addToCart(product));  // Dispatch product to be added to the cart
   };
   // Update localStorage whenever count changes
   useEffect(() => {

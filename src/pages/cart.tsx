@@ -17,7 +17,7 @@ import Help_circle_one from "@/svg/Help_circle_one";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useSelector } from 'react-redux';
-
+import { RootState } from '../store/store';
 interface Product {
   id: number;
   brand: string;
@@ -40,7 +40,7 @@ interface Product {
   category: string;
 }
 const Cart = ()=>{
-  const cartItems = useSelector((state) => state.items);
+  const cartItems = useSelector((state:RootState) => state.items);
 console.log(cartItems);
 
   const [product, setProduct] = useState<Product | null>(null);

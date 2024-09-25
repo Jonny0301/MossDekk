@@ -17,7 +17,7 @@ export interface Product {
   noise: string;
   image: string;
   width: number;
-  recommended:number;
+  recommended: number;
   profile: number;
   inches: number;
   load: string;
@@ -25,6 +25,7 @@ export interface Product {
   delay: number;
   description: string;
   category: string;
+  purchaseAmount: number;
 }
 
 interface CartState {
@@ -39,12 +40,12 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, cartReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    cart: persistedReducer,
+  },
 });
 
-// Define and export RootState type
-export type RootState = {
-  items: Product[];
-};
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export const persistor = persistStore(store);

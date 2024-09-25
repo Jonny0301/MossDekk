@@ -8,7 +8,6 @@ import Main_Image from "@/components/Main_Image";
 import Tyre_Info_first from "@/svg/Tyre_Infor_first";
 import Tyre_Infor_second from "@/svg/Tyre_Infor_second";
 import Tyre_Infor_third from "@/svg/Tyre_Infor_third";
-import Tyre_22 from "../../public/image/tyre(22).png"
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,7 +16,8 @@ import { useRouter } from 'next/router';
 const inter = Inter({ subsets: ["latin"] });
 
 import { useDispatch } from 'react-redux';
-import { addToCart, Products } from '../store/cartSlice';
+import { addToCart } from '../store/cartSlice';
+import { Product } from '../store/store';
 
 const ProductList: React.FC = ({ }) => {
   const [tyres, setTyres] = useState<any[]>([])
@@ -33,7 +33,6 @@ const ProductList: React.FC = ({ }) => {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>(['Winter', 'Summer', 'All-Season', 'Performance']);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  const [activeTireType, setActiveTireType] = useState('Winter tires');
   const [selectseason, setSelectSeason] = useState<string | null>(null);
   const [selectedWidth, setSelectedWidth] = useState<string | null>(null);
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
@@ -52,6 +51,7 @@ const ProductList: React.FC = ({ }) => {
     const selectWidth = localStorage.getItem("selectedWidth") || '';
     const selectProfile = localStorage.getItem("selectedProfile") || '';
     const selectDimension = localStorage.getItem("selectedDimension") || '';
+
     try {
       const formDataParams = new URLSearchParams();
       formDataParams.append('method', 'fetchFrontTyres');
@@ -59,6 +59,7 @@ const ProductList: React.FC = ({ }) => {
       formDataParams.append('sizeOne', selectWidth);
       formDataParams.append('sizeTwo', selectProfile);
       formDataParams.append('sizeThree', selectDimension);
+
       const response = await axios.post(
         'http://localhost/query.php',
         formDataParams,
@@ -68,8 +69,10 @@ const ProductList: React.FC = ({ }) => {
           },
         }
       );
-      console.log(response.data)
-      if (response.data == "no entry") {
+
+      console.log(response.data);
+
+      if (response.data === "no entry") {
         toast("Tires not found", {
           position: "top-right",
           autoClose: 2000,
@@ -79,23 +82,32 @@ const ProductList: React.FC = ({ }) => {
           draggable: true,
           type: "warning", // Changed to warning or error if more appropriate
         });
-        const merged = [...[], ...[], ...[]]
+        const merged = [...[], ...[], ...[]];
         setTyres(merged);
         setBudgetArray([]);
         setQualityArray([]);
         setPremiumArray([]);
         return;
       }
-      const merged = [...response.data[1], ...response.data[2], ...response.data[3]]
+
+      // Merge arrays and add purchaseAmount to each tire
+      const merged = [
+        ...response.data[1].map((tire: any) => ({ ...tire, purchaseAmount: 4 })), // Assuming response.data[1] is an array of tires
+        ...response.data[2].map((tire: any) => ({ ...tire, purchaseAmount: 4 })), // Assuming response.data[2] is another array of tires
+        ...response.data[3].map((tire: any) => ({ ...tire, purchaseAmount: 4 })), // Assuming response.data[3] is another array of tires
+      ];
+
       setTyres(merged);
       setBudgetArray(response.data[1]);
       setQualityArray(response.data[2]);
       setPremiumArray(response.data[3]);
-      console.log(merged)
+
+      console.log(merged);
     } catch (error) {
       console.error(error);
     }
   };
+
 
 
   // Handle input change
@@ -133,10 +145,8 @@ const ProductList: React.FC = ({ }) => {
   const goToDetailPage = (pID: number) => {
     window.location.href = `/pdetail?id=${pID}`
   }
-  const productPurchasePage = async (id:number) => {
-    window.location.href = `/cart?productid=${id}`
-    localStorage.setItem('stockCount', "4");
-
+  const productPurchasePage = async (id: number) => {
+    window.location.href = `/cart`
   }
   const handleSeasonClick = (season: string) => {
     // Set the clicked season to the selected one, reset the other
@@ -199,7 +209,7 @@ const ProductList: React.FC = ({ }) => {
 
   const dispatch = useDispatch();
 
-  const handleAddToCart = (Product:Products) => {
+  const handleAddToCart = (Product: Product) => {
     dispatch(addToCart(Product));  // Dispatch product to be added to the cart
   };
   return (
@@ -278,10 +288,10 @@ const ProductList: React.FC = ({ }) => {
                               <div className="pp-product-list-main-product-pan flex flex-col tyreResultContainer" key={`budget-${tyre.id}`}>
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                   <div className="pp-product-list-mpp-image-outback absolute">
-                                    {tyre.image.length > 30 || tyre.size == null?
-                                    <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
-                                    :
-                                    <Image alt="Tire image of Moss Dekk AS" src={`http://localhost/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
+                                    {tyre.image.length > 30 || tyre.size == null ?
+                                      <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
+                                      :
+                                      <Image alt="Tire image of Moss Dekk AS" src={`http://localhost/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
                                     }
                                   </div>
                                 </div>
@@ -296,14 +306,14 @@ const ProductList: React.FC = ({ }) => {
                                   <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
                                     <p className="text-lg leading-7 font-semi-bold text-black">{tyre.brand}</p>
                                     <p className="text-lg leading-7 font-semi-bold text-black line-clamp-1">{tyre.model}</p>
-                                    {tyre.size == ""||tyre.size==null?
-                                    <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
-                                      {tyre.width}/{tyre.profile}-{tyre.inches} {tyre.load} {tyre.speed}
-                                    </p>
-                                    :
-                                    <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
-                                      {tyre.size} {tyre.load} {tyre.speed}
-                                    </p>
+                                    {tyre.size == "" || tyre.size == null ?
+                                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
+                                        {tyre.width}/{tyre.profile}-{tyre.inches} {tyre.load} {tyre.speed}
+                                      </p>
+                                      :
+                                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
+                                        {tyre.size} {tyre.load} {tyre.speed}
+                                      </p>
                                     }
                                   </div>
                                   <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
@@ -336,7 +346,14 @@ const ProductList: React.FC = ({ }) => {
                                     <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK {tyre.price}</span></p>
                                   </div>
                                   <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
-                                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={()=>{productPurchasePage(tyre.id),handleAddToCart(tyre)}}>
+                                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => {
+                                      productPurchasePage(tyre.id);
+                                      const productWithPurchaseAmount = {
+                                        ...tyre,
+                                        purchaseAmount: tyre.purchaseAmount || 4, // Default to 1 if not set
+                                      };
+                                      handleAddToCart(productWithPurchaseAmount)
+                                    }}>
                                       <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
                                     </div>
                                     <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(tyre.id)}>
@@ -453,10 +470,10 @@ const ProductList: React.FC = ({ }) => {
                               <div className="pp-product-list-main-product-pan flex flex-col tyreResultContainer" key={`quality-${tyre.id}`}>
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                   <div className="pp-product-list-mpp-image-outback absolute">
-                                  {tyre.image.length > 30 || tyre.size == null?
-                                    <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
-                                    :
-                                    <Image alt="Tire image of Moss Dekk AS" src={`http://localhost/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
+                                    {tyre.image.length > 30 || tyre.size == null ?
+                                      <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
+                                      :
+                                      <Image alt="Tire image of Moss Dekk AS" src={`http://localhost/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
                                     }
                                   </div>
                                 </div>
@@ -471,14 +488,14 @@ const ProductList: React.FC = ({ }) => {
                                   <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
                                     <p className="text-lg leading-7 font-semi-bold text-black">{tyre.brand}</p>
                                     <p className="text-lg leading-7 font-semi-bold text-black line-clamp-1">{tyre.model}</p>
-                                    {tyre.size == "" || tyre.size==null?
-                                    <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
-                                      {tyre.width}/{tyre.profile}-{tyre.inches} {tyre.load} {tyre.speed}
-                                    </p>
-                                    :
-                                    <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
-                                      {tyre.size} {tyre.load} {tyre.speed}
-                                    </p>
+                                    {tyre.size == "" || tyre.size == null ?
+                                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
+                                        {tyre.width}/{tyre.profile}-{tyre.inches} {tyre.load} {tyre.speed}
+                                      </p>
+                                      :
+                                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
+                                        {tyre.size} {tyre.load} {tyre.speed}
+                                      </p>
                                     }
                                   </div>
                                   <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
@@ -511,7 +528,14 @@ const ProductList: React.FC = ({ }) => {
                                     <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK {tyre.price}</span></p>
                                   </div>
                                   <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
-                                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={()=>{productPurchasePage(tyre.id),handleAddToCart(tyre)}}>
+                                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => {
+                                      productPurchasePage(tyre.id);
+                                      const productWithPurchaseAmount = {
+                                        ...tyre,
+                                        purchaseAmount: tyre.purchaseAmount || 4, // Default to 1 if not set
+                                      };
+                                      handleAddToCart(productWithPurchaseAmount)
+                                    }}>
                                       <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
                                     </div>
                                     <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(tyre.id)}>
@@ -570,10 +594,10 @@ const ProductList: React.FC = ({ }) => {
                               <div className="pp-product-list-main-product-pan flex flex-col tyreResultContainer" key={`quality-${tyre.id}`}>
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                   <div className="pp-product-list-mpp-image-outback absolute">
-                                  {tyre.image.length > 30 || tyre.size == null?
-                                    <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
-                                    :
-                                    <Image alt="Tire image of Moss Dekk AS" src={`http://localhost/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
+                                    {tyre.image.length > 30 || tyre.size == null ?
+                                      <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
+                                      :
+                                      <Image alt="Tire image of Moss Dekk AS" src={`http://localhost/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
                                     }
                                   </div>
                                 </div>
@@ -588,14 +612,14 @@ const ProductList: React.FC = ({ }) => {
                                   <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
                                     <p className="text-lg leading-7 font-semi-bold text-black">{tyre.brand}</p>
                                     <p className="text-lg leading-7 font-semi-bold text-black line-clamp-1">{tyre.model}</p>
-                                    {tyre.size == ""||tyre.size==null?
-                                    <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
-                                      {tyre.width}/{tyre.profile}-{tyre.inches} {tyre.load} {tyre.speed}
-                                    </p>
-                                    :
-                                    <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
-                                      {tyre.size} {tyre.load} {tyre.speed}
-                                    </p>
+                                    {tyre.size == "" || tyre.size == null ?
+                                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
+                                        {tyre.width}/{tyre.profile}-{tyre.inches} {tyre.load} {tyre.speed}
+                                      </p>
+                                      :
+                                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">
+                                        {tyre.size} {tyre.load} {tyre.speed}
+                                      </p>
                                     }
                                   </div>
                                   <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
@@ -628,7 +652,14 @@ const ProductList: React.FC = ({ }) => {
                                     <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK {tyre.price}</span></p>
                                   </div>
                                   <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
-                                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={()=>{productPurchasePage(tyre.id),handleAddToCart(tyre)}}>
+                                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => {
+                                      productPurchasePage(tyre.id);
+                                      const productWithPurchaseAmount = {
+                                        ...tyre,
+                                        purchaseAmount: tyre.purchaseAmount || 4, // Default to 1 if not set
+                                      };
+                                      handleAddToCart(productWithPurchaseAmount)
+                                    }}>
                                       <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
                                     </div>
                                     <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(tyre.id)}>

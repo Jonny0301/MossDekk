@@ -18,6 +18,10 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import { useDispatch } from 'react-redux';
+import { decrementAmount, incrementAmount } from "@/store/cartSlice";
+import { removeFromCart } from '../store/cartSlice'; // Adjust the import based on your file structure
+
 interface Product {
   id: number;
   brand: string;
@@ -39,89 +43,53 @@ interface Product {
   delay: number;
   category: string;
 }
-const Cart = ()=>{
-  const cartItems = useSelector((state:RootState) => state.items);
-console.log(cartItems);
-
-  const [product, setProduct] = useState<Product | null>(null);
+const Cart = () => {
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const [productprice, setProductPrice] = useState<number>(1);
-  const [count, setCount] = useState<number>(1); // Default count is 1
-  const [totalPrice, setTotalPrice] = useState<number>(0); // Total price based on count and unit price
   const [enviromenttax, setEnviromentTax] = useState<number>(0);
   const [balancing, setBalancing] = useState<number>(0);
   const [sum, setSum] = useState<number>(0);
-  const router = useRouter();
-  const { productid } = router.query; // Extract `id` from the query object
-
-  // Max and min count values
-  const maxCount = 4;
-  const minCount = 1;
   const tax = 25;
   const balanc_price = 500;
-  // Fetch product details from API
-  const fetchProduct = async () => {
-    try {
-      const response = await axios.get(`http://localhost/productDetailsApi.php?pID=${productid}`);
-      setProduct(response.data);
-      setProductPrice(response.data.price);
-    } catch (error) {
-      console.error(error);
-    }
+  const calculateTotalPurchaseAmount = (items: { purchaseAmount: number; }[]) => {
+    return items.reduce((total, item) => total + item.purchaseAmount, 0);
   };
-
-  // Get count from localStorage on mount and update total price
-  useEffect(() => {
-    const savedCount = localStorage.getItem('stockCount');
-    if (savedCount) {
-      const initialCount = parseInt(savedCount, 10);
-      setCount(initialCount);
-    }
-  }, []);
-
-  // Update localStorage whenever count changes
-  useEffect(() => {
-    localStorage.setItem('stockCount', count.toString());
-  }, [count]);
-
+  const totalPurchaseAmount = calculateTotalPurchaseAmount(cartItems);
   const backProductpage = async () => {
     window.location.href = "/products"
   }
-  // Recalculate total price whenever count or productprice changes
   useEffect(() => {
-    setTotalPrice(count * productprice);
-    setEnviromentTax(count * tax);
-    setBalancing(count * balanc_price);
-  }, [count, productprice, tax,balanc_price]);
-  useEffect(()=>{
+    setEnviromentTax(totalPurchaseAmount * tax);
+    setBalancing(totalPurchaseAmount * balanc_price);
+  }, [totalPurchaseAmount, productprice, tax, balanc_price]);
+  useEffect(() => {
     setSum(totalPrice + enviromenttax + balancing);
-    localStorage.setItem("totalprice",sum.toString());
-    localStorage.setItem("initialpricce",productprice.toString())
+    localStorage.setItem("totalprice", sum.toString());
+    localStorage.setItem("initialpricce", productprice.toString())
   }
-)
-  // Increment the count
-  const handleIncrement = () => {
-    if (count < maxCount) {
-      setCount(prevCount => prevCount + 1);
-    }
-  };
- const goToCheckOutPage = () =>{
-  window.location.href = "/checkout"
- }
-  // Decrement the count
-  const handleDecrement = () => {
-    if (count > minCount) {
-      setCount(prevCount => prevCount - 1); 
-    }
+  )
+  const goToCheckOutPage = () => {
+    window.location.href = "/checkout"
+  }
+  const dispatch = useDispatch();
+  const handleIncrement = (id: number) => {
+    dispatch(incrementAmount(id));
   };
 
-  // Fetch product data when the product ID changes
-  useEffect(() => {
-    if (productid) {
-      fetchProduct();
-    }
-    
-  }, [productid]);
-  return product? (
+  const handleDecrement = (id: number) => {
+    dispatch(decrementAmount(id));
+  };
+  const calculateTotalPrice = (items: { price: string | number; purchaseAmount: number; }[]) => {
+    return items.reduce((total, item) => {
+      const price = typeof item.price === "string" ? parseFloat(item.price) : item.price;
+      return total + (price * item.purchaseAmount);
+    }, 0);
+  };
+  const totalPrice = calculateTotalPrice(cartItems);
+  const handleRemoveFromCart = (id: number) => {
+    dispatch(removeFromCart(id));
+  };
+  return (
     <div className="home-container flex flex-col">
       <Header />
       <main style={{ "width": '100%' }}>
@@ -135,42 +103,50 @@ console.log(cartItems);
             <div className="pcp-main-title pt-[77px] max-[1227px]:pt-[35px] max-[834px]:pt-[24px]">
               <p className="text-4xl leading-10 font-semi-bold text-black max-[1227px]:text-2xl max-[834px]:text-xl max-[834px]:pl-[6px]">1 -  HANDLEHURV</p>
             </div>
-            <div className="pcp-main-info flex flex-row justify-between pt-[95px] pl-[40px] gap-[167px] max-[1903px]:gap-[0px] max-[1266px]:pl-[8px] max-[1227px]:pt-[31px] max-[966px]:pl-[6px] max-[834px]:pt-[16px]">
-              <div className="pm-minfo flex flex-row gap-[279px] items-center max-[1774px]:gap-[50px] max-[1227px]:gap-[65px] max-[834px]:gap-[7px] max-[572px]:flex-col ">
-                <div className="flex flex-row gap-[26px] max-[1227px]:gap-[15px] max-[834px]:gap-[14px] max-[572px]:items-start">
-                  <div className="pm-minfo-image w-[161px] h-[161px] flex justify-center items-center bg-[#F7F7F7] max-[1227px]:w-[109px] max-[1227px]:h-[110px] max-[834px]:w-[69px] max-[834px]:h-[69px]">
-                    <Image src={product.image} width={84} height={130} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
-                  </div>
-                  <div className="pm-minfo-text gap-[20px] flex flex-col justify-center max-[1227px]:gap-[3px] max-[446px]:h-[57px] max-[446px]:w-[161px]">
-                    <p className="text-3xl w-[400px] max-[1100px]:w-[250px] max-[620px]:w-[140px] max-[620px]:line-clamp-none leading-10 font-semi-bold text-black max-[1227px]:text-xl max-[834px]:text-sm line-clamp-1">{product.brand} - {product.model} - {product.speed}</p>
-                    {product.size == "" || product.size == null ?
+            {cartItems.map((product) => (
+              <div className="pcp-main-info flex flex-row justify-between pt-[95px] pl-[40px] gap-[167px] max-[1903px]:gap-[0px] max-[1266px]:pl-[8px] max-[1227px]:pt-[31px] max-[966px]:pl-[6px] max-[834px]:pt-[16px]" key={product.id}>
+                <div className="pm-minfo flex flex-row gap-[279px] items-center max-[1774px]:gap-[50px] max-[1227px]:gap-[65px] max-[834px]:gap-[7px] max-[572px]:flex-col ">
+                  <div className="flex flex-row gap-[26px] max-[1227px]:gap-[15px] max-[834px]:gap-[14px] max-[572px]:items-start">
+                    {product?.image && product.image.length > 30 ?
+                      <div className="pm-minfo-image w-[161px] h-[161px] flex justify-center items-center bg-[#F7F7F7] max-[1227px]:w-[109px] max-[1227px]:h-[110px] max-[834px]:w-[69px] max-[834px]:h-[69px]">
+                        <Image src={product.image} width={84} height={130} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
+                      </div>
+                      :
+                      <div className="pm-minfo-image w-[161px] h-[161px] flex justify-center items-center bg-[#F7F7F7] max-[1227px]:w-[109px] max-[1227px]:h-[110px] max-[834px]:w-[69px] max-[834px]:h-[69px]">
+                        <Image src={`http://localhost/uploads/tyreImg/${product.image}`} width={84} height={130} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
+                      </div>
+                    }
+                    <div className="pm-minfo-text gap-[20px] flex flex-col justify-center max-[1227px]:gap-[3px] max-[446px]:h-[57px] max-[446px]:w-[161px]">
+                      <p className="text-3xl w-[400px] max-[1100px]:w-[250px] max-[620px]:w-[140px] max-[620px]:line-clamp-none leading-10 font-semi-bold text-black max-[1227px]:text-xl max-[834px]:text-sm line-clamp-1">{product.brand} - {product.model} - {product.speed}</p>
+                      {product.size == "" || product.size == null ?
                         <p className="text-3xl leading-10 font-semi-bold text-black max-[1227px]:text-xl max-[834px]:text-sm">{product.width}/{product.profile}-{product.inches} {product.load} {product.speed}</p>
 
                         :
                         <p className="text-3xl leading-10 font-semi-bold text-black max-[1227px]:text-xl max-[834px]:text-sm">{product.size} {product.load} {product.speed}</p>
 
                       }
-                    {/* <p className="text-3xl leading-10 font-semi-bold text-black max-[1227px]:text-xl max-[834px]:text-sm">205/55-16 91V</p> */}
+                    </div>
+
                   </div>
-
+                  <div className="choose-amount-pan flex flex-row gap-[2px]">
+                    <button className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-4xl leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px] max-[834px]:w-[32px] max-[834px]:h-[32px] max-[834px]:text-2xl cursor-pointer" onClick={() => dispatch(decrementAmount(product.id))} disabled={product.purchaseAmount <= 1}>-</button>
+                    <div className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-lg leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px]  max-[834px]:w-[32px] max-[834px]:h-[32px]">{product.purchaseAmount}</div>
+                    <button className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-4xl leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px]  max-[834px]:w-[32px] max-[834px]:h-[32px] max-[834px]:text-2xl cursor-pointer" onClick={() => dispatch(incrementAmount(product.id))} disabled={product.purchaseAmount >= 4}>+</button>
+                  </div>
                 </div>
-                <div className="choose-amount-pan flex flex-row gap-[2px]">
-                  <div className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-4xl leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px] max-[834px]:w-[32px] max-[834px]:h-[32px] max-[834px]:text-2xl cursor-pointer" onClick={handleDecrement}>-</div>
-                  <div className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-lg leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px]  max-[834px]:w-[32px] max-[834px]:h-[32px]">{count}</div>
-                  <div className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-4xl leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px]  max-[834px]:w-[32px] max-[834px]:h-[32px] max-[834px]:text-2xl cursor-pointer" onClick={handleIncrement}>+</div>
+                <div className="pm-priceam flex flex-row gap-[27px] items-center max-[1227px]:gap-[19px] max-[446px]:flex-col-reverse max-[446px]:items-end max-[446px]:gap-[40px] ">
+
+                  <div className="flex-col gap-[7px] flex items-end">
+                    <p className="text-2xl leading-9 font-semi-bold text-[#73C018] max-[1227px]:text-xl max-[834px]:text-base">Nok. {product.price * product.purchaseAmount}</p>
+                    <p className="text-lg leading-7 font-medium text-[#AAAAAA] max-[1227px]:text-sm max-[834px]:text-xs">Nok. {product.price} / stk</p>
+                  </div>
+                  <div className="flex items-center cancel-btn cursor-pointer" onClick={() => handleRemoveFromCart(product.id)}>
+                    <Cancel />
+                  </div>
                 </div>
               </div>
-              <div className="pm-priceam flex flex-row gap-[27px] items-center max-[1227px]:gap-[19px] max-[446px]:flex-col-reverse max-[446px]:items-end max-[446px]:gap-[40px] ">
 
-                <div className="flex-col gap-[7px] flex items-end">
-                  <p className="text-2xl leading-9 font-semi-bold text-[#73C018] max-[1227px]:text-xl max-[834px]:text-base">Nok. {totalPrice}</p>
-                  <p className="text-lg leading-7 font-medium text-[#AAAAAA] max-[1227px]:text-sm max-[834px]:text-xs">Nok. {productprice} / stk</p>
-                </div>
-                <div className="flex items-center cancel-btn">
-                  <Cancel />
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
           <div className="cart-bar px-[208px] h-[1px] bg-white max-[1535px]:px-[80px] max-[966px]:px-[19px] max-[834px]:hidden">
             <div className="h-[1px] w-full bg-[#AAAAAA]"></div>
@@ -193,7 +169,7 @@ console.log(cartItems);
               <div className="flex flex-row mb-[41px] max-[1024px]:mb-[18px] max-[732px]:mb-[10px]">
                 <span className="text-lg leading-7 font-medium text-black max-[1024px]:text-sm max-[1024px]:text-[#AAAAAA]">Totalsum:</span>
                 <span className="w-full border-dashed border-[#AAAAAA] border-t-[1px] mt-[20px] ml-[3px] max-[1024px]:mt-[15px]" ></span>
-                <div className="text-lg leading-7 font-medium text-black min-w-[15%] max-[1166px]:min-w-[19%] max-[512px]:min-w-[22%] ml-[15px] flex justify-end max-[1024px]:text-sm max-[1024px]:text-[#AAAAAA]">Nok. {totalPrice}</div>
+                <div className="text-lg leading-7 font-medium text-black min-w-[17%] max-[1166px]:min-w-[21%] max-[512px]:min-w-[29%] ml-[15px] flex justify-end max-[1024px]:text-sm max-[1024px]:text-[#AAAAAA]">Nok. {totalPrice}</div>
               </div>
               <div className="flex flex-row mb-[18px] max-[1024px]:mb-[8px] max-[732px]:mb-[3px]">
                 <div className="flex flex-row gap-[10px] lg:gap-[0px] fcip-item max-[1024px]:hidden">
@@ -216,7 +192,7 @@ console.log(cartItems);
               <div className="flex flex-row mb-[51px]  max-[1024px]:mb-[30px] max-[732px]:mb-[23px]">
                 <span className="text-xl leading-7 font-semi-bold text-black max-[1024px]:text-base">Totalt:</span>
                 <span className="w-full border-dashed border-[#AAAAAA] border-t-[1px] mt-[20px] ml-[3px] max-[1024px]:mt-[15px]"></span>
-                <div className="text-xl leading-7 font-semi-bold text-black min-w-[15%] max-[1166px]:min-w-[19%] max-[512px]:min-w-[22%] ml-[15px] flex justify-end max-[1024px]:text-base">Nok. {sum}</div>
+                <div className="text-xl leading-7 font-semi-bold text-black min-w-[17%] max-[1166px]:min-w-[21%] max-[512px]:min-w-[29%] ml-[15px] flex justify-end max-[1024px]:text-base">Nok. {sum}</div>
               </div>
               <div className="text-end mb-[30px] max-[1024px]:mb-[15px] max-[732px]:mb-[8px]">
                 <p className="text-lg leading-7 font-medium max-[1024px]:text-sm text-black">Alle priser er inkludert mva</p>
@@ -235,7 +211,9 @@ console.log(cartItems);
       </main>
     </div>
 
-  ):(<></>);
+  );
 }
 export default Cart;
+
+
 

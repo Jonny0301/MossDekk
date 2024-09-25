@@ -53,7 +53,9 @@ const Faktura_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             <div ref={modalRef} className="w-[838px] max-h-[95vh] overflow-y-auto hide-scrollbar flex flex-col h-[480px]">
                 <div className="px-[30px] py-[31px] flex flex-row justify-between bg-[#18181B] items-center max-[590px]:p-[15px]">
                     <p className="text-lg leading-7 font-medium text-[#73C018] max-[590px]:text-sm">Beataling Alternativ</p>
-                    <X_Cancel />
+                    <div onClick={onClose}>
+                        <X_Cancel />
+                    </div>
                 </div>
                 <div className="pt-[63px] bg-[#1F1F1F] pl-[31px] pr-[21px] pb-[26px] gap-[72px] h-full flex flex-col justify-between">
                     <div className="relative w-full flex justify-center">
@@ -95,7 +97,7 @@ const Faktura_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                         </div>
                         <div className='rounded-[8px] p-[10px] bg-[#73C018] gap-[2px] flex flex-row items-center cursor-pointer'>
                             <p className='text-lg leading-7 font-normal font-["Inter"] text-white'>Fortsett</p>
-                            <Cheveron_Right  />
+                            <Cheveron_Right />
                         </div>
                     </div>
                 </div>

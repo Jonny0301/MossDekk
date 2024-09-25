@@ -25,10 +25,11 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
 import { useDispatch } from 'react-redux';
-import { addToCart,Products } from '../store/cartSlice';
+import { addToCart, } from '../store/cartSlice';
 const inter = Inter({ subsets: ["latin"] });
 
 interface Product {
+  purchaseAmount: number;
   id: number;
   brand: string;
   model: string;
@@ -48,8 +49,9 @@ interface Product {
   euClass: string;
   delay: number;
   description: string;
-  recommended:number;
+  recommended: number;
   category: string;
+
 }
 
 const ProductDetail = ({ pID }: { pID: number }) => {
@@ -58,34 +60,38 @@ const ProductDetail = ({ pID }: { pID: number }) => {
   const [productDescription, setProductDescription] = useState<any[]>([]);
   const router = useRouter();
   const { id } = router.query; // Extract `id` from the query object
-  const [count, setCount] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedCount = localStorage.getItem('stockCount');
-      return savedCount ? parseInt(savedCount, 10) : 4;
-    }
-    return 4; // Fallback default value
-  });
+  // const [count, setCount] = useState(() => {
+  //   if (typeof window !== "undefined") {
+  //     const savedCount = localStorage.getItem('stockCount');
+  //     return savedCount ? parseInt(savedCount, 10) : 4;
+  //   }
+  //   return 4; // Fallback default value
+  // });
   const dispatch = useDispatch();
 
-  const handleAddToCart = (product:Products) => {
+  const handleAddToCart = (product: Product) => {
     dispatch(addToCart(product));  // Dispatch product to be added to the cart
   };
   // Update localStorage whenever count changes
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem('stockCount', count.toString());
-    }
-  }, [count]);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     localStorage.setItem('stockCount', count.toString());
+  //   }
+  // }, [count]);
+
+  const [count, setCount] = useState<number>(product?.purchaseAmount || 1); // Default to 1 if not set
 
   const handleIncrement = () => {
     if (count < 4) {
       setCount(prevCount => prevCount + 1);
+      setProduct(prevProduct => prevProduct ? { ...prevProduct, purchaseAmount: prevProduct.purchaseAmount + 1 } : null);
     }
   };
 
   const handleDecrement = () => {
     if (count > 1) {
       setCount(prevCount => prevCount - 1);
+      setProduct(prevProduct => prevProduct ? { ...prevProduct, purchaseAmount: prevProduct.purchaseAmount - 1 } : null);
     }
   };
 
@@ -112,6 +118,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
     try {
       const formDataParams = new URLSearchParams();
       formDataParams.append('method', 'fetchProductDetail');
+
       const response = await axios.post(
         'http://localhost/query.php',
         formDataParams,
@@ -121,8 +128,15 @@ const ProductDetail = ({ pID }: { pID: number }) => {
           },
         }
       );
-      setReProduct(response.data);
-      console.log(response.data)
+
+      // Assuming response.data is an array of product objects
+      const productsWithAmount = response.data.map((product: any) => ({
+        ...product,
+        purchaseAmount: 4 // Set the default purchaseAmount or use another default value
+      }));
+
+      setReProduct(productsWithAmount); // Set the modified data
+      console.log(productsWithAmount); // Log the modified products
     } catch (error) {
       console.error(error);
     }
@@ -148,8 +162,8 @@ const ProductDetail = ({ pID }: { pID: number }) => {
           <div className="product-detail-pan flex flex-row pt-[24px] pl-[309px] pr-[389px] pb-[91px] gap-[105px] bg-[#F7F7F7] max-[1848px]:px-[80px] max-[1848px]:justify-center max-[1340px]:gap-[6px] max-[1340px]:pt-[35px] max-[1340px]:pb-[68px] max-[900px]:flex-col max-[900px]:items-center max-[900px]:px-[16px] max-[900px]:pt-[13px] max-[900px]:gap-[22px] max-[900px]:pb-[19px]">
             <div className="product-detail-image-pan flex flex-col gap-[13px] max-[1340px]:gap-[6px] max-[520px]:gap-[4px]">
               {product?.image && product.image.length > 30 ?
-              <>
-              <div className="pd-image w-[640px] h-[700px] flex justify-center items-center bg-white max-[1340px]:w-[474px] max-[1340px]:h-[519px] max-[520px]:w-[343px] max-[520px]:h-[375px]">
+                <>
+                  <div className="pd-image w-[640px] h-[700px] flex justify-center items-center bg-white max-[1340px]:w-[474px] max-[1340px]:h-[519px] max-[520px]:w-[343px] max-[520px]:h-[375px]">
                     <Image src={product.image} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
                   </div>
                   <div className="pd-carsouel flex flex-row gap-[12px] justify-between max-[520px]:gap-[8px]">
@@ -166,7 +180,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                       <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
                     </div>
                   </div>
-              </>
+                </>
                 :
                 <>
                   <div className="pd-image w-[640px] h-[700px] flex justify-center items-center bg-white max-[1340px]:w-[474px] max-[1340px]:h-[519px] max-[520px]:w-[343px] max-[520px]:h-[375px]">
@@ -187,7 +201,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                     </div>
                   </div>
                 </>
-                }
+              }
               {/* <div className="pd-carsouel-item w-[20px] h-[50px] bg-[red]">Prev</div>
                             <div className="pd-carsouel-item w-[20px] h-[50px] bg-[green]">Next</div> */}
             </div>
@@ -283,130 +297,138 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                   </div>
                 </div>
                 <div className="choose-amount-btn-group flex flex-row gap-[11px] max-[1340px]:gap-[6px] max-[520px]:gap-[5.35px]">
-                  <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#73C018] max-[1340px]:px-[15px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[9.18px] cursor-pointer" onClick={()=>{productPurchasePage(),handleAddToCart(product)}}>
-                    <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">KJØP DEKK</p>
-                  </div>
-                  <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#AAAAAA] max-[1340px]:px-[12px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[7.39px] cursor-pointer" onClick={backProductpage}>
-                    <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">Gå tilbake</p>
-                  </div>
+                  <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#73C018] max-[1340px]:px-[15px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[9.18px] cursor-pointer" onClick={() => {
+                    const productWithPurchaseAmount = {
+                      ...product,
+                      purchaseAmount: count  // Make sure this uses the latest count
+                    };
 
+                    productPurchasePage();
+                    handleAddToCart(productWithPurchaseAmount);  // Pass updated product with purchaseAmount
+                  }}>
+                  <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">KJØP DEKK</p>
                 </div>
-              </div>
-              <div className="pdi-category flex flex-row pt-[22px] gap-[7px] max-[1340px]:pt-[11px] max-[1340px]:gap-[5px] max-[520px]:pt-[11.79px]">
-                <p className="text-lg leading-7 font-medium text-black max-[1340px]:text-sm">Kategorier:</p>
-                <p className="text-lg leading-7 font-medium text-[#6D6D6D] max-[1340px]:text-sm">{product.category}</p>
-              </div>
-              <div className="pdi-chare flex flex-row gap-[13px] pt-[6px] max-[520px]:pt-[5px+]">
-                <p className="text-base font-medium text-[#000000] leading-5 max-[1340px]:text-sm">Share</p>
-                <div className="flex flex-row gap-[20px] max-[1340px]:gap-[14px]">
-                  <Dfacebook />
-                  <Dinstagram />
-                  <Dyoutube />
-                  <Dtwitter />
-                  <Dlinkedin />
+                <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#AAAAAA] max-[1340px]:px-[12px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[7.39px] cursor-pointer" onClick={backProductpage}>
+                  <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">Gå tilbake</p>
                 </div>
+
+              </div>
+            </div>
+            <div className="pdi-category flex flex-row pt-[22px] gap-[7px] max-[1340px]:pt-[11px] max-[1340px]:gap-[5px] max-[520px]:pt-[11.79px]">
+              <p className="text-lg leading-7 font-medium text-black max-[1340px]:text-sm">Kategorier:</p>
+              <p className="text-lg leading-7 font-medium text-[#6D6D6D] max-[1340px]:text-sm">{product.category}</p>
+            </div>
+            <div className="pdi-chare flex flex-row gap-[13px] pt-[6px] max-[520px]:pt-[5px+]">
+              <p className="text-base font-medium text-[#000000] leading-5 max-[1340px]:text-sm">Share</p>
+              <div className="flex flex-row gap-[20px] max-[1340px]:gap-[14px]">
+                <Dfacebook />
+                <Dinstagram />
+                <Dyoutube />
+                <Dtwitter />
+                <Dlinkedin />
               </div>
             </div>
           </div>
-          <div className="product-detail-description flex flex-col pt-[21px] pl-[304px] pr-[313px] pb-[145px] bg-white max-[1450px]:px-[80px] max-[1450px]:pt-[15px] max-[1450px]:pb-[11px] max-[488px]:pt-[19px] max-[488px]:px-[16px] max-[488px]:pb-[9px]">
-            <div className="pdd-title border-b-[#F7F7F7] border-b-[1px] pb-[18px] max-[1450px]:pb-[11px]">
-              <p className="text-2xl text-black font-semi-bold max-[1450px]:text-lg">Description</p>
-            </div>
-            <div className="pdd-content pt-[32px] max-[1450px]:pt-[15px]">
-              <p className="text-lg leading-7 font-normal font-['Inter'] text-black max-[1450px]:text-sm">{product.description}</p>
-            </div>
-
-          </div>
-          <div className="product-detail-related flex flex-col gap-[33px] pl-[310px] pr-[206px] bg-white pb-[23px] max-[1846px]:px-[80px] max-[1024px]:pb-[82px] max-[1024px]:gap-[41px] max-[745px]:px-[16px] max-[643px]:items-center max-[400px]:gap-[25px] max-[1400px]:pb-[46px]">
-            <div className="pdr-title w-full text-start max-[643px]:justify-center max-[643px]:flex max-[400px]:justify-start">
-              <p className="text-2xl text-black font-semi-bold max-[1024px]:text-lg">Related products</p>
-            </div>
-            <div className="pdr-list grid grid-cols-4 gap-[28px] max-[948px]:grid-cols-3 max-[643px]:flex max-[643px]:flex-wrap max-[643px]:justify-center max-[400px]:gap-[14px]">
-              {reproduct.length > 0 ? reproduct.map((relateproduct, i) => (
-                i < 4 &&
-                <div className="pp-product-list-main-product-pan flex flex-col" key={relateproduct.id}>
-                  <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
-                    <div className="pp-product-list-mpp-image-outback absolute">
-                      {relateproduct.image.length > 30 ?
-                        <Image alt="Car accessories image" src={relateproduct.image} width={176.52} height={238}></Image>
-                        :
-                        <Image alt="Car accessories image" src={`http://localhost/uploads/tyreImg/${relateproduct.image}`} width={176.52} height={238}></Image>
-
-                      }
-                    </div>
-                  </div>
-                  <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
-                    <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
-                      {relateproduct.recommended == 1 ?
-                        <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
-                          <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
-                        </div> : <></>
-                      }
-                    </div>
-                    <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
-                      <p className="text-lg leading-7 font-semi-bold text-black">{relateproduct.brand}</p>
-                      <p className="text-lg leading-7 font-semi-bold text-black line-clamp-1">{relateproduct.model}</p>
-                      {relateproduct.size == "" || relateproduct.size == null ?
-                        <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.width}/{relateproduct.profile}-{relateproduct.inches} {relateproduct.load} {relateproduct.speed}</p>
-                        :
-                        <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.size} {relateproduct.load} {relateproduct.speed}</p>
-                      }
-                    </div>
-                    <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
-                      <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
-                        <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
-                          <Tyre_Info_first />
-                        </div>
-                        <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
-                          <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.fuel}</p>
-                        </div>
-                      </div>
-                      <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
-                        <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
-                          <Tyre_Infor_second />
-                        </div>
-                        <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
-                          <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.grip}</p>
-                        </div>
-                      </div>
-                      <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
-                        <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
-                          <Tyre_Infor_third />
-                        </div>
-                        <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
-                          <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.noise}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="pp-product-list-mmp-price pt-[19px] flex flex-row justify-center">
-                      <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK {relateproduct.price}</span></p>
-                    </div>
-                    <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
-                      <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => {productPurchasePage(),handleAddToCart(relateproduct)}}>
-                        <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
-                      </div>
-                      <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(relateproduct.id)}>
-                        <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              )) : <></>}
-
-
-            </div>
-          </div>
-          <Partner />
-
-          <GetInTouch />
-          <Footer />
         </div>
-      </main>
+        <div className="product-detail-description flex flex-col pt-[21px] pl-[304px] pr-[313px] pb-[145px] bg-white max-[1450px]:px-[80px] max-[1450px]:pt-[15px] max-[1450px]:pb-[11px] max-[488px]:pt-[19px] max-[488px]:px-[16px] max-[488px]:pb-[9px]">
+          <div className="pdd-title border-b-[#F7F7F7] border-b-[1px] pb-[18px] max-[1450px]:pb-[11px]">
+            <p className="text-2xl text-black font-semi-bold max-[1450px]:text-lg">Description</p>
+          </div>
+          <div className="pdd-content pt-[32px] max-[1450px]:pt-[15px]">
+            <p className="text-lg leading-7 font-normal font-['Inter'] text-black max-[1450px]:text-sm">{product.description}</p>
+          </div>
+
+        </div>
+        <div className="product-detail-related flex flex-col gap-[33px] pl-[310px] pr-[206px] bg-white pb-[23px] max-[1846px]:px-[80px] max-[1024px]:pb-[82px] max-[1024px]:gap-[41px] max-[745px]:px-[16px] max-[643px]:items-center max-[400px]:gap-[25px] max-[1400px]:pb-[46px]">
+          <div className="pdr-title w-full text-start max-[643px]:justify-center max-[643px]:flex max-[400px]:justify-start">
+            <p className="text-2xl text-black font-semi-bold max-[1024px]:text-lg">Related products</p>
+          </div>
+          <div className="pdr-list grid grid-cols-4 gap-[28px] max-[948px]:grid-cols-3 max-[643px]:flex max-[643px]:flex-wrap max-[643px]:justify-center max-[400px]:gap-[14px]">
+            {reproduct.length > 0 ? reproduct.map((relateproduct, i) => (
+              i < 4 &&
+              <div className="pp-product-list-main-product-pan flex flex-col" key={relateproduct.id}>
+                <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
+                  <div className="pp-product-list-mpp-image-outback absolute">
+                    {relateproduct.image.length > 30 ?
+                      <Image alt="Car accessories image" src={relateproduct.image} width={176.52} height={238}></Image>
+                      :
+                      <Image alt="Car accessories image" src={`http://localhost/uploads/tyreImg/${relateproduct.image}`} width={176.52} height={238}></Image>
+
+                    }
+                  </div>
+                </div>
+                <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
+                  <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
+                    {relateproduct.recommended == 1 ?
+                      <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
+                        <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                      </div> : <></>
+                    }
+                  </div>
+                  <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
+                    <p className="text-lg leading-7 font-semi-bold text-black">{relateproduct.brand}</p>
+                    <p className="text-lg leading-7 font-semi-bold text-black line-clamp-1">{relateproduct.model}</p>
+                    {relateproduct.size == "" || relateproduct.size == null ?
+                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.width}/{relateproduct.profile}-{relateproduct.inches} {relateproduct.load} {relateproduct.speed}</p>
+                      :
+                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.size} {relateproduct.load} {relateproduct.speed}</p>
+                    }
+                  </div>
+                  <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
+                    <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                      <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                        <Tyre_Info_first />
+                      </div>
+                      <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                        <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.fuel}</p>
+                      </div>
+                    </div>
+                    <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                      <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                        <Tyre_Infor_second />
+                      </div>
+                      <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                        <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.grip}</p>
+                      </div>
+                    </div>
+                    <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                      <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                        <Tyre_Infor_third />
+                      </div>
+                      <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                        <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.noise}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pp-product-list-mmp-price pt-[19px] flex flex-row justify-center">
+                    <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK {relateproduct.price}</span></p>
+                  </div>
+                  <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
+                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => { productPurchasePage(), handleAddToCart(relateproduct) }}>
+                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                    </div>
+                    <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(relateproduct.id)}>
+                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            )) : <></>}
+
+
+          </div>
+        </div>
+        <Partner />
+
+        <GetInTouch />
+        <Footer />
     </div>
+      </main >
+    </div >
 
   ) : (
-    <></>
-  );
+  <></>
+);
 }
 export default ProductDetail;

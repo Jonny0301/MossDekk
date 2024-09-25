@@ -5,59 +5,107 @@ import Footer from "@/components/Footer";
 import Partner from "@/components/Partner";
 import GetInTouch from "@/components/GetInTouch";
 import Main_Image from "@/components/Main_Image";
-import Tyre_Info_first from "@/svg/Tyre_Infor_first";
-import Tyre_Infor_second from "@/svg/Tyre_Infor_second";
-import Tyre_Infor_third from "@/svg/Tyre_Infor_third";
-import Tyre_22 from "../../public/image/tyre(22).png"
-import Product_detail from "../../public/image/product_detail.png"
-import { SetStateAction, useState } from "react";
+import { ChangeEvent, SetStateAction, useState } from "react";
 import { useEffect } from 'react';
-import Swiper from 'swiper';
-import { Navigation } from "swiper/modules";
-import { Thumbs } from "swiper/modules";
 import 'swiper/swiper-bundle.css';
-import Dfacebook from "@/svg/Dfacebook";
-import Dinstagram from "@/svg/Dinstagram";
-import Dlinkedin from "@/svg/Dlinkedin";
-import Dtwitter from "@/svg/Dtwitter";
-import Dyoutube from "@/svg/Dyoutube";
 import Calendar from "@/components/calendar";
 import axios from "axios";
-import { setDefaultAutoSelectFamily } from "net";
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { useDispatch } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Faktura_Modal from "@/modal/faktura_modal";
+import { Console } from "console";
+import { tree } from "next/dist/build/templates/app-page";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Pricing() {
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const [dateTime, setDateTime] = useState<string>('');
-  const [showCalendar, setShowCalendar] = useState(false);
   const [prices, setPrices] = useState<any>({ price128: '', price165: '' });
   const [balancePrice, setBalancePrice] = useState<any>(0);
   const [count, setCount] = useState<number>(1); // Default count is 1
   const [taxPrice, setTaxPrice] = useState<number>(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [location, setLocation] = useState<string>("");
+  const [location, setLocation] = useState<string>("none");
   const [totalProductPrice, setTotalProductPrice] = useState<number>(0);
   const [firstProductPrice, setFirstProductPrice] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // Handle date selection
+  const [enviromenttax, setEnviromentTax] = useState<number>(0);
+  const [balancing, setBalancing] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [regNr, setRegNr] = useState('');
+  const [navn, setNavn] = useState('');
+  const [mobilNr, setMobilNr] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [isValid, setIsValid] = useState<boolean>(true);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    if (!/\S+@\S+\.\S+/.test(value)) {
+      setEmailError('Please enter a valid email address.');
+    } else {
+      setEmailError('');
+    }
+  };
   const handleDateTimeSelected = (dateTime: string) => {
     setDateTime(dateTime);
   };
+  const handleRegChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const value = e.target.value;
+    if (value.length <= 7) {
+      setRegNr(value);
+      if (value.length === 7) {
+        const hasLetter = /[a-zA-Z]/.test(value);
+        const hasNumber = /[0-9]/.test(value);
+        const isValidInput = hasLetter && hasNumber;
+        setIsValid(isValidInput);
+      } else {
+        setIsValid(true);
+      }
+    }
+  };
+  const handlesubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!emailError && isValid == true && email && regNr && navn && dateTime && mobilNr && location !== 'none') {
+      toast("Correct information", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        type: "success", // Changed to warning or error if more appropriate
+      });
+      setPaymentModalOpen(prev => !prev);
 
+    } else {
+      toast("Please enter correct information", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        type: "warning", // Changed to warning or error if more appropriate
+      });
+    }
+
+  }
   const toggleCalendar = () => {
-    // setShowCalendar(!showCalendar);
     setIsModalOpen(prev => !prev)
   };
-
-  // Fetch service prices from the backend
   const getServices = async (value: string) => {
     if (value === "none") {
       setIsVisible(false);
-      setTotalProductPrice(firstProductPrice * count);
-
       return;
+    } else {
+      setIsVisible(true);
     }
-
     try {
       const formDataParams = new URLSearchParams();
       formDataParams.append('method', 'getServices');
@@ -81,13 +129,9 @@ export default function Pricing() {
         const price165Match = serviceData.match(/<span id="price165">(\d+)<\/span>/);
         const price128 = price128Match ? parseInt(price128Match[1], 10) : 0;
         const price165 = price165Match ? parseInt(price165Match[1], 10) : 0;
-        setPrices({
-          price128,
-          price165,
-        });
+        setBalancePrice(price128);
+        setTaxPrice(price165)
         setIsVisible(true);
-        setTotalProductPrice((firstProductPrice * count) + (prices.price128 * count) + (prices.price165 * count))
-
       } else {
         console.error('Services field is missing or invalid in the API response');
       }
@@ -95,44 +139,48 @@ export default function Pricing() {
       console.error('Error fetching services:', error);
     }
   };
-
-  // Handle count change and store it in localStorage
   const selectCount = (value: string) => {
     setCount(parseInt(value, 10));
     localStorage.setItem("stockCount", value.toString());
   };
-
-  // Load count from localStorage when the component mounts
+  const calculateTotalPurchaseAmount = (items: { purchaseAmount: number }[]) => {
+    return items.reduce((total, item) => total + item.purchaseAmount, 0);
+  };
+  const calculateTotalPrice = (items: { price: string | number, purchaseAmount: number }[]) => {
+    return items.reduce((total, item) => {
+      const price = typeof item.price === "string" ? parseFloat(item.price) : item.price;
+      return total + (price * item.purchaseAmount);
+    }, 0);
+  };
   useEffect(() => {
-    const savedCount = localStorage.getItem('stockCount');
-    const initialPrice = localStorage.getItem('initialpricce');
-    
-    if (savedCount) {
-      const initialCount = parseInt(savedCount, 10);
-      
-      // Ensure a default value of '0' if initialPrice is null
-      const initProductPrice = parseInt(initialPrice ?? '0', 10);
-      
-      setCount(initialCount);
-      setFirstProductPrice(initProductPrice);
+    const totalPurchaseAmount = calculateTotalPurchaseAmount(cartItems);
+    const totalPrice = calculateTotalPrice(cartItems);
+    setTotalCount(totalPurchaseAmount);
+    const calculatedEnviromentTax = totalPurchaseAmount * taxPrice;
+    const calculatedBalancing = totalPurchaseAmount * balancePrice;
+    setEnviromentTax(calculatedEnviromentTax);
+    setBalancing(calculatedBalancing);
+    let finalPrice = totalPrice;
+    if (location !== "none") {
+      finalPrice += calculatedEnviromentTax + calculatedBalancing;
     }
-  }, []);
-
-  // Update prices when count or prices change
-  useEffect(() => {
-    if (prices.price128 && prices.price165) {
-      setBalancePrice(prices.price128 * count);
-      setTaxPrice(prices.price165 * count);
+    setTotalProductPrice(finalPrice);
+    localStorage.setItem("totalprice", finalPrice.toString());
+  }, [cartItems, taxPrice, balancePrice, location]);
+  const handleCloseModal = () => {
+    setPaymentModalOpen(false)
+  }
+  const generateOptions = (totalCount: number): JSX.Element[] => {
+    const options = [];
+    for (let i = 1; i <= totalCount; i++) {
+      options.push(
+        <option key={i} value={i} className='text-black text-sm text-lg font-normal font-["Inter"] leading-5'>
+          {i}
+        </option>
+      );
     }
-    if (location === "none") {
-      setTotalProductPrice(firstProductPrice * count);
-    }
-    else (
-      setTotalProductPrice((firstProductPrice * count) + (prices.price128 * count) + (prices.price165 * count))
-    )
-  }, [count, prices.price128, prices.price165, firstProductPrice]);
-
-
+    return options;
+  };
   return (
     <div className="home-container flex flex-col">
       <Header />
@@ -141,8 +189,6 @@ export default function Pricing() {
           <Main_Image />
           <div className="checkout-pan flex flex-col bg-white pt-[66px] pb-[84px] pl-[306px] pr-[255px] max-[1650px]:px-[80px] max-[1650px]:pt-[44px] max-[1650px]:pb-[45px] max-[1650px]:items-center max-[772px]:px-[16px] max-[772px]:pt-[24px] max-[772px]:pb-[26px]">
             <div className="flex flex-col">
-
-
               <div className="checkout-pan-title">
                 <p className="text-4xl leading-10 font-semi-bold text-black max-[1024px]:text-2xl">Kjøp dekk</p>
               </div>
@@ -157,28 +203,49 @@ export default function Pricing() {
                   <p className="w-[90px] text-lg leading-7 font-normal font-['Inter'] text-[#6D6D6D]">Reg Nr:</p>
                   <p className="text-lg leading-7 font-normal font-['Inter'] text-[#E21632]">*</p>
                 </div>
-                <input className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"></input>
+                <input
+                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"
+                  value={regNr}
+                  pattern="[a-zA-Z]{2}[0-9]{5}$" type="text" maxLength={7}
+                  onChange={handleRegChange}
+                >
+
+                </input>
               </div>
               <div className="gap-[14px] flex flex-col pt-[14px] max-[772px]:pt-[14px]">
                 <div className="flex flex-row">
                   <p className="w-[90px] text-lg leading-7 font-normal font-['Inter'] text-[#6D6D6D]">Navn:</p>
                   <p className="text-lg leading-7 font-normal font-['Inter'] text-[#E21632]">*</p>
                 </div>
-                <input className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"></input>
+                <input
+                  value={navn}
+                  onChange={(e) => setNavn(e.target.value)}
+                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"
+                >
+                </input>
               </div>
               <div className="gap-[14px] flex flex-col pt-[14px] max-[772px]:pt-[14px]">
                 <div className="flex flex-row">
                   <p className="w-[90px] text-lg leading-7 font-normal font-['Inter'] text-[#6D6D6D]">Mobil nr:</p>
                   <p className="text-lg leading-7 font-normal font-['Inter'] text-[#E21632]">*</p>
                 </div>
-                <input className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"></input>
+                <input
+                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"
+                  value={mobilNr}
+                  onChange={(e) => setMobilNr(e.target.value)}
+                >
+                </input>
               </div>
               <div className="gap-[14px] flex flex-col pt-[14px] max-[772px]:pt-[14px] max-[772px]:pt-[14px]">
                 <div className="flex flex-row">
                   <p className="w-[90px] text-lg leading-7 font-normal font-['Inter'] text-[#6D6D6D]">Email</p>
                   <p className="text-lg leading-7 font-normal font-['Inter'] text-[#E21632]">*</p>
-                </div> 
-                <input className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"></input>
+                </div>
+                <input
+                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"
+                  onChange={handleEmailChange}
+                  value={email}
+                ></input>
               </div>
               <div className="pt-[14px] flex flex-col gap-[2px]">
                 <div className="flex flex-row">
@@ -186,13 +253,12 @@ export default function Pricing() {
                   <p className="text-lg leading-7 font-normal font-['Inter'] text-[#E21632]">*</p>
                 </div>
                 <div className="relative w-[392px] max-[772px]:w-[343px]">
-
                   <select
-                      onClick={(e) => {
-                        const target = e.target as HTMLSelectElement; // Cast e.target to HTMLSelectElement
-                        getServices(target.value);
-                        setLocation(target.value);
-                      }}
+                    onClick={(e) => {
+                      const target = e.target as HTMLSelectElement;
+                      getServices(target.value);
+                      setLocation(target.value);
+                    }}
                     className="h-[56px] block w-[392px] px-[10px] py-[18px] text-black text-sm text-lg font-normal font-['Inter'] leading-5 rounded-none border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018] max-[772px]:w-[343px]"
                     style={{ outline: "#73C018" }}
                   >
@@ -201,25 +267,10 @@ export default function Pricing() {
                   </select>
 
                 </div>
-              </div>
-              <div className="pt-[14px] flex flex-col gap-[2px]">
-                <p className="text-sm leading-5 font-normal font-['Inter'] text-[#6D6D6D]">Velg antall Dekk</p>
-                <div className="relative w-[392px] max-[772px]:w-[343px]">
-                  <select
-                    className="h-[56px] block w-[392px] px-[10px] py-[18px] text-black text-sm text-lg font-normal font-['Inter'] leading-5 rounded-none border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018] max-[772px]:w-[343px]"
-                    style={{ outline: "#73C018" }}
-                    value={count}
-                    onChange={(e) => selectCount(e.target.value)}
-                  >
-                    <option value="1" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">1</option>
-                    <option value="2" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">2</option>
-                    <option value="3" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">3</option>
-                    <option value="4" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">4</option>
-                  </select>
-                </div>
 
               </div>
-              {isVisible && (
+
+              {isVisible ? (
                 <div className="pt-[18px] flex flex-col gap-[16px] w-[1104px] max-[1230px]:w-[714px] max-[772px]:pt-[24px] max-[772px]:w-[343px] max-[772px]:gap-[10px]">
                   <div className="w-full pl-[170px] pr-[157px] flex flex-row max-[1230px]:pr-[16px] max-[772px]:pl-[6px] max-[772px]:pr-[13px]">
                     <p className="text-base leading-6 font-medium mr-[375px] text-black max-[1230px]:mr-[271px] max-[772px]:mr-[137px] max-[772px]:text-sm">Services</p>
@@ -246,20 +297,18 @@ export default function Pricing() {
                     <div className="relative w-[62px] pl-[40px] flex items-center  max-[772px]:pl-[12px]">
 
                       <select
-                        className="h-[34px] block w-[62px] rounded-[4px] px-[10px] py-[5px] text-black text-sm text-base font-normal font-['Inter'] leading-6 border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
+                        className="h-[34px] block w-[62px] rounded-[4px] pr-[30px] py-[5px] text-black text-sm text-base font-normal font-['Inter'] leading-6 border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
                         style={{ outline: "#73C018" }}
-                        value={count}
+                        value={totalCount}
                         disabled
                       >
-                        <option value="1" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">1</option>
-                        <option value="2" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">2</option>
-                        <option value="3" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">3</option>
-                        <option value="4" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">4</option>
+                        {generateOptions(totalCount)}
+                        {/* <option value="1" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">1</option> */}
                       </select>
 
                     </div>
                     <div className="pl-[253px] flex items-center max-[1230px]:pl-[105px]  max-[772px]:pl-[40px]">
-                      <p className="text-lg text-[#787881] leading-7 font-medium  max-[772px]:text-base">{balancePrice}</p>
+                      <p className="text-lg text-[#787881] leading-7 font-medium  max-[772px]:text-base">{balancing}</p>
                     </div>
                   </div>
                   <div className="flex flex-row py-[15px] pl-[40px] pr-[140px] bg-[#F7F7F7] rounded-[4px] max-[772px]:pl-[6px] max-[772px]:pr-[11px]">
@@ -282,23 +331,21 @@ export default function Pricing() {
                     <div className="relative w-[62px] pl-[40px] flex items-center  max-[772px]:pl-[12px]">
 
                       <select
-                        className="h-[34px] block w-[62px] rounded-[4px] px-[10px] py-[5px] text-black text-sm text-base font-normal font-['Inter'] leading-6 border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
+                        className="h-[34px] block w-[62px] rounded-[4px] pr-[30px] py-[5px] text-black text-sm text-base font-normal font-['Inter'] leading-6 border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
                         style={{ outline: "#73C018" }}
-                        value={count}
+                        value={totalCount}
                         disabled
                       >
-                        <option value="1" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">1</option>
-                        <option value="2" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">2</option>
-                        <option value="3" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">3</option>
-                        <option value="4" className="text-black text-sm text-lg font-normal font-['Inter'] leading-5">4</option>
+                        {generateOptions(totalCount)}
+                        
                       </select>
                     </div>
                     <div className="pl-[253px] flex items-center max-[1230px]:pl-[105px]  max-[772px]:pl-[40px]">
-                      <p className="text-lg text-[#787881] leading-7 font-medium  max-[772px]:text-base">{taxPrice}</p>
+                      <p className="text-lg text-[#787881] leading-7 font-medium  max-[772px]:text-base">{enviromenttax}</p>
                     </div>
                   </div>
                 </div>
-              )}
+              ) : (<></>)}
 
               <div className="pt-[36px] max-[1024px]:pt-[29px] max-[772px]:w-[345px] max-[772px]:pt-[19px]">
                 <p className="text-lg leading-7 font-normal text-black font-['Inter'] max-[1024px]:text-sm ">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.</p>
@@ -308,34 +355,32 @@ export default function Pricing() {
                   <p className="text-4xl leading-10 font-semi-bold text-black max-[1024px]:text-2xl  max-[772px]:text-lg">Select time and date</p>
                 </div>
                 <div onClick={toggleCalendar}>
-                <input
-                  className="h-[56px] block w-[392px] px-[10px] py-[18px] text-black text-sm text-lg font-normal font-['Inter'] leading-5 rounded-none border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018] max-[772px]:w-[343px]"
-                  value={dateTime} onChange={(e) => {setDateTime(e.target.value);}}
-                >
-
-                </input>
-
+                  <input
+                    className="h-[56px] block w-[392px] px-[10px] py-[18px] text-black text-sm text-lg font-normal font-['Inter'] leading-5 rounded-none border-[#AAAAAA] border-[2px] focus:outline-none focus:ring-0 focus:border-[#73C018] max-[772px]:w-[343px]"
+                    value={dateTime} onChange={(e) => { setDateTime(e.target.value); }}
+                  >
+                  </input>
                 </div>
-                {isModalOpen&&(
-                <div className="w-[599px] text-black shadow max-[772px]:shadow-none max-[772px]:w-[334px]">
-                  <Calendar onDateTimeSelected={handleDateTimeSelected} closeCalendar={toggleCalendar} />
-                </div>
-
+                {isModalOpen && (
+                  <div className="w-[599px] text-black shadow max-[772px]:shadow-none max-[772px]:w-[334px]">
+                    <Calendar onDateTimeSelected={handleDateTimeSelected} closeCalendar={toggleCalendar} />
+                  </div>
                 )}
               </div>
               <div className="pt-[19px] max-[1024px]:pt-[15px]">
-                <div className="bg-[#EF4225] py-[11.86px] px-[10px] w-[145.89px]  max-[1024px]:w-[118px]">
+                <div className="bg-[#EF4225] py-[11.86px] px-[10px] w-[145.89px]  max-[1024px]:w-[118px] cursor-pointer" onClick={handlesubmit}>
                   <p className="text-lg leading-7 font-semi-bold  max-[1024px]:text-sm">PLACE ORDER</p>
                 </div>
               </div>
             </div>
-
           </div>
+          <ToastContainer />
           <Partner />
           <GetInTouch />
           <Footer />
         </div>
       </main>
+      <Faktura_Modal isOpen={paymentModalOpen} onClose={handleCloseModal} />
     </div>
 
   );

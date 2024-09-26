@@ -103,9 +103,14 @@ input::placeholder {
   /* Tailwind's gray-400 color */
   font-family: "Inter" sans-serif;
   font-style: Normal;
+  
   /* Optional: to make the placeholder text italic */
 }
-
+.modal-input::placeholder{
+  font-family: "Inter" sans-serif;
+  font-style: Normal;
+  color: #ffffff;
+}
 .second-price-service-image {
   display: none;
 }

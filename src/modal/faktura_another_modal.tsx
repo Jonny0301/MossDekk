@@ -38,23 +38,22 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       window.removeEventListener('click', handleClickOutside);
     };
   }, [isOpen, onClose]);
-
-  // Return null if modal is not open
   if (!isOpen) return null;
 
   const toggleDropdown = () => setIsOpenDropdown(prev => !prev);
 
-  const handleOptionClick = (option: string) => {
+  const handleOptionClick = (option: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     setSelectedOption(option);
-    // setIsOpenDropdown(false);
+    setIsOpenDropdown(false);
   };
   return (
-    <div className="fixed inset-0 z-50 flex justify-center items-center ">
+    <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
       <div ref={modalRef} className="w-[838px] max-h-[100vh] overflow-y-auto hide-scrollbar flex flex-col h-[480px]">
         <div className="px-[30px] py-[31px] flex flex-row justify-between bg-[#18181B] items-center max-[590px]:p-[15px]">
           <p className="text-lg leading-7 font-medium text-[#73C018] max-[590px]:text-sm">Beataling Alternativ</p>
           <div onClick={onClose} className='cursor-pointer'>
-          <X_Cancel />
+            <X_Cancel />
           </div>
         </div>
         <div className="pt-[63px] bg-[#1F1F1F] pl-[31px] pr-[21px] pb-[26px] gap-[72px] h-full flex flex-col justify-between">
@@ -81,19 +80,19 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   <div className="absolute z-10 w-[305px] mt-[50px] border-[1px] border-[#818182] bg-[#18181B] rounded-[8px] shadow-lg pt-[12px] pb-[8px] gap-[2px]">
                     <div
                       className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading -7 font-normal font-['Inter'] text-center"
-                      onClick={() => {handleOptionClick("Firmakunde/faktura");onClose()}}
+                      onClick={(e) => { handleOptionClick("Firmakunde/faktura", e) }}
                     >
                       Firmakunde/faktura
                     </div>
                     <div
                       className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading -7 font-normal font-['Inter'] text-center"
-                      onClick={() => handleOptionClick("Vipps/Kortbeating/debetaling")}
+                      onClick={(e) => { handleOptionClick("Vipps/Kortbeating/debetaling", e)}}
                     >
                       Vipps/Kortbeating/debetaling
                     </div>
                     <div
                       className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading -7 font-normal font-['Inter'] text-center"
-                      onClick={() => handleOptionClick("Admin")}
+                      onClick={(e) => { handleOptionClick("Admin", e)}}
                     >
                       Admin
                     </div>
@@ -101,6 +100,8 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 )}
               </div>
             </div>
+            {selectedOption =="Firmakunde/faktura"&&
+            <>
             <div className='flex flex-row gap-[31px] max-[610px]:flex-col max-[610px]:items-center max-[610px]:gap-[15px]'>
 
               <div className='w-[200px] max-[610px]:text-center'>
@@ -109,7 +110,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               <div className='flex'>
                 <input
                   placeholder='Org Nr'
-                  className="h-[44px] w-[305px] flex items-center text-center justify-center px-[16px] text-lg font-medium leading-7 text-white bg-[#18181B] rounded-[8px] border-[#73C018] border-[2px] cursor-pointer"
+                  className="modal-input h-[44px] focus:outline-none focus:ring-0 focus:border-[#73C018] w-[305px] flex items-center text-center justify-center px-[16px] text-lg font-medium leading-7 text-white bg-[#18181B] rounded-[8px] border-[#73C018] border-[2px] cursor-pointer"
                 >
                 </input>
               </div>
@@ -123,12 +124,13 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
                 <input
                   placeholder='Referance/info'
-                  className="h-[44px] w-[305px] flex items-center text-center justify-center px-[16px] text-lg font-medium leading-7 text-white bg-[#18181B] rounded-[8px] border-[#73C018] border-[2px] cursor-pointer"
+                  className="modal-input h-[44px] focus:outline-none focus:ring-0 focus:border-[#73C018] w-[305px] flex items-center text-center justify-center px-[16px] text-lg font-medium leading-7 text-white bg-[#18181B] rounded-[8px] border-[#73C018] border-[2px] cursor-pointer"
                 >
                 </input>
 
               </div>
             </div>
+            </>}
           </div>
           <div className='flex flex-row justify-end gap-[9px]'>
             <div className='rounded-[8px] p-[10px] bg-[#E7E7E7] gap-[2px] flex flex-row items-center cursor-pointer'>

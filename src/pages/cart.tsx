@@ -46,6 +46,8 @@ interface Product {
 }
 const Cart = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  console.log(cartItems);
+  
   const [productprice, setProductPrice] = useState<number>(1);
   const [enviromenttax, setEnviromentTax] = useState<number>(0);
   const [balancing, setBalancing] = useState<number>(0);
@@ -65,8 +67,6 @@ const Cart = () => {
   }, [totalPurchaseAmount, productprice, tax, balanc_price]);
   useEffect(() => {
     setSum(totalPrice + enviromenttax + balancing);
-    localStorage.setItem("totalprice", sum.toString());
-    localStorage.setItem("initialpricce", productprice.toString())
   }
   )
   const goToCheckOutPage = () => {

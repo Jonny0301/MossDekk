@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Faktura_Modal from "@/modal/faktura_modal";
 import { Console } from "console";
 import { tree } from "next/dist/build/templates/app-page";
+import Faktura_Another_Modal from "@/modal/faktura_another_modal";
 const inter = Inter({ subsets: ["latin"] });
 const backend_url = process.env.NEXT_PUBLIC_API_URL
 
@@ -240,7 +241,7 @@ export default function Pricing() {
                   <p className="text-lg leading-7 font-normal font-['Inter'] text-[#E21632]">*</p>
                 </div>
                 <input
-                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"
+                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
                   value={regNr}
                   pattern="[a-zA-Z]{2}[0-9]{5}$" type="text" maxLength={7}
                   onChange={(e) => handleRegChange(e.target.value)}
@@ -256,7 +257,7 @@ export default function Pricing() {
                 <input
                   value={navn}
                   onChange={(e) => setNavn(e.target.value)}
-                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"
+                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
                 >
                 </input>
               </div>
@@ -266,7 +267,7 @@ export default function Pricing() {
                   <p className="text-lg leading-7 font-normal font-['Inter'] text-[#E21632]">*</p>
                 </div>
                 <input
-                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"
+                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
                   value={mobilNr}
                   onChange={(e) => setMobilNr(e.target.value)}
                 >
@@ -278,7 +279,7 @@ export default function Pricing() {
                   <p className="text-lg leading-7 font-normal font-['Inter'] text-[#E21632]">*</p>
                 </div>
                 <input
-                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"
+                  className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
                   onChange={handleEmailChange}
                   value={email}
                 ></input>
@@ -416,7 +417,7 @@ export default function Pricing() {
           <Footer />
         </div>
       </main>
-      <Faktura_Modal isOpen={paymentModalOpen} onClose={handleCloseModal} />
+      <Faktura_Another_Modal isOpen={paymentModalOpen} onClose={handleCloseModal} />
     </div>
 
   );

@@ -18,7 +18,6 @@ const Faktura_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     const [selectedOption, setSelectedOption] = useState("Firmakunde/faktura");
     const [fakturaModalOpen, setFakturaModalOpen] = useState(false);
     const handleClickOutside = (event: MouseEvent) => {
-        // Check if the click was outside the modal and dropdown
         if (
             modalRef.current &&
             !modalRef.current.contains(event.target as Node) &&
@@ -47,21 +46,19 @@ const Faktura_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         };
     }, [isOpen, onClose]);
 
-    // Return null if modal is not open
     if (!isOpen) return null;
 
     const toggleDropdown = (e: React.MouseEvent) => {
-        e.stopPropagation(); // Stop the click from propagating to window
+        e.stopPropagation(); 
         setIsOpenDropdown(prev => !prev);
     };
 
     const handleOptionClick = (option: string, e: React.MouseEvent) => {
-        e.stopPropagation(); // Prevent the modal from closing when selecting an option
+        e.stopPropagation();
         setSelectedOption(option);
         setIsOpenDropdown(false);
     };
     const handleOpenModal = () => {
-        // e.stopPropagation();
         setFakturaModalOpen(prev => !prev);
     }
     const handleClose=()=>{

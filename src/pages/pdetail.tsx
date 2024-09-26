@@ -10,7 +10,7 @@ import Tyre_Infor_second from "@/svg/Tyre_Infor_second";
 import Tyre_Infor_third from "@/svg/Tyre_Infor_third";
 import Tyre_22 from "../../public/image/tyre(22).png"
 import Product_detail from "../../public/image/product_detail.png"
-import { SetStateAction, useState } from "react";
+import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, SetStateAction, useState } from "react";
 import { useEffect } from 'react';
 import Swiper from 'swiper';
 import { Navigation } from "swiper/modules";
@@ -53,33 +53,31 @@ interface Product {
   category: string;
 
 }
+interface ProductDescription {
+  tyreInfo: string;
+  runFlat: string;
+  // Add any other properties you expect
+}
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 const ProductDetail = ({ pID }: { pID: number }) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [reproduct, setReProduct] = useState<any[]>([])
-  const [productDescription, setProductDescription] = useState<any[]>([]);
+  const [productDescription, setProductDescription] = useState<ProductDescription | null>(null);
+
+  const [width, setWidth] = useState("");
+  const [profile, setProfile] = useState("");
+  const [inches, setInches] = useState("");
   const router = useRouter();
-  const { id } = router.query; // Extract `id` from the query object
-  // const [count, setCount] = useState(() => {
-  //   if (typeof window !== "undefined") {
-  //     const savedCount = localStorage.getItem('stockCount');
-  //     return savedCount ? parseInt(savedCount, 10) : 4;
-  //   }
-  //   return 4; // Fallback default value
-  // });
+  const { id } = router.query;
+
   const dispatch = useDispatch();
 
   const handleAddToCart = (product: Product) => {
-    dispatch(addToCart(product));  // Dispatch product to be added to the cart
+    dispatch(addToCart(product));
   };
-  // Update localStorage whenever count changes
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     localStorage.setItem('stockCount', count.toString());
-  //   }
-  // }, [count]);
 
-  const [count, setCount] = useState<number>(product?.purchaseAmount || 1); // Default to 1 if not set
+  const [count, setCount] = useState<number>(product?.purchaseAmount || 1);
 
   const handleIncrement = () => {
     if (count < 4) {
@@ -99,16 +97,28 @@ const ProductDetail = ({ pID }: { pID: number }) => {
     window.location.href = "/products"
   }
   const productPurchasePage = async () => {
-    window.location.href = `/cart?productid=${id}`
+    window.location.href = `/cart`
   }
   const goToDetailPage = (pID: number) => {
     window.location.href = `/pdetail?id=${pID}`
   }
   const fetchProduct = async () => {
     try {
-      const response = await axios.get(`http://localhost/productDetailsApi.php?pID=${id}`);
-      setProduct(response.data);
-      console.log(response.data);
+      const response = await axios.get(`${backend_url}/productDetailsApi.php?pID=${id}`);
+      if (response.data.size == null) {
+        setProduct(response.data);
+      } else {
+        const size = response.data.size;
+        const [widthProfile, inches] = size.split('-');
+        const [width, profile] = widthProfile.split('/');
+        setProduct(response.data);
+        setWidth(width);
+        setInches(inches);
+        setProfile(profile);
+      }
+      const productDescription = JSON.parse(response.data.description)
+      setProductDescription(productDescription);
+
     }
     catch (error) {
       console.error(error)
@@ -120,7 +130,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
       formDataParams.append('method', 'fetchProductDetail');
 
       const response = await axios.post(
-        'http://localhost/query.php',
+        `${backend_url}/query.php`,
         formDataParams,
         {
           headers: {
@@ -129,25 +139,18 @@ const ProductDetail = ({ pID }: { pID: number }) => {
         }
       );
 
-      // Assuming response.data is an array of product objects
       const productsWithAmount = response.data.map((product: any) => ({
         ...product,
-        purchaseAmount: 4 // Set the default purchaseAmount or use another default value
+        purchaseAmount: 4
       }));
 
-      setReProduct(productsWithAmount); // Set the modified data
-      console.log(productsWithAmount); // Log the modified products
+      setReProduct(productsWithAmount);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // const tyreSize = "225/45-17";
 
-  // const parts = tyreSize.split(/\/|-/);
-
-  // console.log(parts); 
-  // const [width, profile, inches] = parts.map(Number);
 
   useEffect(() => {
     fetchTyres()
@@ -184,26 +187,25 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                 :
                 <>
                   <div className="pd-image w-[640px] h-[700px] flex justify-center items-center bg-white max-[1340px]:w-[474px] max-[1340px]:h-[519px] max-[520px]:w-[343px] max-[520px]:h-[375px]">
-                    <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
+                    <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
                   </div>
                   <div className="pd-carsouel flex flex-row gap-[12px] justify-between max-[520px]:gap-[8px]">
                     <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
                     </div>
                     <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
                     </div>
                     <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
                     </div>
                     <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={`http://localhost/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
                     </div>
                   </div>
                 </>
               }
-              {/* <div className="pd-carsouel-item w-[20px] h-[50px] bg-[red]">Prev</div>
-                            <div className="pd-carsouel-item w-[20px] h-[50px] bg-[green]">Next</div> */}
+
             </div>
             <div className="product-detail-infor-pan flex flex-col w-[475px] max-[1340px]:w-[384px] max-[520px]:w-[342px]">
               <div className="pdi-title pt-[42px] max-[1340px]:pt-[0px]">
@@ -249,13 +251,16 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                   <div className="p-[10px] bg-white text-black text-lg leading-7 font-semi-bold max-[1340px]:text-sm">Load</div>
                   <div className="py-[10px] bg-white flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px]">{product.load}</div>
                 </div>
-                <div className="grid grid-cols-2">
-                  <div className="p-[10px] bg-[#F8F8F8] text-black text-lg leading-7 font-semi-bold max-[1340px]:text-sm">Eu Klasse</div>
-                  <div className="py-[10px] bg-[#F8F8F8] flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px]">{product.euClass}</div>
-                </div>
+                {
+                  product.euClass &&
+                  <div className="grid grid-cols-2">
+                    <div className="p-[10px] bg-[#F8F8F8] text-black text-lg leading-7 font-semi-bold max-[1340px]:text-sm">Eu Klasse</div>
+                    <div className="py-[10px] bg-[#F8F8F8] flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px]">{product.euClass}</div>
+                  </div>
+                }
                 <div className="grid grid-cols-2">
                   <div className="p-[10px] bg-white text-black text-lg leading-7 font-semi-bold max-[1340px]:text-sm">Bredde</div>
-                  <div className="py-[10px] bg-white flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px]">{product.width}</div>
+                  <div className="py-[10px] bg-white flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px]">{product.width != null ? (product.width) : (width)}</div>
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="p-[10px] bg-[#F8F8F8] text-black text-lg leading-7 font-semi-bold max-[1340px]:text-sm">Season</div>
@@ -263,12 +268,18 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="p-[10px] bg-white text-black text-lg leading-7 font-semi-bold max-[1340px]:text-sm">Profil</div>
-                  <div className="py-[10px] bg-white flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px]">{product.profile}</div>
+                  <div className="py-[10px] bg-white flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px]">{product.profile != null ? (product.profile) : (profile)}</div>
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="p-[10px] bg-[#F8F8F8] text-black text-lg leading-7 font-semi-bold max-[1340px]:text-sm">Diameter</div>
-                  <div className="py-[10px] bg-[#F8F8F8] flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px]">{product.inches}</div>
+                  <div className="py-[10px] bg-[#F8F8F8] flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px]">{product.inches != null ? (product.inches) : (inches)}</div>
                 </div>
+                {productDescription && (
+                  <div className="grid grid-cols-2">
+                    <div className="p-[10px] bg-[#F8F8F8] text-black text-lg leading-7 font-semi-bold max-[1340px]:text-sm">Runflat</div>
+                    <div className="py-[10px] bg-[#F8F8F8] flex pl-[70px] text-[#6D6D6D] text-lg leading-7 font-medium max-[1340px]:text-sm max-[1340px]:pl-[15px] max-[520px]:pl-[35px] uppercase  ">{productDescription.runFlat}</div>
+                  </div>
+                )}
 
               </div>
               {
@@ -306,129 +317,139 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                     productPurchasePage();
                     handleAddToCart(productWithPurchaseAmount);  // Pass updated product with purchaseAmount
                   }}>
-                  <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">KJØP DEKK</p>
-                </div>
-                <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#AAAAAA] max-[1340px]:px-[12px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[7.39px] cursor-pointer" onClick={backProductpage}>
-                  <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">Gå tilbake</p>
-                </div>
+                    <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">KJØP DEKK</p>
+                  </div>
+                  <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#AAAAAA] max-[1340px]:px-[12px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[7.39px] cursor-pointer" onClick={backProductpage}>
+                    <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">Gå tilbake</p>
+                  </div>
 
-              </div>
-            </div>
-            <div className="pdi-category flex flex-row pt-[22px] gap-[7px] max-[1340px]:pt-[11px] max-[1340px]:gap-[5px] max-[520px]:pt-[11.79px]">
-              <p className="text-lg leading-7 font-medium text-black max-[1340px]:text-sm">Kategorier:</p>
-              <p className="text-lg leading-7 font-medium text-[#6D6D6D] max-[1340px]:text-sm">{product.category}</p>
-            </div>
-            <div className="pdi-chare flex flex-row gap-[13px] pt-[6px] max-[520px]:pt-[5px+]">
-              <p className="text-base font-medium text-[#000000] leading-5 max-[1340px]:text-sm">Share</p>
-              <div className="flex flex-row gap-[20px] max-[1340px]:gap-[14px]">
-                <Dfacebook />
-                <Dinstagram />
-                <Dyoutube />
-                <Dtwitter />
-                <Dlinkedin />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="product-detail-description flex flex-col pt-[21px] pl-[304px] pr-[313px] pb-[145px] bg-white max-[1450px]:px-[80px] max-[1450px]:pt-[15px] max-[1450px]:pb-[11px] max-[488px]:pt-[19px] max-[488px]:px-[16px] max-[488px]:pb-[9px]">
-          <div className="pdd-title border-b-[#F7F7F7] border-b-[1px] pb-[18px] max-[1450px]:pb-[11px]">
-            <p className="text-2xl text-black font-semi-bold max-[1450px]:text-lg">Description</p>
-          </div>
-          <div className="pdd-content pt-[32px] max-[1450px]:pt-[15px]">
-            <p className="text-lg leading-7 font-normal font-['Inter'] text-black max-[1450px]:text-sm">{product.description}</p>
-          </div>
-
-        </div>
-        <div className="product-detail-related flex flex-col gap-[33px] pl-[310px] pr-[206px] bg-white pb-[23px] max-[1846px]:px-[80px] max-[1024px]:pb-[82px] max-[1024px]:gap-[41px] max-[745px]:px-[16px] max-[643px]:items-center max-[400px]:gap-[25px] max-[1400px]:pb-[46px]">
-          <div className="pdr-title w-full text-start max-[643px]:justify-center max-[643px]:flex max-[400px]:justify-start">
-            <p className="text-2xl text-black font-semi-bold max-[1024px]:text-lg">Related products</p>
-          </div>
-          <div className="pdr-list grid grid-cols-4 gap-[28px] max-[948px]:grid-cols-3 max-[643px]:flex max-[643px]:flex-wrap max-[643px]:justify-center max-[400px]:gap-[14px]">
-            {reproduct.length > 0 ? reproduct.map((relateproduct, i) => (
-              i < 4 &&
-              <div className="pp-product-list-main-product-pan flex flex-col" key={relateproduct.id}>
-                <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
-                  <div className="pp-product-list-mpp-image-outback absolute">
-                    {relateproduct.image.length > 30 ?
-                      <Image alt="Car accessories image" src={relateproduct.image} width={176.52} height={238}></Image>
-                      :
-                      <Image alt="Car accessories image" src={`http://localhost/uploads/tyreImg/${relateproduct.image}`} width={176.52} height={238}></Image>
-
-                    }
-                  </div>
-                </div>
-                <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
-                  <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
-                    {relateproduct.recommended == 1 ?
-                      <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
-                        <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
-                      </div> : <></>
-                    }
-                  </div>
-                  <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
-                    <p className="text-lg leading-7 font-semi-bold text-black">{relateproduct.brand}</p>
-                    <p className="text-lg leading-7 font-semi-bold text-black line-clamp-1">{relateproduct.model}</p>
-                    {relateproduct.size == "" || relateproduct.size == null ?
-                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.width}/{relateproduct.profile}-{relateproduct.inches} {relateproduct.load} {relateproduct.speed}</p>
-                      :
-                      <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.size} {relateproduct.load} {relateproduct.speed}</p>
-                    }
-                  </div>
-                  <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
-                    <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
-                      <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
-                        <Tyre_Info_first />
-                      </div>
-                      <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
-                        <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.fuel}</p>
-                      </div>
-                    </div>
-                    <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
-                      <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
-                        <Tyre_Infor_second />
-                      </div>
-                      <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
-                        <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.grip}</p>
-                      </div>
-                    </div>
-                    <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
-                      <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
-                        <Tyre_Infor_third />
-                      </div>
-                      <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
-                        <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.noise}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pp-product-list-mmp-price pt-[19px] flex flex-row justify-center">
-                    <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK {relateproduct.price}</span></p>
-                  </div>
-                  <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
-                    <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => { productPurchasePage(), handleAddToCart(relateproduct) }}>
-                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
-                    </div>
-                    <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(relateproduct.id)}>
-                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
-                    </div>
-                  </div>
                 </div>
               </div>
-
-            )) : <></>}
-
-
+              <div className="pdi-category flex flex-row pt-[22px] gap-[7px] max-[1340px]:pt-[11px] max-[1340px]:gap-[5px] max-[520px]:pt-[11.79px]">
+                <p className="text-lg leading-7 font-medium text-black max-[1340px]:text-sm">Kategorier:</p>
+                <p className="text-lg leading-7 font-medium text-[#6D6D6D] max-[1340px]:text-sm">{product.category}</p>
+              </div>
+              <div className="pdi-chare flex flex-row gap-[13px] pt-[6px] max-[520px]:pt-[5px+]">
+                <p className="text-base font-medium text-[#000000] leading-5 max-[1340px]:text-sm">Share</p>
+                <div className="flex flex-row gap-[20px] max-[1340px]:gap-[14px]">
+                  <Dfacebook />
+                  <Dinstagram />
+                  <Dyoutube />
+                  <Dtwitter />
+                  <Dlinkedin />
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <Partner />
+          <div className="product-detail-description flex flex-col pt-[21px] pl-[304px] pr-[313px] pb-[145px] bg-white max-[1450px]:px-[80px] max-[1450px]:pt-[15px] max-[1450px]:pb-[11px] max-[488px]:pt-[19px] max-[488px]:px-[16px] max-[488px]:pb-[9px]">
+            <div className="pdd-title border-b-[#F7F7F7] border-b-[1px] pb-[18px] max-[1450px]:pb-[11px]">
+              <p className="text-2xl text-black font-semi-bold max-[1450px]:text-lg">Description</p>
+            </div>
+            <div className="pdd-content pt-[32px] max-[1450px]:pt-[15px]">
+            {productDescription == null ?
+              <div className="text-black font-['Inter']">No description</div> :
+                <p className="text-lg leading-7 font-normal font-['Inter'] text-black max-[1450px]:text-sm">
+                  {/* Displaying tyreInfo with proper line breaks */}
+                  {productDescription.tyreInfo.split('\r\n').map((line: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, index: Key | null | undefined) => (
+                    <span key={index}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
+                </p>
+            }
+            </div>
+          </div>
+          <div className="product-detail-related flex flex-col gap-[33px] pl-[310px] pr-[206px] bg-white pb-[23px] max-[1846px]:px-[80px] max-[1024px]:pb-[82px] max-[1024px]:gap-[41px] max-[745px]:px-[16px] max-[643px]:items-center max-[400px]:gap-[25px] max-[1400px]:pb-[46px]">
+            <div className="pdr-title w-full text-start max-[643px]:justify-center max-[643px]:flex max-[400px]:justify-start">
+              <p className="text-2xl text-black font-semi-bold max-[1024px]:text-lg">Related products</p>
+            </div>
+            <div className="pdr-list grid grid-cols-4 gap-[28px] max-[948px]:grid-cols-3 max-[643px]:flex max-[643px]:flex-wrap max-[643px]:justify-center max-[400px]:gap-[14px]">
+              {reproduct.length > 0 ? reproduct.map((relateproduct, i) => (
+                i < 4 &&
+                <div className="pp-product-list-main-product-pan flex flex-col" key={relateproduct.id}>
+                  <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
+                    <div className="pp-product-list-mpp-image-outback absolute">
+                      {relateproduct.image.length > 30 ?
+                        <Image alt="Car accessories image" src={relateproduct.image} width={176.52} height={238}></Image>
+                        :
+                        <Image alt="Car accessories image" src={`${backend_url}/uploads/tyreImg/${relateproduct.image}`} width={176.52} height={238}></Image>
 
-        <GetInTouch />
-        <Footer />
-    </div>
+                      }
+                    </div>
+                  </div>
+                  <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
+                    <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
+                      {relateproduct.recommended == 1 ?
+                        <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
+                          <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                        </div> : <></>
+                      }
+                    </div>
+                    <div className="pp-product-list-mmp-exact-info flex flex-col w-full h-[112px] items-center">
+                      <p className="text-lg leading-7 font-semi-bold text-black">{relateproduct.brand}</p>
+                      <p className="text-lg leading-7 font-semi-bold text-black line-clamp-1">{relateproduct.model}</p>
+                      {relateproduct.size == "" || relateproduct.size == null ?
+                        <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.width}/{relateproduct.profile}-{relateproduct.inches} {relateproduct.load} {relateproduct.speed}</p>
+                        :
+                        <p className="pp-product-list-mmp-figures text-lg leading-7 font-normal font-['Inter'] mt-[28px] text-black">{relateproduct.size} {relateproduct.load} {relateproduct.speed}</p>
+                      }
+                    </div>
+                    <div className="pp-product-list-mmp-show-tyre-infor flex flex-row justify-center gap-[8px] mt-[19px]">
+                      <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                        <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                          <Tyre_Info_first />
+                        </div>
+                        <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                          <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.fuel}</p>
+                        </div>
+                      </div>
+                      <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                        <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                          <Tyre_Infor_second />
+                        </div>
+                        <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                          <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.grip}</p>
+                        </div>
+                      </div>
+                      <div className="pp-product-list-mmp-show-tyre-infor-detail flex flex-row gap-[2px]">
+                        <div className="pp-product-list-mmp-show-tyre-infor-detail-svg py-[3.99px] px-[4px] rounded-[2px] bg-white flex justify-center items-center">
+                          <Tyre_Infor_third />
+                        </div>
+                        <div className="pp-product-list-mmp-show-tyre-infor-detail-figures py-[6px] px-[10.5px] rounded-[2px] flex justify-center items-center bg-[#B0B0B0]">
+                          <p className="uppercase text-sm leading-5 font-middle text-black">{relateproduct.noise}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="pp-product-list-mmp-price pt-[19px] flex flex-row justify-center">
+                      <p className="text-lg leading-7 font-normal font-['Inter'] text-black">Price: <span className="text-lg leading-7 font-semi-bold text-black">NOK {relateproduct.price}</span></p>
+                    </div>
+                    <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
+                      <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => { productPurchasePage(), handleAddToCart(relateproduct) }}>
+                        <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                      </div>
+                      <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(relateproduct.id)}>
+                        <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              )) : <></>}
+
+
+            </div>
+          </div>
+          <Partner />
+
+          <GetInTouch />
+          <Footer />
+        </div>
       </main >
     </div >
 
   ) : (
-  <></>
-);
+    <></>
+  );
 }
 export default ProductDetail;

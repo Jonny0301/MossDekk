@@ -10,11 +10,11 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import GetInTouch from "@/components/GetInTouch";
 const inter = Inter({ subsets: ["latin"] });
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 export default function Guide() {
     const router = useRouter();
     const { pathname, asPath } = router;
-    console.log(asPath, '=======');
     const [selectedSection, setSelectedSection] = useState("section1");
 
     // Function to handle item click

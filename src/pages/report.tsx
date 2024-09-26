@@ -34,6 +34,7 @@ import Tyre_Infor_second from "@/svg/Tyre_Infor_second";
 import Tyre_Infor_third from "@/svg/Tyre_Infor_third";
 
 const inter = Inter({ subsets: ["latin"] });
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 export default function Report() {
     const [inputValue, setInputValue] = useState<string>("");

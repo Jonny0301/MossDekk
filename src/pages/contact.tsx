@@ -22,6 +22,8 @@ import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { log } from "console";
 const inter = Inter({ subsets: ["latin"] });
+const backend_url = process.env.NEXT_PUBLIC_API_URL
+
 interface FormData {
     name: string;
     email: string;
@@ -53,7 +55,6 @@ const Contact: React.FC = () => {
             [name]: value,
 
         });
-        console.log(formData);
 
     };
 
@@ -79,7 +80,7 @@ const Contact: React.FC = () => {
     
             // Make the POST request
             const response = await axios.post(
-                'https://dev.mossdekk.no/query.php', // Ensure this URL is correct
+                `${backend_url}/query.php`,
                 formDataParams, // Pass URLSearchParams directly, no need for .toString()
                 {
                     headers: {
@@ -89,15 +90,12 @@ const Contact: React.FC = () => {
             );
     
             if (response.data === 'success') {
-                console.log(response.data);
                 
                 alert('Contact saved successfully!');
                 window.location.reload();
             } else if (response.data === 'empty fields') {
-                console.log(response.data);
                 alert('Please fill in all fields.');
             } else {
-                console.log(response.data);
                 alert('Failed to save contact.');
             }
         } catch (error) {

@@ -14,6 +14,7 @@ import Experts from "@/svg/Experts";
 import Services from "@/svg/Services";
 import { SetStateAction, useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 export default function About() {
     const [activeButton, setActiveButton] = useState('Mission');

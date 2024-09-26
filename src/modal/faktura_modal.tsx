@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import X_Cancel from "@/svg/X_cancel";
 import ArrowDropUp from '@/svg/ArrowDropUp';
 import ArrowDropDown_O from '@/svg/ArrowDropDown_O';
 import Cheveron_Left from '@/svg/Cheveron_Left';
 import Cheveron_Right from '@/svg/Cheveron_Right';
+import Faktura_Another_Modal from './faktura_another_modal';
 
 interface ModalProps {
     isOpen: boolean;
@@ -12,11 +13,18 @@ interface ModalProps {
 
 const Faktura_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     const modalRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null); // New ref for dropdown
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
     const [selectedOption, setSelectedOption] = useState("Firmakunde/faktura");
-
+    const [fakturaModalOpen, setFakturaModalOpen] = useState(false);
     const handleClickOutside = (event: MouseEvent) => {
-        if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        // Check if the click was outside the modal and dropdown
+        if (
+            modalRef.current &&
+            !modalRef.current.contains(event.target as Node) &&
+            dropdownRef.current &&
+            !dropdownRef.current.contains(event.target as Node)
+        ) {
             onClose();
         }
     };
@@ -42,18 +50,29 @@ const Faktura_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     // Return null if modal is not open
     if (!isOpen) return null;
 
-    const toggleDropdown = () => setIsOpenDropdown(prev => !prev);
-
-    const handleOptionClick = (option: string) => {
-        setSelectedOption(option);
-        // setIsOpenDropdown(false);
+    const toggleDropdown = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Stop the click from propagating to window
+        setIsOpenDropdown(prev => !prev);
     };
+
+    const handleOptionClick = (option: string, e: React.MouseEvent) => {
+        e.stopPropagation(); // Prevent the modal from closing when selecting an option
+        setSelectedOption(option);
+        setIsOpenDropdown(false);
+    };
+    const handleOpenModal = () => {
+        // e.stopPropagation();
+        setFakturaModalOpen(prev => !prev);
+    }
+    const handleClose=()=>{
+        setFakturaModalOpen(false);
+    }
     return (
-        <div className="fixed inset-0 z-50 flex justify-center items-center">
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
             <div ref={modalRef} className="w-[838px] max-h-[95vh] overflow-y-auto hide-scrollbar flex flex-col h-[480px]">
                 <div className="px-[30px] py-[31px] flex flex-row justify-between bg-[#18181B] items-center max-[590px]:p-[15px]">
                     <p className="text-lg leading-7 font-medium text-[#73C018] max-[590px]:text-sm">Beataling Alternativ</p>
-                    <div onClick={onClose}>
+                    <div onClick={onClose} className='cursor-pointer'>
                         <X_Cancel />
                     </div>
                 </div>
@@ -65,25 +84,25 @@ const Faktura_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                         >
                             {selectedOption}
                             {isOpenDropdown ? <ArrowDropUp /> : <ArrowDropDown_O />}
-
                         </div>
+
                         {isOpenDropdown && (
-                            <div className="absolute z-10 w-[305px] mt-[50px] border-[1px] border-[#818182] bg-[#18181B] rounded-[8px] shadow-lg pt-[12px] pb-[8px] gap-[2px]">
+                            <div ref={dropdownRef} className="absolute z-10 w-[305px] mt-[50px] border-[1px] border-[#818182] bg-[#18181B] rounded-[8px] shadow-lg pt-[12px] pb-[8px] gap-[2px]">
                                 <div
-                                    className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading -7 font-normal font-['Inter'] text-center"
-                                    onClick={() => handleOptionClick("Firmakunde/faktura")}
+                                    className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading-7 font-normal font-['Inter'] text-center"
+                                    onClick={(e) => { handleOptionClick("Firmakunde/faktura", e); handleOpenModal();}}
                                 >
                                     Firmakunde/faktura
                                 </div>
                                 <div
-                                    className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading -7 font-normal font-['Inter'] text-center"
-                                    onClick={() => handleOptionClick("Vipps/Kortbeating/debetaling")}
+                                    className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading-7 font-normal font-['Inter'] text-center"
+                                    onClick={(e) => handleOptionClick("Vipps/Kortbeating/debetaling", e)}
                                 >
                                     Vipps/Kortbeating/debetaling
                                 </div>
                                 <div
-                                    className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading -7 font-normal font-['Inter'] text-center"
-                                    onClick={() => handleOptionClick("Admin")}
+                                    className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading-7 font-normal font-['Inter'] text-center"
+                                    onClick={(e) => handleOptionClick("Admin", e)}
                                 >
                                     Admin
                                 </div>
@@ -102,6 +121,7 @@ const Faktura_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     </div>
                 </div>
             </div>
+            <Faktura_Another_Modal isOpen={fakturaModalOpen} onClose={handleClose} />
         </div>
     );
 };

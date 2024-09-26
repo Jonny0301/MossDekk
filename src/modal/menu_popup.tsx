@@ -50,7 +50,6 @@ const MenuPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
         setIsHandlingClick(true);
         setIsOmlegg(prev => {
             const newValue = !prev; // Toggle the state
-            console.log(`isOmlegg changed to: ${newValue}`);
             return newValue;
         });
 
@@ -66,7 +65,6 @@ const MenuPopup: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
         setIsHandlingClick(true);
         setIsReprasjon(prev => {
             const newValue = !prev; // Toggle the state
-            console.log(`isOmlegg changed to: ${newValue}`);
             return newValue;
         });
 

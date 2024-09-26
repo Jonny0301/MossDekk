@@ -8,6 +8,7 @@ import Back_Image from "../../public/image/back_image.png";
 import Product from "../../public/image/product_detail.png";
 
 const inter = Inter({ subsets: ["latin"] });
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 export default function Order() {
   return (

@@ -59,7 +59,8 @@ import X_Cancel from "@/svg/X_cancel";
 import Cancel from "@/svg/Cancel";
 import { HtmlContext } from "next/dist/server/future/route-modules/app-page/vendored/contexts/entrypoints";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isHandlingClick, setIsHandlingClick] = useState<boolean>(false);
@@ -113,7 +114,6 @@ export default function Home() {
         setIsHandlingClick(true);
         setIsMenuPopup(prev => {
             const newValue = !prev;
-            console.log(`isOmlegg changed to: ${newValue}`);
             return newValue;
         });
         setTimeout(() => setIsHandlingClick(false), 200);
@@ -175,7 +175,7 @@ export default function Home() {
             formDataParams.append('sizeTwo', selectProfile);
             formDataParams.append('sizeThree', selectDimension);
             const response = await axios.post(
-                'http://localhost/query.php',
+                `${backend_url}/query.php`,
                 formDataParams,
                 {
                     headers: {
@@ -183,14 +183,13 @@ export default function Home() {
                     },
                 }
             );
-
             if (
                 (response.data[1] && response.data[1].length > 0) ||
                 (response.data[2] && response.data[2].length > 0) ||
                 (response.data[3] && response.data[3].length > 0)
-              ) {
+            ) {
                 window.location.href = "/products";
-              } else {
+            } else {
                 toast("Tires not found", {
                     position: "top-right",
                     autoClose: 2000,
@@ -199,8 +198,8 @@ export default function Home() {
                     pauseOnHover: true,
                     draggable: true,
                     type: "warning", // Changed to warning or error if more appropriate
-                  });
-              }
+                });
+            }
 
         } catch (error) {
             console.error(error);
@@ -211,8 +210,6 @@ export default function Home() {
             try {
                 const response = await axios.get<any[]>('https://api.apify.com/v2/datasets/2cG9DNsKjQJdMySfE/items?token=apify_api_5J3BU4R3hbY7dpBgawZ7O7qITakyJ51Pr7Kz');
                 setReviews(response.data);
-                // console.log(response.data);
-
             } catch (error) {
                 console.error('Error fetching reviews:', error);
             }

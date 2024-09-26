@@ -46,7 +46,6 @@ export default function Header() {
         setIsHandlingClick(true);
         setIsMenuPopupOpen(prev => {
             const newValue = !prev; // Toggle the state
-            console.log(`isOmlegg changed to: ${newValue}`);
             return newValue;
         });
 

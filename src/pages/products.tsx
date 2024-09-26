@@ -18,6 +18,7 @@ const inter = Inter({ subsets: ["latin"] });
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/cartSlice';
 import { Product } from '../store/store';
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 const ProductList: React.FC = ({ }) => {
   const [tyres, setTyres] = useState<any[]>([])
@@ -61,7 +62,7 @@ const ProductList: React.FC = ({ }) => {
       formDataParams.append('sizeThree', selectDimension);
 
       const response = await axios.post(
-        'http://localhost/query.php',
+        `${backend_url}/query.php`,
         formDataParams,
         {
           headers: {
@@ -69,9 +70,6 @@ const ProductList: React.FC = ({ }) => {
           },
         }
       );
-
-      console.log(response.data);
-
       if (response.data === "no entry") {
         toast("Tires not found", {
           position: "top-right",
@@ -102,7 +100,6 @@ const ProductList: React.FC = ({ }) => {
       setQualityArray(response.data[2]);
       setPremiumArray(response.data[3]);
 
-      console.log(merged);
     } catch (error) {
       console.error(error);
     }
@@ -157,7 +154,6 @@ const ProductList: React.FC = ({ }) => {
   };
   useEffect(() => {
     fetchTyres();
-    console.log(tyres);
   }, [])
 
 
@@ -291,7 +287,7 @@ const ProductList: React.FC = ({ }) => {
                                     {tyre.image.length > 30 || tyre.size == null ?
                                       <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
                                       :
-                                      <Image alt="Tire image of Moss Dekk AS" src={`http://localhost/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
+                                      <Image alt="Tire image of Moss Dekk AS" src={`${backend_url}/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
                                     }
                                   </div>
                                 </div>
@@ -473,7 +469,7 @@ const ProductList: React.FC = ({ }) => {
                                     {tyre.image.length > 30 || tyre.size == null ?
                                       <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
                                       :
-                                      <Image alt="Tire image of Moss Dekk AS" src={`http://localhost/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
+                                      <Image alt="Tire image of Moss Dekk AS" src={`${backend_url}/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
                                     }
                                   </div>
                                 </div>
@@ -597,7 +593,7 @@ const ProductList: React.FC = ({ }) => {
                                     {tyre.image.length > 30 || tyre.size == null ?
                                       <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
                                       :
-                                      <Image alt="Tire image of Moss Dekk AS" src={`http://localhost/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
+                                      <Image alt="Tire image of Moss Dekk AS" src={`${backend_url}/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
                                     }
                                   </div>
                                 </div>

@@ -4,6 +4,7 @@ import Calendar_larrow from '@/svg/Calendar_larrow';
 import Calendar_rarrow from '@/svg/Calendar_rarrow';
 import Calendar_x from '@/svg/Calendar_x';
 import axios from 'axios';
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 const months = [
   "January", "February", "March", "April", "May", "June",
@@ -51,7 +52,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
   };
 
   const isPastDate = (day: number, monthIndex: number, year: number) => {
-    const date = new Date(year, monthIndex, day).getTime();
+    const date = new Date(year, monthIndex, day-1).getTime();
     const todayAtMidnight = new Date().setHours(0, 0, 0, 0);
     return date < todayAtMidnight;
   };
@@ -118,7 +119,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
       formDataParams.append('type', 'dekk'); // Include the selected day in the request
       formDataParams.append('workType', 'tyreChangeDekkhotell'); // Include the selected day in the request
 
-      const response = await axios.post('http://localhost/query.php', formDataParams, {
+      const response = await axios.post(`${backend_url}/query.php`, formDataParams, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -137,7 +138,6 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
       // Join the time slots into a single string
       const timeSlotsString = timeSlots.join(',');
       
-      console.log(timeSlotsString); // Time slots string like "12:00,13:20"
       setTimeSlots(timeSlots); // Update the state with time slots if needed
     } catch (error) {
       console.error('Error fetching time slots:', error);
@@ -182,7 +182,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
         </div>
       </div>
 
-      {selectedDay && (
+      {selectedDay ? (
         <>
           <TimeSlotSelector timeSlots={timeSlots} onTimeSlotSelected={handleTimeSlotSelection} />
           {/* <div className="mt-4">
@@ -190,7 +190,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
             <p className="text-black">Day of the Week: {weekdays[new Date(year, selectedDay.month, selectedDay.day).getDay()]}</p>
           </div> */}
         </>
-      )}
+      ):<div className='text-black pt-3'>No employees available at this date</div>}
 
       <div className='pt-[20px] flex flex-col max-[772px]:hidden'>
         <p className='text-base leading-6 font-medium text-[#6D6D6D]'>*Note:</p>
@@ -208,3 +208,4 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
 };
 
 export default Calendar;
+``

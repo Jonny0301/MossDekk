@@ -21,6 +21,7 @@ import { RootState } from '../store/store';
 import { useDispatch } from 'react-redux';
 import { decrementAmount, incrementAmount } from "@/store/cartSlice";
 import { removeFromCart } from '../store/cartSlice'; // Adjust the import based on your file structure
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 interface Product {
   id: number;
@@ -113,7 +114,7 @@ const Cart = () => {
                       </div>
                       :
                       <div className="pm-minfo-image w-[161px] h-[161px] flex justify-center items-center bg-[#F7F7F7] max-[1227px]:w-[109px] max-[1227px]:h-[110px] max-[834px]:w-[69px] max-[834px]:h-[69px]">
-                        <Image src={`http://localhost/uploads/tyreImg/${product.image}`} width={84} height={130} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
+                        <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} width={84} height={130} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
                       </div>
                     }
                     <div className="pm-minfo-text gap-[20px] flex flex-col justify-center max-[1227px]:gap-[3px] max-[446px]:h-[57px] max-[446px]:w-[161px]">

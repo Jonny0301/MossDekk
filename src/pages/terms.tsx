@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 export default function Terms() {
     const [activeTerm, setActiveTerm] = useState<string>('');
@@ -19,12 +20,8 @@ export default function Terms() {
     const handleTermClick = (term: string, event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
         setActiveTerm(term);
-
         const targetId = term.toLowerCase().replace(/ /g, '-');
         const targetElement = document.getElementById(targetId);
-console.log(targetId);
-console.log(targetElement);
-
         if (targetElement) {
             targetElement.scrollIntoView({
                 behavior: 'smooth',

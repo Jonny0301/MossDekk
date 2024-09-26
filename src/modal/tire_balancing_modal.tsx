@@ -43,7 +43,6 @@ const Tire_Balancing_modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     };
     const handleJaClick = () => {
         setShowCalendar(true); // Show the calendar when "Ja" is clicked
-        console.log(showCalendar);
 
     };
 

@@ -19,6 +19,7 @@ import Faktura_Modal from "@/modal/faktura_modal";
 import { Console } from "console";
 import { tree } from "next/dist/build/templates/app-page";
 const inter = Inter({ subsets: ["latin"] });
+const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 export default function Pricing() {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -54,21 +55,56 @@ export default function Pricing() {
   const handleDateTimeSelected = (dateTime: string) => {
     setDateTime(dateTime);
   };
-  const handleRegChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.value;
+  const handleRegChange = async (value: string) => {
+    setRegNr(value);
     if (value.length <= 7) {
-      setRegNr(value);
       if (value.length === 7) {
-        const hasLetter = /[a-zA-Z]/.test(value);
-        const hasNumber = /[0-9]/.test(value);
-        const isValidInput = hasLetter && hasNumber;
+        const isValidInput = /^[a-zA-Z]{2}[0-9]{5}$/.test(value);
         setIsValid(isValidInput);
+        setRegNr(value);
+        if (isValid) {
+          try {
+            const formDataParams = new URLSearchParams();
+            formDataParams.append('method', 'checkedRegNr');
+            formDataParams.append('modal', "1");
+            formDataParams.append('regNr', regNr);
+            const response = await axios.post(
+              `${process.env.NEXT_PUBLIC_API_URL}/query.php`,
+              formDataParams,
+              {
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                },
+              }
+            );
+            if (response.data.result == "success") {
+              setEmail(response.data.email);
+              setNavn(response.data.name);
+              setMobilNr(response.data.mobile);
+              setLocation(response.data.location)
+            }
+            else {
+                toast("Please enter correct RegNr", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  type: "warning", 
+                });
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }
       } else {
-        setIsValid(true);
+        setIsValid(true); 
       }
     }
   };
-  const handlesubmit = (e: React.FormEvent) => {
+  const handlesubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
     e.stopPropagation();
     if (!emailError && isValid == true && email && regNr && navn && dateTime && mobilNr && location !== 'none') {
@@ -114,7 +150,7 @@ export default function Pricing() {
       formDataParams.append('locationID', '18');
 
       const response = await axios.post(
-        'http://localhost/query.php',
+        `${backend_url}/query.php`,
         formDataParams,
         {
           headers: {
@@ -207,7 +243,7 @@ export default function Pricing() {
                   className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px]"
                   value={regNr}
                   pattern="[a-zA-Z]{2}[0-9]{5}$" type="text" maxLength={7}
-                  onChange={handleRegChange}
+                  onChange={(e) => handleRegChange(e.target.value)}
                 >
 
                 </input>
@@ -337,7 +373,7 @@ export default function Pricing() {
                         disabled
                       >
                         {generateOptions(totalCount)}
-                        
+
                       </select>
                     </div>
                     <div className="pl-[253px] flex items-center max-[1230px]:pl-[105px]  max-[772px]:pl-[40px]">

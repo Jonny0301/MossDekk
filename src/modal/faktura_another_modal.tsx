@@ -5,8 +5,10 @@ import ArrowDropDown_O from '@/svg/ArrowDropDown_O';
 import Cheveron_Left from '@/svg/Cheveron_Left';
 import Cheveron_Right from '@/svg/Cheveron_Right';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const backend_url = process.env.NEXT_PUBLIC_API_URL
+const backend_url = process.env.NEXT_PUBLIC_API_URL;
 
 interface ModalProps {
   isOpen: boolean;
@@ -15,6 +17,7 @@ interface ModalProps {
 
 const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const adminModalRef = useRef<HTMLDivElement>(null); // Ref for admin modal
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Firmakunde/faktura");
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false); // Admin modal state
@@ -22,19 +25,31 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      onClose();
+    // Check if the click is outside both modals (main modal and admin modal)
+    if (
+      modalRef.current && !modalRef.current.contains(event.target as Node) &&
+      adminModalRef.current && !adminModalRef.current.contains(event.target as Node)
+    ) {
+      closeModal();
+    }
+  };
+
+  const closeModal = () => {
+    if (isAdminModalOpen) {
+      setIsAdminModalOpen(false); // Only close the admin modal
+    } else {
+      onClose(); // Close the main modal
     }
   };
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        closeModal();
       }
     };
 
-    if (isOpen) {
+    if (isOpen || isAdminModalOpen) {
       window.addEventListener('keydown', handleKeyDown);
       window.addEventListener('click', handleClickOutside);
     }
@@ -43,19 +58,21 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('click', handleClickOutside);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, isAdminModalOpen]);
 
-  if (!isOpen && !isAdminModalOpen) return null; // Only render if one of the modals is open
+  if (!isOpen && !isAdminModalOpen) return null; // Render only when either modal is open
 
-  const toggleDropdown = () => setIsOpenDropdown(prev => !prev);
+  const toggleDropdown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsOpenDropdown((prev) => !prev);
+  };
 
   const handleOptionClick = (option: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setIsOpenDropdown(false);
 
-      if (option == "Admin") {
-      onClose(); // Close the main modal when Admin is selected
-      setIsAdminModalOpen(true);  // Open the password modal
+    if (option === "Admin") {
+      setIsAdminModalOpen(true);
     } else {
       setSelectedOption(option);
     }
@@ -78,11 +95,21 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       );
 
       if (response.data == "success") {
-        setSelectedOption("Admin");  // Set Admin as selected
-        setIsAdminModalOpen(false);  // Close the password modal
-        setErrorMessage("");  // Clear any errors
-      } else {
-        setErrorMessage("Invalid password. Please try again.");
+        setErrorMessage("");
+        setIsAdminModalOpen(false); // Close the admin modal
+        setSelectedOption("Admin"); // Update the selection
+        
+      } 
+      if(response.data == "failed") {
+        toast("Invalid password. Please try again.", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          type: "warning",
+        });
       }
     } catch (error) {
       console.error(error);
@@ -102,7 +129,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <div ref={modalRef} className="w-[838px] max-h-[100vh] overflow-y-auto hide-scrollbar flex flex-col h-[480px]">
             <div className="px-[30px] py-[31px] flex flex-row justify-between bg-[#18181B] items-center max-[590px]:p-[15px]">
               <p className="text-lg leading-7 font-medium text-[#73C018] max-[590px]:text-sm">Beataling Alternativ</p>
-              <div onClick={onClose} className='cursor-pointer'>
+              <div onClick={closeModal} className='cursor-pointer'>
                 <X_Cancel />
               </div>
             </div>
@@ -110,12 +137,12 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               <div className="relative w-full flex flex-col gap-[20px] max-[610px]:items-center max-[610px]:gap-[10px]">
                 <div className='flex flex-row gap-[31px] max-[610px]:flex-col max-[610px]:items-center max-[610px]:gap-[15px]'>
                   <div className='w-[200px]'>
-                    <p className='text-lg leading-7 font-normal font-["Inter"]'>Velg en betalings måte:</p>
+                    <p className='text-lg leading-7 font-normal font-["Inter"] text-white'>Velg en betalings måte:</p>
                   </div>
                   <div className='flex'>
                     <div
                       className="h-[44px] w-[305px] flex items-center justify-center relative px-[16px] text-lg font-medium leading-7 text-white bg-[#18181B] rounded-[8px] border-[#73C018] border-[2px] cursor-pointer"
-                      onClick={toggleDropdown}
+                      onClick={(e) => toggleDropdown(e)}
                     >
                       {selectedOption}
                       <div className='absolute right-[10px]'>
@@ -132,7 +159,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                         </div>
                         <div
                           className="cursor-pointer py-[3px] text-white hover:bg-[#73C018] hover:bg-[#1F1F1F] text-lg leading-7 font-normal font-['Inter'] text-center"
-                          onClick={(e) => { handleOptionClick("Vipps/Kortbeating/debetaling", e)}}
+                          onClick={(e) => { handleOptionClick("Vipps/Kortbeating/debetaling", e) }}
                         >
                           Vipps/Kortbeating/debetaling
                         </div>
@@ -147,12 +174,12 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   </div>
                 </div>
 
-                {/* Show Org number and Reference fields for Firmakunde/faktura */}
+                {/* Org number and Reference fields for Firmakunde/faktura */}
                 {selectedOption === "Firmakunde/faktura" && (
                   <>
                     <div className='flex flex-row gap-[31px] max-[610px]:flex-col max-[610px]:items-center max-[610px]:gap-[15px]'>
                       <div className='w-[200px] max-[610px]:text-center'>
-                        <p className='text-lg leading-7 font-normal font-["Inter"]'>Organisation Nr:</p>
+                        <p className='text-lg leading-7 font-normal font-["Inter"] text-white'>Organisation Nr:</p>
                       </div>
                       <div className='flex'>
                         <input
@@ -163,11 +190,11 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     </div>
                     <div className='flex flex-row gap-[31px] max-[610px]:flex-col max-[610px]:items-center max-[610px]:gap-[15px]'>
                       <div className='w-[200px] max-[610px]:text-center'>
-                        <p className='text-lg leading-7 font-normal font-["Inter"]'>Referance/info:</p>
+                        <p className='text-lg leading-7 font-normal font-["Inter"]text-white'>Referance:</p>
                       </div>
                       <div className='flex'>
                         <input
-                          placeholder='Referance/info'
+                          placeholder='Referance'
                           className="modal-input h-[44px] focus:outline-none focus:ring-0 focus:border-[#73C018] w-[305px] flex items-center text-center justify-center px-[16px] text-lg font-medium leading-7 text-white bg-[#18181B] rounded-[8px] border-[#73C018] border-[2px]"
                         />
                       </div>
@@ -189,17 +216,15 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
       )}
-
-      {/* Admin Modal */}
       {isAdminModalOpen && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-[#18181B] p-6 rounded-md">
+          <div ref={adminModalRef} className="bg-[#1F1F1F] p-6 rounded-md">
             <p>Enter Admin Password:</p>
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border border-gray-300 rounded px-3 py-2"
+              onChange={(e) => { setPassword(e.target.value); }}
+              className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-0 focus:border-[#73C018] text-black"
             />
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <div className="flex justify-end mt-4">

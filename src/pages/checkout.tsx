@@ -405,7 +405,7 @@ export default function Pricing() {
                 )}
               </div>
               <div className="pt-[19px] max-[1024px]:pt-[15px]">
-                <div className="bg-[#EF4225] py-[11.86px] px-[10px] w-[145.89px]  max-[1024px]:w-[118px] cursor-pointer" onClick={handlesubmit}>
+                <div className="bg-[#EF4225] py-[11.86px] px-[10px] w-[145.89px]  max-[1024px]:w-[118px] cursor-pointer text-white" onClick={handlesubmit}>
                   <p className="text-lg leading-7 font-semi-bold  max-[1024px]:text-sm">PLACE ORDER</p>
                 </div>
               </div>

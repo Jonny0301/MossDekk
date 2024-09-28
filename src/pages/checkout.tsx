@@ -58,66 +58,58 @@ export default function Pricing() {
   };
   const handleRegChange = async (value: string) => {
     setRegNr(value);
-    if (value.length <= 7) {
-      if (value.length === 7) {
-        const isValidInput = /^[a-zA-Z]{2}[0-9]{5}$/.test(value);
-        setIsValid(isValidInput);
-        setRegNr(value);
-        if (isValid) {
-          try {
-            const formDataParams = new URLSearchParams();
-            formDataParams.append('method', 'checkedRegNr');
-            formDataParams.append('modal', "1");
-            formDataParams.append('regNr', regNr);
-            const response = await axios.post(
-              `${process.env.NEXT_PUBLIC_API_URL}/query.php`,
-              formDataParams,
-              {
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded',
-                },
-              }
-            );
-            if (response.data.result == "success") {
-              setEmail(response.data.email);
-              setNavn(response.data.name);
-              setMobilNr(response.data.mobile);
-              setLocation(response.data.location)
-            }
-            else {
-                toast("Please enter correct RegNr", {
-                  position: "top-right",
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  type: "warning", 
-                });
-            }
-          } catch (error) {
-            console.error(error);
-          }
+    // if (value.length <= 7) {
+    //   if (value.length === 7) {
+    //     const isValidInput = /^[a-zA-Z]{2}[0-9]{5}$/.test(value);
+    //     setIsValid(isValidInput);
+    //     setRegNr(value);
+    //     if (isValid) {
+    try {
+      const formDataParams = new URLSearchParams();
+      formDataParams.append('method', 'checkedRegNr');
+      formDataParams.append('modal', "1");
+      formDataParams.append('regNr', regNr);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/query.php`,
+        formDataParams,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
         }
-      } else {
-        setIsValid(true); 
+      );
+      if (response.data.result == "success") {
+        setEmail(response.data.email);
+        setNavn(response.data.name);
+        setMobilNr(response.data.mobile);
+        setLocation(response.data.location)
       }
+      else {
+        toast("Please enter correct RegNr", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          type: "warning",
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
-  };
+  }
+  //   } else {
+  //     setIsValid(true); 
+  //   }
+  // }
+  // };
   const handlesubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
     e.stopPropagation();
     if (!emailError && isValid == true && email && regNr && navn && dateTime && mobilNr && location !== 'none') {
-      toast("Correct information", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        type: "success", // Changed to warning or error if more appropriate
-      });
+
       setPaymentModalOpen(prev => !prev);
 
     } else {
@@ -243,8 +235,9 @@ export default function Pricing() {
                 <input
                   className="w-[633px] py-[14px] px-[10px] border-[#AAAAAA] border-[2px] text-black outline-none text-lg leading-7 font-normal font-['Inter'] max-[1024px]:w-[478px] max-[772px]:w-[343px] focus:outline-none focus:ring-0 focus:border-[#73C018]"
                   value={regNr}
-                  pattern="[a-zA-Z]{2}[0-9]{5}$" type="text" maxLength={7}
-                  onChange={(e) => handleRegChange(e.target.value)}
+                  pattern="[a-zA-Z]{2}[0-9]{5}$" type="text"/* maxLength={7}*/
+                  onBlur={(e) => handleRegChange(e.target.value)}
+                  onChange={(e)=>setRegNr(e.target.value)}
                 >
 
                 </input>
@@ -417,7 +410,7 @@ export default function Pricing() {
           <Footer />
         </div>
       </main>
-      <Faktura_Another_Modal isOpen={paymentModalOpen} onClose={handleCloseModal} />
+      <Faktura_Another_Modal isOpen={paymentModalOpen} onClose={handleCloseModal} email={email} price={totalProductPrice} regNr={regNr} name={navn} mobile={mobilNr} date={dateTime} count={totalCount} />
     </div>
 
   );

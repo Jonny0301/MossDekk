@@ -382,3 +382,6 @@ input:focus {
   --tw-border-opacity: 1;
   border-color: rgb(79 70 229 / var(--tw-border-opacity));
 }
+.sc-fulCBj{
+  display: none;
+}

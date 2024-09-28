@@ -15,11 +15,13 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<Product>) => {
       const itemIndex = state.items.findIndex(item => item.id === action.payload.id);
-      if (itemIndex > -1) {
-        state.items[itemIndex].purchaseAmount = action.payload.purchaseAmount;
-      } else {
+      // if (itemIndex > -1) {
+      //   state.items[itemIndex].purchaseAmount = action.payload.purchaseAmount;
+      // } else {
+        state.items = [];
         state.items.push(action.payload);
-      }
+
+      // }
     },
     removeFromCart: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter(item => item.id !== action.payload);

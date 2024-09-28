@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import TimeSlotSelector from './TimeSlotSelector'; // Import the TimeSlotSelector
 import Calendar_larrow from '@/svg/Calendar_larrow';
 import Calendar_rarrow from '@/svg/Calendar_rarrow';
@@ -29,7 +29,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
   const [selectedDay, setSelectedDay] = useState<{ day: number; month: number } | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
   const [timeSlots, setTimeSlots] = useState<string[]>([]); // State for time slots
-
+  const [closed, setClosed] = useState<boolean>(false);
   // Compute the second month index based on the first month index
   const secondMonthIndex = (firstMonthIndex + 1) % 12;
   const secondMonthYear = firstMonthIndex === 11 ? year + 1 : year; // Handle year change if December
@@ -124,21 +124,26 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-      const htmlString = response.data;
-
-      // Extract time slots from the HTML string
-      const timeSlots = [];
-      const regex = /saveTimeDekk\('(\d{2}:\d{2})',/g;
-      let match;
+      if(response.data=="closed"){
+        setClosed(true);
+      }else{
+        
+        const htmlString = response.data;
   
-      while ((match = regex.exec(htmlString)) !== null) {
-        timeSlots.push(match[1]); // Push the time string into the array
+        // Extract time slots from the HTML string
+        const timeSlots = [];
+        const regex = /saveTimeDekk\('(\d{2}:\d{2})',/g;
+        let match;
+    
+        while ((match = regex.exec(htmlString)) !== null) {
+          timeSlots.push(match[1]); // Push the time string into the array
+        }
+    
+        // Join the time slots into a single string
+        const timeSlotsString = timeSlots.join(',');
+        
+        setTimeSlots(timeSlots); // Update the state with time slots if needed
       }
-  
-      // Join the time slots into a single string
-      const timeSlotsString = timeSlots.join(',');
-      
-      setTimeSlots(timeSlots); // Update the state with time slots if needed
     } catch (error) {
       console.error('Error fetching time slots:', error);
     }
@@ -181,16 +186,21 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
           {renderDays(secondMonthIndex, secondMonthYear)}
         </div>
       </div>
+{
+  closed == true?
+  <div className='text-black pt-3'>No employees available at this date</div>
+  :
 
-      {selectedDay ? (
-        <>
+      // {selectedDay ? (
+        // <>
           <TimeSlotSelector timeSlots={timeSlots} onTimeSlotSelected={handleTimeSlotSelection} />
-          {/* <div className="mt-4">
+          /* <div className="mt-4">
             <p className="text-green-600">Selected Day: {selectedDay.day} {months[selectedDay.month]} {year}</p>
             <p className="text-black">Day of the Week: {weekdays[new Date(year, selectedDay.month, selectedDay.day).getDay()]}</p>
-          </div> */}
-        </>
-      ):<div className='text-black pt-3'>No employees available at this date</div>}
+          </div> */
+        // </>
+      // ):<div className='text-black pt-3'>No employees available at this date</div>}
+}
 
       <div className='pt-[20px] flex flex-col max-[772px]:hidden'>
         <p className='text-base leading-6 font-medium text-[#6D6D6D]'>*Note:</p>

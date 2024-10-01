@@ -104,7 +104,11 @@ const ProductDetail = ({ pID }: { pID: number }) => {
   }
   const fetchProduct = async () => {
     try {
+      console.log(id);
+      
       const response = await axios.get(`${backend_url}/productDetailsApi.php?pID=${id}`);
+      console.log(response.data);
+      
       if (response.data.size == null) {
         setProduct(response.data);
       } else {
@@ -128,8 +132,8 @@ const ProductDetail = ({ pID }: { pID: number }) => {
     try {
       const formDataParams = new URLSearchParams();
       formDataParams.append('method', 'fetchProductDetail');
-
-      const response = await axios.post(
+  
+      const response = await axios.post(  
         `${backend_url}/query.php`,
         formDataParams,
         {
@@ -138,23 +142,37 @@ const ProductDetail = ({ pID }: { pID: number }) => {
           },
         }
       );
-
-      const productsWithAmount = response.data.map((product: any) => ({
-        ...product,
-        purchaseAmount: 4
-      }));
-
-      setReProduct(productsWithAmount);
+  
+      // Check if response.data is an array
+      if (Array.isArray(response.data)) {
+        const productsWithAmount = response.data.map((product: any) => ({
+          ...product,
+          purchaseAmount: 4
+        }));
+        setReProduct(productsWithAmount);
+      } else {
+        console.error("Expected an array but got:", response.data);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching tyres:", error);
     }
   };
+  
 
 
 
   useEffect(() => {
-    fetchTyres()
-    fetchProduct();
+    if(!product){
+      setTimeout(() => {
+        fetchTyres()
+        fetchProduct();
+        
+      }, 1000);
+    }
+    else{
+      fetchTyres()
+      fetchProduct(); 
+    }
   }, [id]);
   return product ? (
     <div className="home-container flex flex-col">

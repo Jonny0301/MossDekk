@@ -78,7 +78,7 @@ const ProductList: React.FC = ({ }) => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          type: "warning", // Changed to warning or error if more appropriate
+          type: "warning", // Changed to warning or error if more appropriate 
         });
         const merged = [...[], ...[], ...[]];
         setTyres(merged);
@@ -87,6 +87,7 @@ const ProductList: React.FC = ({ }) => {
         setPremiumArray([]);
         return;
       }
+console.log(response.data);
 
       // Merge arrays and add purchaseAmount to each tire
       const merged = [
@@ -284,7 +285,7 @@ const ProductList: React.FC = ({ }) => {
                               <div className="pp-product-list-main-product-pan flex flex-col tyreResultContainer" key={`budget-${tyre.id}`}>
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                   <div className="pp-product-list-mpp-image-outback absolute">
-                                    {tyre.image.length > 30 || tyre.size == null ?
+                                    {tyre.image.length > 30 && tyre.size == null ?
                                       <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
                                       :
                                       <Image alt="Tire image of Moss Dekk AS" src={`${backend_url}/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
@@ -466,7 +467,7 @@ const ProductList: React.FC = ({ }) => {
                               <div className="pp-product-list-main-product-pan flex flex-col tyreResultContainer" key={`quality-${tyre.id}`}>
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                   <div className="pp-product-list-mpp-image-outback absolute">
-                                    {tyre.image.length > 30 || tyre.size == null ?
+                                    {tyre.image.length > 30 && tyre.size == null ?
                                       <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
                                       :
                                       <Image alt="Tire image of Moss Dekk AS" src={`${backend_url}/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
@@ -590,7 +591,7 @@ const ProductList: React.FC = ({ }) => {
                               <div className="pp-product-list-main-product-pan flex flex-col tyreResultContainer" key={`quality-${tyre.id}`}>
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                   <div className="pp-product-list-mpp-image-outback absolute">
-                                    {tyre.image.length > 30 || tyre.size == null ?
+                                    {tyre.image.length > 30 && tyre.size == null ?
                                       <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
                                       :
                                       <Image alt="Tire image of Moss Dekk AS" src={`${backend_url}/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />

@@ -118,7 +118,7 @@ const Faktura_Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     </div>
                 </div>
             </div>
-            <Faktura_Another_Modal isOpen={fakturaModalOpen} onClose={handleClose} />
+            {/* <Faktura_Another_Modal isOpen={fakturaModalOpen} onClose={handleClose} /> */}
         </div>
     );
 };

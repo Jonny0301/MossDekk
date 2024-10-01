@@ -22,24 +22,25 @@ interface ModalProps {
   mobile: string;
   date: string;
   count: number;
+  envprice:number;
+  totalPrice:number
 }
 
-const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, price, regNr, name, mobile, date, count }) => {
+const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, price, regNr, name, mobile, date, count,envprice,totalPrice }) => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  console.log(cartItems);
-
   const modalRef = useRef<HTMLDivElement>(null);
-  const adminModalRef = useRef<HTMLDivElement>(null); // Ref for admin modal
+  const adminModalRef = useRef<HTMLDivElement>(null);
   const paymentModalRef = useRef<HTMLDivElement>(null);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Firmakunde/faktura");
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false); // Admin modal state
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [day, setDay] = useState<string>("");
   const [orgNr, setOrgNr] = useState<string>("");
   const [paymentUrl, setPaymentUrl] = useState<string>("");
   const [time, setTime] = useState<string>("");
+  const serviceIds = useState<string>(",128,165")
   const handleClickOutside = (event: MouseEvent) => {
     // Check if the click is outside both modals (main modal and admin modal)
     if (
@@ -146,115 +147,6 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
     }
   };
 
-  //   function tyreChangeOrder() {
-  //     var emptyField = 0;
-  //     $('.inputMod').each(function() {
-  //         if($(this).attr('id') == 'orgNr') { return true; }
-  //         if($(this).val() == '') {
-  //             //$(this).css('border', '1px solid red');
-  //             emptyField = 1;
-  //         }
-  //     });
-  //     if(emptyField == 1) {
-  //         //showModal('Empty fields', 'All the fields are required');
-  //         showAlert('danger', 'All fields are required');
-  //         $('#footer-btn-buy').show();
-  //         return;
-  //     }
-  //     // $('#paymentOptionModal').hide();
-
-  //     var regNr = variables['regNr'] = $('#regNr').val();
-  //     var name = variables['name'] = $('#name').val();
-  //     var mobile = variables['mobile'] = $('#mobile').val();
-  //     var date = variables['date'] = $('#tyreChangeDateTime').val();
-  //     var tyres = variables['tyres'] = $('#tyres').find(':selected').val();
-  //     var email = variables['email'] = $('#email').val();
-  //     var paymentMode = variables['paymentMode'];
-  //     var orgNr = variables['orgNr'];
-  //     console.log(paymentMode);
-  //     var locationID = '18' // Moss dekk variables['locationID'] =  $("#locationID").val();
-  //     var addressLocation =variables['addressLocation'] =  $("#addressLocation").val();
-  //     var postcodeLocation =variables['postcodeLocation'] =  $("#postcodeLocation").val();
-  //     var cityLocation =variables['cityLocation'] =  $("#cityLocation").val();
-  //     variables['price'] = parseInt($('#orderPrice').html());
-
-  //     var servicesURL = '';
-  //     var IDs = variables['serviceIDs'].split(',');
-  //     IDs.forEach(function (id) {
-  //         if(id == '' || id == ' ' || id == 'undefined') { return true; }
-  //         servicesURL += '&service'+id+'='+variables['service'+id];
-  //     });
-  //     showLoadingBar();
-  // var url = 
-  // 'locationID='+locationID
-  // +'&addressLocation='+addressLocation
-  // +'&postcodeLocation='+postcodeLocation
-  // +'&cityLocation='+cityLocation
-  // +'&method=tyreOrderWithoutLogin&paymentDone=0'
-  // +'&orgNr='+variables['orgNr']
-  // +'&apiTyre='+variables['apiTyre']
-  // +'&paymentMode='+paymentMode
-  // +'&tyreID='+variables['tyreID']
-  // +'&email='+email
-  // +'&totalTime='+variables['totalTime']
-  // +'&workType=newTyre'
-  // +'&price='+variables['price']
-  // +'&regNr='+regNr
-  // +'&name='+name
-  // +'&mobile='+mobile
-  // +'&date='+date
-  // +'&serviceIDs='+variables['serviceIDs']
-  // +'&serviceCounts='+variables['serviceCounts']
-  // +'&time='+variables['time']
-  // +'&tyres='+tyres+servicesURL;
-  //     console.log('url:' + url);
-  //     fetch(url, function(result) {
-  //         var e = $.parseJSON(result);
-  //         if(e[0] == 'failed') {
-  //             showAlert('danger','Technical error, contact admin');
-  //         }else if(e[0] == 'paySessionSuccess') {
-  //             var token = e[1];
-  //             var url = e[2];
-  //             console.log("paySessionSuccess");
-  //             //showPaymentModal(token, url);
-  //             if(paymentMode!='payAtShop')
-  //                 dinteroNewInstance(token);
-
-  //             else {
-  //                 $('#buyTyreModal').modal('hide');
-  //                 hideLoadingBar();
-  //             }
-  //         }else if(e[0] == 'empty fields') {
-  //             showAlert('danger','All fields are required');
-  //             $('#footer-btn-buy').show();
-  //         }else if(e[0] == 'already ordered') {
-  //             showAlert('danger','This Reg Nr is already under process');
-  //             $('#footer-btn-buy').show();
-  //         }else if(e[0] == 'no work') {
-  //             showAlert('danger','This work has not been assigned');
-  //             $('#footer-btn-buy').show();
-  //         }else if(e[0] == 'no employee') {
-  //             showAlert('danger','No employee available at this time');
-  //             $('#footer-btn-buy').show();
-  //         }else if(e[0] == 'api error') {
-  //             showAlert('danger', 'API error, contact admin');
-  //             $('#footer-btn-buy').show();
-  //         }else if(e[0] == 'success') {
-  //             // mode=orgNr || payAtShop
-  //             //showAlert('success', 'Successfully placed your order');
-  //             showAlert('success', 'Bestillingen din er nå mottatt og registrert. Du vil snart få e-mail med bekreftelse.');
-  //             //$('.modal').modal('hide');
-  //             window.location.href = "?p=successfulOrder&"+'email='+email+'&totalTime='+variables['totalTime']+'&workType=newTyre'+'&price='+variables['price']+'&regNr='+regNr+'&name='+name+'&mobile='+mobile+'&date='+date+'&serviceIDs='+variables['serviceIDs']+'&serviceCounts='+variables['serviceCounts']+'&time='+variables['time']+'&tyres='+tyres+servicesURL+'&ps=1&paymentMode=payAtShop';
-  //             variables = [];
-
-  //         }
-
-  //         if(e[0] != 'paySessionSuccess') { hideLoadingBar(); }
-  //     });
-
-  // }
-
-
   const handlePayment = async () => {
     try {
       const formDataParams = new URLSearchParams();
@@ -267,27 +159,25 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
       if (selectedOption == "Admin") {
         formDataParams.append('orgNr', `921836686`);
         formDataParams.append('paymentMode', 'payAtShop');
-      } else if (selectedOption == "Firmakunde/faktura"){
+      } else if (selectedOption == "Firmakunde/faktura") {
         formDataParams.append('orgNr', `${orgNr}`);
         formDataParams.append('paymentMode', 'orgNr');
-      }else{
+      } else {
         formDataParams.append('paymentMode', 'payNow');
       }
       formDataParams.append('apiTyre', '1');
-
       formDataParams.append('tyreID', `${cartItems[0].id}`);
       // formDataParams.append('tyreID', `2999`);
       formDataParams.append('email', email);
       formDataParams.append('totalTime', `${null}`);
       formDataParams.append('workType', `newTyre`);
-      
       formDataParams.append('price', `${price}`);
       formDataParams.append('regNr', `${regNr}`);
       formDataParams.append('name', `${name}`);
       formDataParams.append('mobile', `${mobile}`);
       formDataParams.append('date', `${day}`);
       formDataParams.append('time', `${time}`);
-      formDataParams.append('serviceIDs', `,128,165`);
+      formDataParams.append('serviceIDs', `${serviceIds}`);
       formDataParams.append('serviceCounts', `,${cartItems[0].purchaseAmount},${cartItems[0].purchaseAmount}`);
       formDataParams.append('tyres', `${cartItems[0].purchaseAmount}`);
 
@@ -302,10 +192,10 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
         }
       );
       setPaymentUrl(response.data[2]);
-      if(response.data[0]=="success"){
-
+      if (response.data[0] == "success") {
+        window.location.href=`/order?RegNr=${regNr}&day=${day}&time=${time}&envprice=${envprice}&totalPrice=${totalPrice}`
       }
-      else if(response.data[0]=="already ordered"){
+      else if (response.data[0] == "already ordered") {
         toast("This Reg Nr is already under process", {
           position: "top-right",
           autoClose: 2000,
@@ -316,7 +206,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
           type: "warning", // Changed to warning or error if more appropriate
         });
       }
-      else if(response.data[0]=="no work"){
+      else if (response.data[0] == "no work") {
         toast("This work has not been assigned", {
           position: "top-right",
           autoClose: 2000,
@@ -327,7 +217,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
           type: "warning", // Changed to warning or error if more appropriate
         });
       }
-      else if(response.data[0]=="no employee"){
+      else if (response.data[0] == "no employee") {
         toast("TNo employee available at this time", {
           position: "top-right",
           autoClose: 2000,
@@ -346,7 +236,6 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
 
   return (
     <>
-      {/* Main Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
           <div ref={modalRef} className="w-[838px] max-h-[100vh] overflow-y-auto hide-scrollbar flex flex-col h-[480px]">
@@ -397,7 +286,6 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
                   </div>
                 </div>
 
-                {/* Org number and Reference fields for Firmakunde/faktura */}
                 {selectedOption === "Firmakunde/faktura" && (
                   <>
                     <div className='flex flex-row gap-[31px] max-[610px]:flex-col max-[610px]:items-center max-[610px]:gap-[15px]'>
@@ -466,13 +354,13 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
               <h3 className='text-white text-semi-bold text-xl'>Beataling </h3>
             </div>
             <div className='px-6 max-[400px]:px-1'>
-            <iframe
-              src={`${paymentUrl}?language=no&sdk=0.0.17`}
-              frameBorder="0"
-              scrolling="yes"
-              height="600px"
-              className='w-[800px] max-[900px]:w-[500px] max-[550px]:w-full max-[550px]:h-[400px]  overflow-scroll'
-            />
+              <iframe
+                src={`${paymentUrl}?language=no&sdk=0.0.17`}
+                frameBorder="0"
+                scrolling="yes"
+                height="600px"
+                className='w-[800px] max-[900px]:w-[500px] max-[550px]:w-full max-[550px]:h-[400px]  overflow-scroll'
+              />
 
             </div>
             <div className="flex justify-end mt-4 pb-6 px-6 max-[400px]:px-2">

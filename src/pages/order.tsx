@@ -6,11 +6,55 @@ import Partner from "@/components/Partner";
 import Main_Image from "@/components/Main_Image";
 import Back_Image from "../../public/image/back_image.png";
 import Product from "../../public/image/product_detail.png";
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { useDispatch } from 'react-redux';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 export default function Order() {
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const [totalCount, setTotalCount] = useState<any>(0);
+  const [date, setDate] = useState<string>();
+  const router = useRouter();
+  const { RegNr } = router.query;
+  const { day } = router.query;
+  const { time } = router.query;
+  const { envprice } = router.query;
+  const { totalPrice } = router.query;
+  const calculateTotalPurchaseAmount = (items: { purchaseAmount: number }[]) => {
+    return items.reduce((total, item) => total + item.purchaseAmount, 0);
+  };
+
+  useEffect(() => {
+    const totalPurchaseAmount = calculateTotalPurchaseAmount(cartItems);
+    const envPriceNumber = Number(envprice); // or parseFloat(envprice)
+    const totalTaxPrice = totalPurchaseAmount * envPriceNumber;
+    setTotalCount(totalTaxPrice);
+  }, [cartItems,envprice]);
+  useEffect(() => {
+    if (day && time) {
+      const fullDate = `${day} ${time}`;
+      console.log("Full Date String:", fullDate);
+      
+      // Create a Date object
+      const newDate = new Date(fullDate);
+      
+      // Format the date to "13 May 2024" (British style)
+      const formattedDate = newDate.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
+      
+      // Set the formatted date
+      setDate(formattedDate);
+    }
+  }, [day, time]);
+  
   return (
     <div className="home-container flex flex-col">
       <Header />
@@ -32,19 +76,19 @@ export default function Order() {
                   <div className="text-zinc-500">
                     Order number:{" "}
                     <div className="text-lg font-semi-bold text-black leading-7 max-[1250px]:text-sm max-[1250px]:leading-5">
-                      1141
+                      {RegNr}
                     </div>
                   </div>
                   <div className="text-zinc-500">
                     Date:{" "}
                     <div className="text-lg font-semi-bold text-black leading-7 max-[1250px]:text-sm max-[1250px]:leading-5">
-                      May 10, 2024
+                        {date}
                     </div>
                   </div>
                   <div className="text-zinc-500">
                     Total:{" "}
                     <div className="text-lg font-semi-bold text-black leading-7 max-[1250px]:text-sm max-[1250px]:leading-5">
-                      kr 1016 / stk
+                      Nok {totalPrice} / stk
                     </div>
                   </div>
                   <div className="text-zinc-500">
@@ -74,7 +118,7 @@ export default function Order() {
                         Date
                       </div>
                       <div className="text-lg leding-7 font-medium text-black max-[1250px]:text-sm max-[1250px]:leading-5 max-[1250px]:font-normal max-[700px]:text-xs max-[700px]:leading-4">
-                        13 May 2024
+                        {date}
                       </div>
                     </div>
                     <div className="flex flex-col w-auto h-auto pr-[16px] pl-7 border-r border-r-solid border-r-[#aaa] max-[1250px]:pl-2 max-[1250px]:pr-[6px]">
@@ -82,7 +126,7 @@ export default function Order() {
                         Order Number
                       </div>
                       <div className="text-lg leding-7 font-medium text-black max-[1250px]:text-sm max-[1250px]:leading-5 max-[1250px]:font-normal max-[700px]:text-xs max-[700px]:leading-4">
-                        012-123456789
+                        {RegNr}
                       </div>
                     </div>
                     <div className="flex flex-col w-auto h-auto pl-[25px] max-[1250px]:pl-4">
@@ -95,38 +139,49 @@ export default function Order() {
                     </div>
                   </div>
                   <div className="flex border-b border-dashed border-b-[#aaa] mx-[-5px]"></div>
-                  <div className="flex flex-row justify-between w-full h-auto pt-[33px] pb-[150px] border-b border-b-solid border-b-[#aaa]  max-[1250px]:pt-[21px] max-[1250px]:pb-11 max-[700px]:pt-5 max-[700px]:pb-[31px]">
+                  {cartItems.map((product)=>(
+                  <div className="flex flex-row justify-between w-full h-auto pt-[33px] pb-[150px] border-b border-b-solid border-b-[#aaa]  max-[1250px]:pt-[21px] max-[1250px]:pb-11 max-[700px]:pt-5 max-[700px]:pb-[31px]" key={product.id}>
                     <div className="flex flex-row justify-between w-[260px] max-[1250px]:w-auto max-[1250px]:gap-[11px]">
                       <div className="flex justify-center items-center w-[93px] h-[93px] bg-[#D9D9D9] rounded-lg max-[1250px]:w-[68px] max-[1250px]:h-[68px] max-[700px]:w-[52px] max-[700px]:h-[52px]">
+                        {product?.image && product.image.length > 30 ?
                         <Image
                           alt=" product image"
                           src={Product}
                           className="w-[52px] h-[82px] max-[1250px]:w-10 max-[1250px]:h-[61px] max-[700px]:w-[31px] max-[700px]:h-[48px]"
                         ></Image>
+                        :
+                        <Image
+                        alt=" product image"
+                        src={`${backend_url}/uploads/tyreImg/${product.image}`}
+                        className="w-[52px] h-[82px] max-[1250px]:w-10 max-[1250px]:h-[61px] max-[700px]:w-[31px] max-[700px]:h-[48px]"
+                      ></Image>
+                        }
                       </div>
                       <div className="flex flex-col w-auto h-auto text-sm leading-5 font-medium text-[#787881] pt-[10px] max-[1250px]:text-xs max-[1250px]:leading-4 max-[1250px]:font-normal max-[700px]:text-xs max-[700px]:leading-4 max-[700px]:pt-0">
                         <div className="flex pb-[5px]  max-[700px]:pb-0">VERKSTED MATRIELL</div>
                         <div className="flex">
-                          Pack: Premium
+                          Pack: {product.category}
                           <br />
-                          Qty: 1
+                          Qty: {product.purchaseAmount}
                         </div>
                       </div>
                     </div>
                     <div className="flex pt-[5px] w-auto">
                       <div className="text-lg leading-7 font-semi-bold text-black max-[1250px]:text-sm max-[1250px]:leading-5 max-[700px]:text-sm max-[700px]:leading-5">
-                        kr 1016 / stk
+                        Nok {product.price} / stk
                       </div>
                     </div>
                   </div>
+
+                  ))}
                   <div className="flex flex-row justify-between w-full h-auto pt-[13px] pb-[48px] text-[#aaa] border-b border-b-solid border-b-[#aaa] max-[1250px]:pt-2 max-[1250px]:pb-[25px] max-[700px]:pt-[6px] max-[700px]:pb-[25px]">
                     <div className="flex flex-col text-lg leading-7 gap-[7px] font-medium max-[1250px]:text-sm max-[1250px]:leading-5 max-[1250px]:font-normal max-[700px]:text-sm max-[700px]:leading-5">
                       <div className="flex">Sub TotalMiljøavgift</div>
                       <div className="flex">Miljøavgift</div>
                     </div>
                     <div className="flex flex-col text-lg leading-7 w-auto font-medium gap-[7px] max-[1250px]:text-sm max-[1250px]:leading-5 max-[1250px]:font-normal max-[700px]:text-sm max-[700px]:leading-5">
-                      <div className="flex w-full ">kr 1016 / stk</div>
-                      <div className="flex pl-[30px] w-full max-[700px]:pl-[20px]">kr 2 / stk</div>
+                      <div className="flex w-full justify-end">Nok {totalCount} / stk</div>
+                      <div className="flex justify-end w-full">Nok {envprice} / stk</div>
                     </div>
                   </div>
                   <div className="flex justify-between pt-[10px] w-full h-auto">
@@ -134,7 +189,7 @@ export default function Order() {
                       Order Total
                     </div>
                     <div className="flex text-2xl leading-8 font-semi-bold text-black max-[1250px]:text-lg max-[1250px]:leading-7">
-                      kr 1016 / stk
+                      Nok {totalPrice} / stk
                     </div>
                   </div>
                 </div>

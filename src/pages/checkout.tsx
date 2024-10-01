@@ -410,7 +410,7 @@ export default function Pricing() {
           <Footer />
         </div>
       </main>
-      <Faktura_Another_Modal isOpen={paymentModalOpen} onClose={handleCloseModal} email={email} price={totalProductPrice} regNr={regNr} name={navn} mobile={mobilNr} date={dateTime} count={totalCount} />
+      <Faktura_Another_Modal isOpen={paymentModalOpen} onClose={handleCloseModal} email={email} price={totalProductPrice} regNr={regNr} name={navn} mobile={mobilNr} date={dateTime} count={totalCount} envprice = {taxPrice} totalPrice = {totalProductPrice}/>
     </div>
 
   );

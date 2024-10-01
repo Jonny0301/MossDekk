@@ -171,6 +171,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
       formDataParams.append('email', email);
       formDataParams.append('totalTime', `${null}`);
       formDataParams.append('workType', `newTyre`);
+      
       formDataParams.append('price', `${price}`);
       formDataParams.append('regNr', `${regNr}`);
       formDataParams.append('name', `${name}`);

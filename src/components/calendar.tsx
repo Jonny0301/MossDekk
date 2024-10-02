@@ -3,6 +3,8 @@ import TimeSlotSelector from './TimeSlotSelector'; // Import the TimeSlotSelecto
 import Calendar_larrow from '@/svg/Calendar_larrow';
 import Calendar_rarrow from '@/svg/Calendar_rarrow';
 import Calendar_x from '@/svg/Calendar_x';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 import axios from 'axios';
 const backend_url = process.env.NEXT_PUBLIC_API_URL
 
@@ -24,6 +26,7 @@ interface CalendarProps {
 }
 
 const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }) => {
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const [firstMonthIndex, setFirstMonthIndex] = useState(new Date().getMonth()); // Start with current month
   const [year, setYear] = useState(new Date().getFullYear()); // Current year
   const [selectedDay, setSelectedDay] = useState<{ day: number; month: number } | null>(null);
@@ -52,7 +55,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
   };
 
   const isPastDate = (day: number, monthIndex: number, year: number) => {
-    const date = new Date(year, monthIndex, day-1).getTime();
+    const date = new Date(year, monthIndex, day-cartItems[0].delay).getTime();
     const todayAtMidnight = new Date().setHours(0, 0, 0, 0);
     return date < todayAtMidnight;
   };

@@ -115,7 +115,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
       formDataParams.append('password', password);
 
       const response = await axios.post(
-        `${backend_url}/query.php`,
+        `${backend_url}/queryNewSite.php`,
         formDataParams,
         {
           headers: {
@@ -171,7 +171,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
       formDataParams.append('email', email);
       formDataParams.append('totalTime', `${null}`);
       formDataParams.append('workType', `newTyre`);
-      
+
       formDataParams.append('price', `${price}`);
       formDataParams.append('regNr', `${regNr}`);
       formDataParams.append('name', `${name}`);
@@ -184,7 +184,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
 
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/query.php`,
+        `${process.env.NEXT_PUBLIC_API_URL}/queryNewSite.php`,
         formDataParams,
         {
           headers: {

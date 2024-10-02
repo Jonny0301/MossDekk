@@ -119,7 +119,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
       formDataParams.append('type', 'dekk'); // Include the selected day in the request
       formDataParams.append('workType', 'tyreChangeDekkhotell'); // Include the selected day in the request
 
-      const response = await axios.post(`${backend_url}/query.php`, formDataParams, {
+      const response = await axios.post(`${backend_url}/queryNewSite.php`, formDataParams, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },

@@ -19,8 +19,8 @@ const cartSlice = createSlice({
       //   state.items[itemIndex].purchaseAmount = action.payload.purchaseAmount;
       // } else {
         state.items = [];
-        state.items.push(action.payload);
-
+        // state.items.push(action.payload);
+        state.items = [action.payload];
       // }
     },
     removeFromCart: (state, action: PayloadAction<number>) => {

@@ -106,7 +106,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
     try {
       console.log(id);
       
-      const response = await axios.get(`${backend_url}/productDetailsApi.php?pID=${id}`);
+      const response = await axios.get(`${backend_url}/productDetailForNewSite.php?pID=${id}`);
       console.log(response.data);
       
       if (response.data.size == null) {
@@ -141,7 +141,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
       formDataParams.append('sizeTwo', selectProfile);
       formDataParams.append('sizeThree', selectDimension);
       const response = await axios.post(  
-        `${backend_url}/query.php`,
+        `${backend_url}/queryNewSite.php`,
         formDataParams,
         {
           headers: {

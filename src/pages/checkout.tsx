@@ -70,7 +70,7 @@ export default function Pricing() {
       formDataParams.append('modal', "1");
       formDataParams.append('regNr', regNr);
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/query.php`,
+        `${process.env.NEXT_PUBLIC_API_URL}/queryNewSite.php`,
         formDataParams,
         {
           headers: {
@@ -143,7 +143,7 @@ export default function Pricing() {
       formDataParams.append('locationID', '18');
 
       const response = await axios.post(
-        `${backend_url}/query.php`,
+        `${backend_url}/queryNewSite.php`,
         formDataParams,
         {
           headers: {

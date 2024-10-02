@@ -80,7 +80,7 @@ const Contact: React.FC = () => {
     
             // Make the POST request
             const response = await axios.post(
-                `${backend_url}/query.php`,
+                `${backend_url}/queryNewSite.php`,
                 formDataParams, // Pass URLSearchParams directly, no need for .toString()
                 {
                     headers: {

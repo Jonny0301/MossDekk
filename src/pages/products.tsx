@@ -52,7 +52,7 @@ const ProductList: React.FC = ({ }) => {
     const selectWidth = localStorage.getItem("selectedWidth") || '';
     const selectProfile = localStorage.getItem("selectedProfile") || '';
     const selectDimension = localStorage.getItem("selectedDimension") || '';
-
+  
     try {
       const formDataParams = new URLSearchParams();
       formDataParams.append('method', 'fetchFrontTyres');
@@ -60,9 +60,9 @@ const ProductList: React.FC = ({ }) => {
       formDataParams.append('sizeOne', selectWidth);
       formDataParams.append('sizeTwo', selectProfile);
       formDataParams.append('sizeThree', selectDimension);
-
+  
       const response = await axios.post(
-        `${backend_url}/query.php`,
+        `${backend_url}/queryNewSite.php`,
         formDataParams,
         {
           headers: {
@@ -70,6 +70,7 @@ const ProductList: React.FC = ({ }) => {
           },
         }
       );
+  
       if (response.data[0] === "no entry") {
         toast("Tires not found", {
           position: "top-right",
@@ -78,34 +79,46 @@ const ProductList: React.FC = ({ }) => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          type: "warning", // Changed to warning or error if more appropriate 
+          type: "warning",
         });
-        const merged = [...[], ...[], ...[]];
-        setTyres(merged);
+        setTyres([]);
         setBudgetArray([]);
         setQualityArray([]);
         setPremiumArray([]);
         return;
       }
-console.log(response.data);
-
-      // Merge arrays and add purchaseAmount to each tire
+  
+      console.log(response.data);
+  
+      const budgetArray = response.data[1] && response.data[1].length ? response.data[1] : [];
+      const qualityArray = response.data[2] && response.data[2].length ? response.data[2] : [];
+      const premiumArray = response.data[3] && response.data[3].length ? response.data[3] : [];
+  
+      // Helper function to round price
+      const roundPrice = (tire: any) => ({
+        ...tire,
+        price: parseFloat(tire.price).toFixed(0), // Round price to 2 decimal places
+        purchaseAmount: 4,
+      });
+  
+      // Merge and round prices
       const merged = [
-        ...response.data[1].map((tire: any) => ({ ...tire, purchaseAmount: 4 })), // Assuming response.data[1] is an array of tires
-        ...response.data[2].map((tire: any) => ({ ...tire, purchaseAmount: 4 })), // Assuming response.data[2] is another array of tires
-        ...response.data[3].map((tire: any) => ({ ...tire, purchaseAmount: 4 })), // Assuming response.data[3] is another array of tires
+        ...budgetArray.map(roundPrice),
+        ...qualityArray.map(roundPrice),
+        ...premiumArray.map(roundPrice),
       ];
-
+  
       setTyres(merged);
-      setBudgetArray(response.data[1]);
-      setQualityArray(response.data[2]);
-      setPremiumArray(response.data[3]);
-
+      setBudgetArray(budgetArray.map(roundPrice));
+      setQualityArray(qualityArray.map(roundPrice));
+      setPremiumArray(premiumArray.map(roundPrice));
+  
     } catch (error) {
       console.error(error);
     }
   };
-
+  
+  
 
 
   // Handle input change
@@ -364,7 +377,7 @@ console.log(response.data);
                                     }}>
                                       <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
                                     </div>
-                                    <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(tyre.id)}>
+                                    <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => {goToDetailPage(tyre.id)}}>
                                       <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
                                     </div>
                                   </div>

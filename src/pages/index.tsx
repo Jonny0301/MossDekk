@@ -185,7 +185,7 @@ export default function Home() {
             formDataParams.append('sizeTwo', selectProfile);
             formDataParams.append('sizeThree', selectDimension);
             const response = await axios.post(
-                `${backend_url}/query.php`,
+                `${backend_url}/queryNewSite.php`,
                 formDataParams,
                 {
                     headers: {

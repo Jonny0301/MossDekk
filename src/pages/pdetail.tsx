@@ -129,10 +129,17 @@ const ProductDetail = ({ pID }: { pID: number }) => {
     }
   };
   const fetchTyres = async () => {
+    const selectSeason = localStorage.getItem("selectSeason") || '';
+    const selectWidth = localStorage.getItem("selectedWidth") || '';
+    const selectProfile = localStorage.getItem("selectedProfile") || '';
+    const selectDimension = localStorage.getItem("selectedDimension") || '';
     try {
       const formDataParams = new URLSearchParams();
       formDataParams.append('method', 'fetchProductDetail');
-  
+      formDataParams.append('season', selectSeason);
+      formDataParams.append('sizeOne', selectWidth);
+      formDataParams.append('sizeTwo', selectProfile);
+      formDataParams.append('sizeThree', selectDimension);
       const response = await axios.post(  
         `${backend_url}/query.php`,
         formDataParams,
@@ -142,6 +149,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
           },
         }
       );
+  console.log(response.data);
   
       // Check if response.data is an array
       if (Array.isArray(response.data)) {
@@ -162,16 +170,9 @@ const ProductDetail = ({ pID }: { pID: number }) => {
 
 
   useEffect(() => {
-    if(!product){
-      setTimeout(() => {
-        fetchTyres()
-        fetchProduct();
-        
-      }, 1000);
-    }
-    else{
-      fetchTyres()
-      fetchProduct(); 
+    if (!product && id) {
+      fetchProduct();
+      fetchTyres();
     }
   }, [id]);
   return product ? (

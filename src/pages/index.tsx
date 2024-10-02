@@ -75,7 +75,17 @@ export default function Home() {
     const [selectedWidth, setSelectedWidth] = useState<string | null>(null);
     const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
     const [selectedDimension, setSelectedDimension] = useState<string | null>(null);
-
+    useEffect(() => {
+        const storedSeason = localStorage.getItem('selectSeason');
+        const storedWidth = localStorage.getItem('selectedWidth');
+        const storedProfile = localStorage.getItem('selectedProfile');
+        const storedDimension = localStorage.getItem('selectedDimension');
+    
+        if (storedSeason) setSelectSeason(storedSeason);
+        if (storedWidth) setSelectedWidth(storedWidth);
+        if (storedProfile) setSelectedProfile(storedProfile);
+        if (storedDimension) setSelectedDimension(storedDimension);
+      }, []);
     useEffect(() => {
         if (selectseason) localStorage.setItem('selectSeason', selectseason);
     }, [selectseason]);
@@ -189,7 +199,18 @@ export default function Home() {
                 (response.data[3] && response.data[3].length > 0)
             ) {
                 window.location.href = "/products";
-            } else {
+            }else if(response.data[0]=="no entry"){
+                toast("Tires not found", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    type: "warning", // Changed to warning or error if more appropriate
+                });
+            }
+             else {
                 toast("Tires not found", {
                     position: "top-right",
                     autoClose: 2000,
@@ -283,6 +304,7 @@ export default function Home() {
                                         <select
                                             className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:ring-0 focus:border-0 rounded-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
                                             onChange={handleSeasonChange}
+                                            value={selectseason || ''}
                                         >
                                             <option value="summer" className='text-black text-lg font-medium leading-7'>Sommerdekk</option>
                                             <option value="winter" className='text-black text-lg font-medium leading-7'>Vinterdekk - piggfrie</option>
@@ -302,6 +324,7 @@ export default function Home() {
                                         <select
                                             className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:ring-0 focus:border-0 rounded-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
                                             onChange={handleWidthChange}
+                                            value={selectedWidth || ''}
                                         >
                                             {generateOptions(145, 355, 10)}
                                         </select>
@@ -320,6 +343,7 @@ export default function Home() {
                                         <select
                                             className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:ring-0 focus:border-0 rounded-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
                                             onChange={handleProfileChange}
+                                            value={selectedProfile || ''}
                                         >
                                             {generateOptions(30, 90, 5)}
                                         </select>
@@ -338,6 +362,7 @@ export default function Home() {
                                         <select
                                             className="h-[64px] block w-full px-[18px] py-[11px] border border-gray-300 shadow-sm focus:outline-none focus:ring-0 focus:border-0 rounded-lg rounded-br-lg text-black text-lg font-medium leading-7 appearance-none"
                                             onChange={handleDimensionChange}
+                                            value={selectedDimension || ''}
                                         >
                                             {generateOptions(13, 27)}
                                         </select>

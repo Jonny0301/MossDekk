@@ -70,7 +70,7 @@ const ProductList: React.FC = ({ }) => {
           },
         }
       );
-      if (response.data === "no entry") {
+      if (response.data[0] === "no entry") {
         toast("Tires not found", {
           position: "top-right",
           autoClose: 2000,
@@ -162,6 +162,17 @@ console.log(response.data);
     const speedValues = ["K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "H", "V", "W", "Y", "ZR"];
     return speedValues.indexOf(tyreSpeed) >= speedValues.indexOf(selectedSpeed);
   }
+  useEffect(() => {
+    const storedSeason = localStorage.getItem('selectSeason');
+    const storedWidth = localStorage.getItem('selectedWidth');
+    const storedProfile = localStorage.getItem('selectedProfile');
+    const storedDimension = localStorage.getItem('selectedDimension');
+
+    if (storedSeason) setSelectSeason(storedSeason);
+    if (storedWidth) setSelectedWidth(storedWidth);
+    if (storedProfile) setSelectedProfile(storedProfile);
+    if (storedDimension) setSelectedDimension(storedDimension);
+  }, []);
   useEffect(() => {
     if (selectseason) localStorage.setItem('selectSeason', selectseason);
   }, [selectseason]);
@@ -810,6 +821,7 @@ console.log(response.data);
                       <select
                         className="h-[52px] block w-full pr-[13px] pl-[10px] py-[12px] border border-gray-300 shadow-sm focus:outline-none bg-[#EEF2F3] focus:border-0 focus:ring-0 rounded-[4px] text-black text-lg font-norml font-['Inter'] leading-7 appearance-none"
                         onChange={handleSeasonChange}
+                        value={selectseason || ''}
                       >
                         <option value="summer" className='text-black text-lg font-nomal font-["Inter"] leading-7'>Summer</option>
                         <option value="winter" className='text-black text-lg font-nomal font-["Inter"] leading-7'>Winter</option>
@@ -825,6 +837,7 @@ console.log(response.data);
                     <div className="cat-info-input relative">
                       <select
                         onChange={handleWidthChange}
+                        value={selectedWidth || ''}
                         className="h-[52px] block w-full pr-[13px] pl-[10px] py-[12px] border border-gray-300 shadow-sm focus:outline-none bg-[#EEF2F3] uppercase focus:border-0 focus:ring-0 rounded-[4px] text-black text-lg font-norml font-['Inter'] leading-7 appearance-none"
                       >
                         {generateOptions(145, 355, 10)}
@@ -839,6 +852,7 @@ console.log(response.data);
                     <div className="cat-info-input relative">
                       <select
                         onChange={handleProfileChange}
+                        value={selectedProfile || ''}
                         className="h-[52px] block w-full pr-[13px] pl-[10px] py-[12px] border border-gray-300 shadow-sm focus:outline-none bg-[#EEF2F3] uppercase focus:border-0 focus:ring-0 rounded-[4px] text-black text-lg font-norml font-['Inter'] leading-7 appearance-none"
                       >
                         {generateOptions(30, 90, 5)}
@@ -853,6 +867,7 @@ console.log(response.data);
                     <div className="cat-info-input relative">
                       <select
                         onChange={handleDimensionChange}
+                        value={selectedDimension || ''}
                         className="h-[52px] block w-full pr-[13px] pl-[10px] py-[12px] border border-gray-300 shadow-sm focus:outline-none bg-[#EEF2F3] uppercase focus:border-0 focus:ring-0 rounded-[4px] text-black text-lg font-norml font-['Inter'] leading-7 appearance-none"
                       >
                         {generateOptions(13, 27)}

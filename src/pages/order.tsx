@@ -278,7 +278,6 @@ export default function Order() {
                       <div className="flex text-2xl leading-8 font-semi-bold text-black max-[1250px]:text-lg max-[1250px]:leading-7">
                         Order Total
                       </div>
-                      
                       <div className="flex text-2xl leading-8 font-semi-bold text-black max-[1250px]:text-lg max-[1250px]:leading-7">
                         Nok {order.price} / stk
                       </div>

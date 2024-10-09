@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import TimeSlotSelector from './TimeSlotSelector'; // Import the TimeSlotSelector
 import Calendar_larrow from '@/svg/Calendar_larrow';
 import Calendar_rarrow from '@/svg/Calendar_rarrow';
@@ -6,7 +6,8 @@ import Calendar_x from '@/svg/Calendar_x';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import axios from 'axios';
-const backend_url = process.env.NEXT_PUBLIC_API_URL
+import LoadingComponent from "@/components/onLoad"
+const backend_url = process.env.NEXT_PUBLIC_API_URL;
 
 const months = [
   "January", "February", "March", "April", "May", "June",
@@ -20,27 +21,27 @@ const getDaysInMonth = (month: number, year: number) => {
 };
 
 interface CalendarProps {
-  onDateTimeSelected: (dateTime: string) => void; // Prop to handle selected date and time
-  // isOpen: boolean;
-  closeCalendar: () => void; // Prop to close the calendar
+  onDateTimeSelected: (dateTime: string) => void;
+  closeCalendar: () => void;
 }
 
 const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }) => {
+  const [loading, setLoading] = useState(false);
+
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const [firstMonthIndex, setFirstMonthIndex] = useState(new Date().getMonth()); // Start with current month
-  const [year, setYear] = useState(new Date().getFullYear()); // Current year
+  const [firstMonthIndex, setFirstMonthIndex] = useState(new Date().getMonth());
+  const [year, setYear] = useState(new Date().getFullYear());
   const [selectedDay, setSelectedDay] = useState<{ day: number; month: number } | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
-  const [timeSlots, setTimeSlots] = useState<string[]>([]); // State for time slots
+  const [timeSlots, setTimeSlots] = useState<string[]>([]);
   const [closed, setClosed] = useState<boolean>(false);
-  // Compute the second month index based on the first month index
+
   const secondMonthIndex = (firstMonthIndex + 1) % 12;
-  const secondMonthYear = firstMonthIndex === 11 ? year + 1 : year; // Handle year change if December
-  // if (!isOpen) return null;
+  const secondMonthYear = firstMonthIndex === 11 ? year + 1 : year;
 
   const updateCalendars = (offset: number) => {
     setFirstMonthIndex((prevIndex) => {
-      let newIndex = prevIndex + offset; // Move in one-month blocks
+      let newIndex = prevIndex + offset;
 
       if (newIndex > 11) {
         setYear((prevYear) => prevYear + 1);
@@ -55,7 +56,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
   };
 
   const isPastDate = (day: number, monthIndex: number, year: number) => {
-    const date = new Date(year, monthIndex, day-cartItems[0].delay).getTime();
+    const date = new Date(year, monthIndex, day - cartItems[0]?.delay || 0).getTime();
     const todayAtMidnight = new Date().setHours(0, 0, 0, 0);
     return date < todayAtMidnight;
   };
@@ -64,7 +65,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
     const daysInMonth = getDaysInMonth(monthIndex, year);
     const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
     const firstDayOfMonth = new Date(year, monthIndex, 1).getDay();
-    const emptyDays = Array.from({ length: firstDayOfMonth }, (_, i) => null);
+    const emptyDays = Array.from({ length: firstDayOfMonth }, () => null);
 
     return (
       <div className="grid grid-cols-7 gap-[8px] max-[772px]:w-[334px]">
@@ -81,11 +82,11 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
             <div
               key={day}
               className={`text-center cursor-pointer text-base leading-6 font-normal text-[#73C018] ${selectedDay?.day === day && selectedDay.month === monthIndex ? 'bg-blue-300' : ''
-                } ${isWeekend ? 'text-[#E21632]' : ''} ${isDisabled ? 'text-[#888888] cursor-not-allowed' : ''}`}
+                } ${isDisabled ? 'text-[#888888] cursor-not-allowed' : ''}`}
               onClick={() => {
                 if (!isDisabled) {
                   setSelectedDay({ day, month: monthIndex });
-                  getTimeslot(day); // Fetch time slots for the selected day
+                  getTimeslot(day, monthIndex); // Pass the correct monthIndex for slot fetching
                 }
               }}
             >
@@ -100,52 +101,59 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
   const handleTimeSlotSelection = (time: string) => {
     setSelectedTimeSlot(time);
     if (selectedDay) {
-      const dateTime = `${year}/${selectedDay.month + 1}/${selectedDay.day} ${time}`; // Include the selected time
-      onDateTimeSelected(dateTime); // Call the prop function with the formatted date
-      closeCalendar(); // Close the calendar after selection
+      // Ensure month is correctly adjusted
+      const dateTime = `${year}/${(selectedDay.month + 1).toString().padStart(2, '0')}/${selectedDay.day.toString().padStart(2, '0')} ${time}`;
+      onDateTimeSelected(dateTime);
+      closeCalendar();
     }
   };
 
-  const getTimeslot = async (day: number) => {
-    const date = `${year}/${firstMonthIndex + 1}/${day}`;
-    const datestring = new Date(date);
+  // Fetch the time slots with corrected month handling
+  const getTimeslot = async (day: number, monthIndex: number) => {
+    setLoading(true)
+    // Correct the month to be 1-indexed for the API request
+    const formattedDate = `${year}/${(monthIndex + 1).toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}`;
+    const datestring = new Date(formattedDate);
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const dayofWeek = daysOfWeek[datestring.getDay()];
+
     try {
       const formDataParams = new URLSearchParams();
       formDataParams.append('method', 'getTimeSlots');
-      formDataParams.append('day', dayofWeek); // Include the selected day in the request
-      formDataParams.append('date', date); // Include the selected day in the request
-      formDataParams.append('serviceIDs', ""); // Include the selected day in the request
-      formDataParams.append('serviceCounts', ""); // Include the selected day in the request
-      formDataParams.append('locationID', '18'); // Include the selected day in the request
-      formDataParams.append('type', 'dekk'); // Include the selected day in the request
-      formDataParams.append('workType', 'tyreChangeDekkhotell'); // Include the selected day in the request
+      formDataParams.append('day', dayofWeek);
+      formDataParams.append('date', formattedDate); // Use corrected formatted date
+      formDataParams.append('serviceIDs', "");
+      formDataParams.append('serviceCounts', "");
+      formDataParams.append('locationID', '18');
+      formDataParams.append('type', 'dekk');
+      formDataParams.append('workType', 'tyreChangeDekkhotell');
 
       const response = await axios.post(`${backend_url}/queryNewSite.php`, formDataParams, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-      if(response.data=="closed"){
+
+      if (response.data[0] === "closed") {
+        setLoading(false)
+
         setClosed(true);
-      }else{
-        
+      } else {
+        setClosed(false);
+
         const htmlString = response.data;
-  
-        // Extract time slots from the HTML string
+
         const timeSlots = [];
         const regex = /saveTimeDekk\('(\d{2}:\d{2})',/g;
         let match;
-    
+
         while ((match = regex.exec(htmlString)) !== null) {
-          timeSlots.push(match[1]); // Push the time string into the array
+          timeSlots.push(match[1]);
         }
-    
-        // Join the time slots into a single string
-        const timeSlotsString = timeSlots.join(',');
-        
-        setTimeSlots(timeSlots); // Update the state with time slots if needed
+
+        setTimeSlots(timeSlots);
+        setLoading(false)
+
       }
     } catch (error) {
       console.error('Error fetching time slots:', error);
@@ -154,14 +162,15 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
 
   useEffect(() => {
     if (selectedDay) {
-      getTimeslot(selectedDay.day); // Fetch time slots when the selected day changes
+      // Adjusted to pass the monthIndex properly
+      getTimeslot(selectedDay.day, selectedDay.month);
     }
   }, [selectedDay]);
 
   return (
     <div className="pt-[64px] pl-[14px] pr-[13px] pb-[18px] relative rounded max-[772px]:p-0">
       <div className="grid grid-cols-2 gap-[56px] max-[772px]:grid-cols-1">
-        <div className='absolute top-[18px] right-[13px] max-[772px]:top-[-45px] cursor-pointer' onClick={()=>closeCalendar()}>
+        <div className='absolute top-[18px] right-[13px] max-[772px]:top-[-45px] cursor-pointer' onClick={closeCalendar}>
           <Calendar_x />
         </div>
 
@@ -189,21 +198,11 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
           {renderDays(secondMonthIndex, secondMonthYear)}
         </div>
       </div>
-{
-  closed == true?
-  <div className='text-black pt-3'>No employees available at this date</div>
-  :
-
-      // {selectedDay ? (
-        // <>
+      {
+        closed ?
+          <div className='text-black pt-3'>No employees available at this date</div> :
           <TimeSlotSelector timeSlots={timeSlots} onTimeSlotSelected={handleTimeSlotSelection} />
-          /* <div className="mt-4">
-            <p className="text-green-600">Selected Day: {selectedDay.day} {months[selectedDay.month]} {year}</p>
-            <p className="text-black">Day of the Week: {weekdays[new Date(year, selectedDay.month, selectedDay.day).getDay()]}</p>
-          </div> */
-        // </>
-      // ):<div className='text-black pt-3'>No employees available at this date</div>}
-}
+      }
 
       <div className='pt-[20px] flex flex-col max-[772px]:hidden'>
         <p className='text-base leading-6 font-medium text-[#6D6D6D]'>*Note:</p>
@@ -216,9 +215,10 @@ const Calendar: React.FC<CalendarProps> = ({ onDateTimeSelected, closeCalendar }
           <p className='text-xs leading-4 font-normal font-["Inter"] text-[#6D6D6D]'>Available time</p>
         </div>
       </div>
+      {loading && <LoadingComponent />}
+
     </div>
   );
 };
 
 export default Calendar;
-``

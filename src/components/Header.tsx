@@ -91,7 +91,7 @@ export default function Header() {
         setIsMenuPopupOpen(false);
     };
     return (
-        <header className="flex flex-row pl-[200px] pr-[200px] responsive-header w-full justify-between">
+        <header className="flex flex-row pl-[200px] pr-[200px] responsive-header w-full justify-between z-10">
             <div className='py-3 flex flex-row header-content w-full justify-between'>
                 <div className='w-32 header-logo' style={{ "height": "69.54px" }}>
                     <Link href='/'>

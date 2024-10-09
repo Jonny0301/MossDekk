@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { useDispatch } from 'react-redux';
+import LoadingComponent from "@/components/onLoad"
+
 const backend_url = process.env.NEXT_PUBLIC_API_URL;
 
 interface ModalProps {
@@ -22,17 +24,21 @@ interface ModalProps {
   mobile: string;
   date: string;
   count: number;
-  envprice:number;
-  totalPrice:number
+  envprice: number;
+  totalPrice: number
 }
 
-const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, price, regNr, name, mobile, date, count,envprice,totalPrice }) => {
+const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, price, regNr, name, mobile, date, count, envprice, totalPrice }) => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [iframeHeight, setIframeHeight] = useState(600); // Default height
+
+  const [loading, setLoading] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const modalRef = useRef<HTMLDivElement>(null);
   const adminModalRef = useRef<HTMLDivElement>(null);
   const paymentModalRef = useRef<HTMLDivElement>(null);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Firmakunde/faktura");
+  const [selectedOption, setSelectedOption] = useState("Vipps/Kortbeating/debetaling");
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -41,6 +47,32 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
   const [paymentUrl, setPaymentUrl] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const serviceIds = useState<string>(",128,165")
+
+  useEffect(() => {
+    const handleIframeLoad = () => {
+      // Check if the iframe content is accessible (same-origin)
+      if (iframeRef.current && iframeRef.current.contentWindow) {
+        try {
+          const iframeDocument = iframeRef.current.contentDocument || iframeRef.current.contentWindow.document;
+
+          // Example: Remove unnecessary div elements from the iframe's DOM
+          const unnecessaryDivs = iframeDocument.querySelectorAll('.sc-kMribo');
+          unnecessaryDivs.forEach(div => div.remove());
+
+          // Adjust iframe height dynamically after removing elements
+          const iframeContentHeight = iframeDocument.body.scrollHeight;
+          setIframeHeight(iframeContentHeight); // Dynamically adjust height
+        } catch (error) {
+          console.log('Cannot access iframe content due to cross-origin restrictions.');
+        }
+      }
+    };
+
+    if (iframeRef.current) {
+      iframeRef.current.onload = handleIframeLoad;
+    }
+  }, [paymentUrl]);
+
   const handleClickOutside = (event: MouseEvent) => {
     // Check if the click is outside both modals (main modal and admin modal)
     if (
@@ -194,7 +226,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
       );
       setPaymentUrl(response.data[2]);
       if (response.data[0] == "success") {
-        window.location.href=`/order?RegNr=${regNr}&day=${day}&time=${time}&envprice=${envprice}&totalPrice=${totalPrice}`
+        window.location.href = `/order?RegNr=${regNr}&day=${day}&time=${time}&envprice=${envprice}&totalPrice=${totalPrice}`
       }
       else if (response.data[0] == "already ordered") {
         toast("This Reg Nr is already under process", {
@@ -219,7 +251,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
         });
       }
       else if (response.data[0] == "no employee") {
-        toast("TNo employee available at this time", {
+        toast("No employee available at this time", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -234,11 +266,17 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
       alert("An error occurred. Please try again later.");
     }
   };
+  const goToMainPage = () => {
+    setLoading(true)
+    window.location.href = "/"
+  }
+
+  if (!isOpen) return null;
 
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50" style={{zIndex:"15"}}>
           <div ref={modalRef} className="w-[838px] max-h-[100vh] overflow-y-auto hide-scrollbar flex flex-col h-[480px]">
             <div className="px-[30px] py-[31px] flex flex-row justify-between bg-[#18181B] items-center max-[590px]:p-[15px]">
               <p className="text-lg leading-7 font-medium text-[#73C018] max-[590px]:text-sm">Beataling Alternativ</p>
@@ -317,7 +355,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
                 )}
               </div>
               <div className='flex flex-row justify-end gap-[9px]'>
-                <div className='rounded-[8px] p-[10px] bg-[#E7E7E7] gap-[2px] flex flex-row items-center cursor-pointer' onClick={onClose}>
+                <div className='rounded-[8px] p-[10px] bg-[#E7E7E7] gap-[2px] flex flex-row items-center cursor-pointer' onClick={() => { goToMainPage() }}>
                   <Cheveron_Left />
                   <p className='text-lg leading-7 font-normal font-["Inter"] text-black'>Tilbake</p>
                 </div>
@@ -331,7 +369,7 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
         </div>
       )}
       {isAdminModalOpen && (
-        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-19 flex justify-center items-center bg-black bg-opacity-50">
           <div ref={adminModalRef} className="bg-[#1F1F1F] p-6 rounded-md">
             <p>Enter Admin Password:</p>
             <input
@@ -349,18 +387,19 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
         </div>
       )}
       {paymentUrl && (
-        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50 w-full">
-          <div ref={paymentModalRef} className="bg-white rounded-md max-[550px]:w-full">
+        <div className="fixed inset-0 z-19 flex justify-center items-center bg-black bg-opacity-50 w-full" style={{zIndex:'19'}}>
+          <div ref={paymentModalRef} className="bg-white rounded-md max-[550px]:w-full flex iframe-height" style={{flexDirection:"column"}}>
             <div className='py-6 px-6 bg-[#2f2f2f] rounded-t-md max-[550px]:w-full max-[400px]:px-2'>
               <h3 className='text-white text-semi-bold text-xl'>Beataling </h3>
             </div>
-            <div className='px-6 max-[400px]:px-1'>
+            <div className='px-6 max-[400px]:px-1 overflow-y-scroll'>
               <iframe
-                src={`${paymentUrl}?language=no&sdk=0.0.17`}
+                src={`${paymentUrl}?language=no&ui=inline&sdk=0.0.17`}
                 frameBorder="0"
                 scrolling="yes"
-                height="600px"
-                className='w-[800px] max-[900px]:w-[500px] max-[550px]:w-full max-[550px]:h-[400px]  overflow-scroll'
+                allowTransparency={true}
+                sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
+                className='w-[800px] max-[900px]:w-[500px] max-[550px]:w-full  overflow-scroll h-[1013px]'
               />
 
             </div>
@@ -370,6 +409,8 @@ const Faktura_Another_Modal: React.FC<ModalProps> = ({ isOpen, onClose, email, p
           </div>
         </div>
       )}
+      {loading && <LoadingComponent />}
+
     </>
   );
 };

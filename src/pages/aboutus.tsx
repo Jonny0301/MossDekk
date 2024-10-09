@@ -13,6 +13,8 @@ import Ensurance from "@/svg/Ensurance";
 import Experts from "@/svg/Experts";
 import Services from "@/svg/Services";
 import { SetStateAction, useState } from "react";
+import BackToTop from "@/components/backToTop";
+
 const inter = Inter({ subsets: ["latin"] });
 const backend_url = process.env.NEXT_PUBLIC_API_URL
 
@@ -166,6 +168,8 @@ export default function About() {
                     </div>
                     <Partner />
                     <Footer />
+                    <BackToTop />
+
                 </div>
             </main>
         </div>

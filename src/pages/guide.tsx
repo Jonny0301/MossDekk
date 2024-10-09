@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import GetInTouch from "@/components/GetInTouch";
 const inter = Inter({ subsets: ["latin"] });
 const backend_url = process.env.NEXT_PUBLIC_API_URL
+import BackToTop from "@/components/backToTop";
 
 export default function Guide() {
     const router = useRouter();
@@ -98,7 +99,7 @@ export default function Guide() {
                                 <p className="gpc-main-text w-[728px] text-white text-2xl font-medium font-['Inter'] leading-loose">As seen on the image , the sidewall of a tire includes numbers and letters, which perform the below tire information:</p>
                                 <p className="gpc-extra-text text-[#f6f6f6] text-lg font-normal font-['Inter'] leading-7">1. 225 tire width<br />2. 40 tire profile<br />3. R indicates that it is a “Radial” tire<br />4. 18 tire diameter<br />5. 94 tire load rating<br />6. Y tire speed rating</p>
                                 <p className="gpc-main-text w-[728px] text-white text-2xl font-medium font-['Inter'] leading-loose">When choosing new tires, we recommend using the same size as your existing tires. Note down the information and start your search on blackcircles.com.eg using the three initial standard:</p>
-                                <p className="gpc-extra-text text-[#f6f6f6] text-lg font-normal font-['Inter'] leading-7">1. Width<br/>2. Profile<br/>3. Diameter</p>
+                                <p className="gpc-extra-text text-[#f6f6f6] text-lg font-normal font-['Inter'] leading-7">1. Width<br />2. Profile<br />3. Diameter</p>
                                 <p className="gpc-main-text w-[728px] text-white text-2xl font-medium font-['Inter'] leading-loose">Then, you can select the speed rating and the load rating for your vehicle’s tires.</p>
                             </div>
                         </div>
@@ -106,6 +107,8 @@ export default function Guide() {
                     <Partner />
                     <GetInTouch />
                     <Footer />
+                    <BackToTop />
+
                 </div>
             </main>
         </div>

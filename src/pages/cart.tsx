@@ -20,7 +20,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { useDispatch } from 'react-redux';
 import { decrementAmount, incrementAmount } from "@/store/cartSlice";
+import LoadingComponent from "@/components/onLoad"
 import { removeFromCart } from '../store/cartSlice'; // Adjust the import based on your file structure
+import { tree } from "next/dist/build/templates/app-page";
+import BackToTop from "@/components/backToTop";
+
 const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 interface Product {
@@ -46,8 +50,7 @@ interface Product {
 }
 const Cart = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  console.log(cartItems);
-  
+  const [loading, setLoading] = useState(false);
   const [productprice, setProductPrice] = useState<number>(1);
   const [enviromenttax, setEnviromentTax] = useState<number>(0);
   const [balancing, setBalancing] = useState<number>(0);
@@ -70,7 +73,11 @@ const Cart = () => {
   }
   )
   const goToCheckOutPage = () => {
+    setLoading(true)
+    // setTimeout(() => {
     window.location.href = "/checkout"
+    // }, 3000);
+    // setLoading(false)
   }
   const dispatch = useDispatch();
   const handleIncrement = (id: number) => {
@@ -110,11 +117,19 @@ const Cart = () => {
                   <div className="flex flex-row gap-[26px] max-[1227px]:gap-[15px] max-[834px]:gap-[14px] max-[572px]:items-start">
                     {product?.image && product.image.length > 30 ?
                       <div className="pm-minfo-image w-[161px] h-[161px] flex justify-center items-center bg-[#F7F7F7] max-[1227px]:w-[109px] max-[1227px]:h-[110px] max-[834px]:w-[69px] max-[834px]:h-[69px]">
-                        <Image src={product.image} width={84} height={130} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
+                        {product.image.length === 0 ?
+                          <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                          :
+                          <Image src={product.image} width={84} height={130} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
+                        }
                       </div>
                       :
                       <div className="pm-minfo-image w-[161px] h-[161px] flex justify-center items-center bg-[#F7F7F7] max-[1227px]:w-[109px] max-[1227px]:h-[110px] max-[834px]:w-[69px] max-[834px]:h-[69px]">
-                        <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} width={84} height={130} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
+                        {product.image.length === 0 ?
+                          <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                          :
+                          <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} width={84} height={130} alt="Tire image" className="w-[84px] h-[130px] max-[1227px]:w-[55px] max-[1227px]:h-[85px] max-[834px]:w-[35px] max-[834px]:h-[54px]"></Image>
+                        }
                       </div>
                     }
                     <div className="pm-minfo-text gap-[20px] flex flex-col justify-center max-[1227px]:gap-[3px] max-[446px]:h-[57px] max-[446px]:w-[161px]">
@@ -132,7 +147,7 @@ const Cart = () => {
                   <div className="choose-amount-pan flex flex-row gap-[2px]">
                     <button className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-4xl leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px] max-[834px]:w-[32px] max-[834px]:h-[32px] max-[834px]:text-2xl cursor-pointer" onClick={() => dispatch(decrementAmount(product.id))} disabled={product.purchaseAmount <= 1}>-</button>
                     <div className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-lg leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px]  max-[834px]:w-[32px] max-[834px]:h-[32px]">{product.purchaseAmount}</div>
-                    <button className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-4xl leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px]  max-[834px]:w-[32px] max-[834px]:h-[32px] max-[834px]:text-2xl cursor-pointer" onClick={() => dispatch(incrementAmount(product.id))} disabled={product.purchaseAmount >= 4}>+</button>
+                    <button className="choose-item flex justify-center items-center rounded-[4px] w-[56px] h-[55px] text-4xl leading-7 text-black font-normal font-['Inter'] bg-white border-[#73C018] border-[1px]  max-[834px]:w-[32px] max-[834px]:h-[32px] max-[834px]:text-2xl cursor-pointer" onClick={() => dispatch(incrementAmount(product.id))} disabled={product.purchaseAmount >= 20}>+</button>
                   </div>
                 </div>
                 <div className="pm-priceam flex flex-row gap-[27px] items-center max-[1227px]:gap-[19px] max-[446px]:flex-col-reverse max-[446px]:items-end max-[446px]:gap-[40px] ">
@@ -154,7 +169,7 @@ const Cart = () => {
           </div>
           <div className="final-cart-info-pan bg-white pt-[46px] pl-[258px] pr-[246px] pb-[203px] flex flex-row justify-between max-[1464px]:pl-[112px] max-[1464px]:pr-[80px] max-[1024px]:pt-[20.29px] max-[1024px]:pb-[171px] max-[896px]:pl-[19px] max-[896px]:pr-[16px] max-[732px]:flex-col-reverse	max-[732px]:items-end max-[732px]:gap-[36px] max-[732px]:pt-[0px] max-[732px]:pb-[42px]">
             <div className="flex flex-col gap-[39px] max-[1024px]:gap-[10.71px] max-[896px]:pl-[19px] max-[896px]:pr-[16px] max-[732px]:items-end max-[732px]:pr-[0px]">
-              <div className="flex flew-row gap-[24px] items-center max-[732px]:gap-[2px]">
+              {/* <div className="flex flew-row gap-[24px] items-center max-[732px]:gap-[2px]">
                 <External_link />
                 <p className="text-lg leading-7 font-medium text-[#73C018]">Del handlekurv</p>
               </div>
@@ -164,7 +179,7 @@ const Cart = () => {
                   className="form-checkbox h-[18px] w-[18px] text-blue-600 border-black border-[3px]"
                 />
                 <p className="text-lg leading-7 font-medium text-black">Rabattkode</p>
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-col w-[691px] max-[1160px]:w-[472px] max-[512px]:w-[340px]">
               <div className="flex flex-row mb-[41px] max-[1024px]:mb-[18px] max-[732px]:mb-[10px]">
@@ -200,7 +215,7 @@ const Cart = () => {
               </div>
               <div className="flex justify-end ">
                 <div className="py-[11.5px] px-[11px] bg-[#EF4225] rounded-[4px] max-[1024px]:py-[15.5px] max-[1024px]:px-[10px] max-[512px]:p-[10px] cursor-pointer" onClick={goToCheckOutPage}>
-                  <p className="text-lg leading-7 font-medium max-[1024px]:text-sm">SJEKK UT</p>
+                  <p className="text-lg leading-7 font-medium max-[1024px]:text-sm text-white">SJEKK UT</p>
                 </div>
               </div>
             </div>
@@ -208,6 +223,9 @@ const Cart = () => {
           <Partner />
           <GetInTouch />
           <Footer />
+          {loading && <LoadingComponent />}
+          <BackToTop />
+
         </div>
       </main>
     </div>

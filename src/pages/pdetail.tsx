@@ -26,6 +26,8 @@ import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
 import { useDispatch } from 'react-redux';
 import { addToCart, } from '../store/cartSlice';
+import BackToTop from "@/components/backToTop";
+
 const inter = Inter({ subsets: ["latin"] });
 
 interface Product {
@@ -77,10 +79,10 @@ const ProductDetail = ({ pID }: { pID: number }) => {
     dispatch(addToCart(product));
   };
 
-  const [count, setCount] = useState<number>(product?.purchaseAmount || 1);
+  const [count, setCount] = useState<number>(product?.purchaseAmount || 4);
 
   const handleIncrement = () => {
-    if (count < 4) {
+    if (count < 20) {
       setCount(prevCount => prevCount + 1);
       setProduct(prevProduct => prevProduct ? { ...prevProduct, purchaseAmount: prevProduct.purchaseAmount + 1 } : null);
     }
@@ -105,10 +107,10 @@ const ProductDetail = ({ pID }: { pID: number }) => {
   const fetchProduct = async () => {
     try {
       console.log(id);
-      
+
       const response = await axios.get(`${backend_url}/productDetailForNewSite.php?pID=${id}`);
       console.log(response.data);
-      
+
       if (response.data.size == null) {
         setProduct(response.data);
       } else {
@@ -140,7 +142,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
       formDataParams.append('sizeOne', selectWidth);
       formDataParams.append('sizeTwo', selectProfile);
       formDataParams.append('sizeThree', selectDimension);
-      const response = await axios.post(  
+      const response = await axios.post(
         `${backend_url}/queryNewSite.php`,
         formDataParams,
         {
@@ -149,8 +151,8 @@ const ProductDetail = ({ pID }: { pID: number }) => {
           },
         }
       );
-  console.log(response.data);
-  
+      console.log(response.data);
+
       // Check if response.data is an array
       if (Array.isArray(response.data)) {
         const productsWithAmount = response.data.map((product: any) => ({
@@ -165,7 +167,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
       console.error("Error fetching tyres:", error);
     }
   };
-  
+
 
 
 
@@ -186,40 +188,80 @@ const ProductDetail = ({ pID }: { pID: number }) => {
               {product?.image && product.image.length > 30 ?
                 <>
                   <div className="pd-image w-[640px] h-[700px] flex justify-center items-center bg-white max-[1340px]:w-[474px] max-[1340px]:h-[519px] max-[520px]:w-[343px] max-[520px]:h-[375px]">
-                    <Image src={product.image} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
+                    {product.image.length === 0 ?
+                      <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                      :
+                      <Image src={product.image} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
+                    }
                   </div>
                   <div className="pd-carsouel flex flex-row gap-[12px] justify-between max-[520px]:gap-[8px]">
                     <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      {product.image.length === 0 ?
+                        <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                        :
+                        <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      }
                     </div>
-                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      {product.image.length === 0 ?
+                        <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                        :
+                        <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      }
                     </div>
-                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      {product.image.length === 0 ?
+                        <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                        :
+                        <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      }
                     </div>
-                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      {product.image.length === 0 ?
+                        <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                        :
+                        <Image src={product.image} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      }
                     </div>
                   </div>
                 </>
                 :
                 <>
                   <div className="pd-image w-[640px] h-[700px] flex justify-center items-center bg-white max-[1340px]:w-[474px] max-[1340px]:h-[519px] max-[520px]:w-[343px] max-[520px]:h-[375px]">
-                    <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
+                    {product.image.length === 0 ?
+                      <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                      :
+                      <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={306} height={478} className="w-[306px] h-[478px] max-[1340px]:w-[228px] max-[1340px]:h-[356px] max-[520px]:w-[164px] max-[520px]:h-[257px]"></Image>
+                    }
                   </div>
                   <div className="pd-carsouel flex flex-row gap-[12px] justify-between max-[520px]:gap-[8px]">
                     <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      {product.image.length === 0 ?
+                        <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                        :
+                        <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      }
                     </div>
-                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      {product.image.length === 0 ?
+                        <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                        :
+                        <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      }
                     </div>
-                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      {product.image.length === 0 ?
+                        <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                        :
+                        <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      }
                     </div>
-                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#D6D6D6] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
-                      <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                    <div className="pd-carsouel-item w-[149px] h-[150px] border-[#73C018] border-[1px] bg-white flex justify-center items-center max-[1340px]:w-[110px] max-[1340px]:h-[112px] max-[520px]:w-[80px] max-[520px]:h-[81px]">
+                      {product.image.length === 0 ?
+                        <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                        :
+                        <Image src={`${backend_url}/uploads/tyreImg/${product.image}`} alt="Car accessories image" width={82} height={128} className="w-[82px] h-[128px] max-[1340px]:w-[61px] max-[1340px]:h-[96px] max-[520px]:w-[44px] max-[520px]:h-[69px]" />
+                      }
                     </div>
                   </div>
                 </>
@@ -233,9 +275,9 @@ const ProductDetail = ({ pID }: { pID: number }) => {
               <div className="pdi-price pt-[15px] max-[1340px]:pt-[19px] max-[520px]:pt-[4px]">
                 <p className="text-2xl leading-8 font-semi-bold text-black">Pris: kr {product.price} / stk</p>
               </div>
-              <div className="pdi-description pt-[25px] w-[477px] max-[1340px]:w-[384px] max-[520px]:w-[342px] max-[520px]:pt-[11px]">
+              {/* <div className="pdi-description pt-[25px] w-[477px] max-[1340px]:w-[384px] max-[520px]:w-[342px] max-[520px]:pt-[11px]">
                 <p className="text-lg leading-7 font-normal font-['Inter'] text-black max-[1340px]:text-sm">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolorem udantium, totam rem aperiam, eaque ipsa quae abventore veritatis et quasi architecto beatae vitae dicta sunt explicabomo enim</p>
-              </div>
+              </div> */}
               <div className="pdi-info-list flex flex-row gap-[10px] pt-[15px] max-[1340px]:pt-[51px] max-[1340px]:gap-[6px] max-[520px]:pt-[25px]">
                 <div className="pdi-info-item flex flex-col bg-white border-[#D6D6D6] border-[1px] max-[1340px]:justify-between">
                   <div className="pdi-info-item-img h-[118.93px] w-[150px] flex justify-center items-center max-[1340px]:w-[121px] max-[1340px]:h-[96px] max-[520px]:w-[107.83px] max-[520px]:h-[85.56px]">
@@ -336,10 +378,10 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                     productPurchasePage();
                     handleAddToCart(productWithPurchaseAmount);  // Pass updated product with purchaseAmount
                   }}>
-                    <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">KJØP DEKK</p>
+                    <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm text-white">KJØP DEKK</p>
                   </div>
                   <div className="px-[10px] py-[13.5px] flex justify-center items-center bg-[#AAAAAA] max-[1340px]:px-[12px] max-[1340px]:py-[12px] max-[520px]:py-[9.61px] max-[520px]:px-[7.39px] cursor-pointer" onClick={backProductpage}>
-                    <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm">Gå tilbake</p>
+                    <p className="text-lg leading-7 font-normal font-['Inter'] max-[1340px]:text-sm text-white" >Gå tilbake</p>
                   </div>
 
                 </div>
@@ -365,8 +407,8 @@ const ProductDetail = ({ pID }: { pID: number }) => {
               <p className="text-2xl text-black font-semi-bold max-[1450px]:text-lg">Description</p>
             </div>
             <div className="pdd-content pt-[32px] max-[1450px]:pt-[15px]">
-            {productDescription == null ?
-              <div className="text-black font-['Inter']">No description</div> :
+              {productDescription == null ?
+                <div className="text-black font-['Inter']">No description</div> :
                 <p className="text-lg leading-7 font-normal font-['Inter'] text-black max-[1450px]:text-sm">
                   {/* Displaying tyreInfo with proper line breaks */}
                   {productDescription.tyreInfo.split('\r\n').map((line: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, index: Key | null | undefined) => (
@@ -376,7 +418,7 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                     </span>
                   ))}
                 </p>
-            }
+              }
             </div>
           </div>
           <div className="product-detail-related flex flex-col gap-[33px] pl-[310px] pr-[206px] bg-white pb-[23px] max-[1846px]:px-[80px] max-[1024px]:pb-[82px] max-[1024px]:gap-[41px] max-[745px]:px-[16px] max-[643px]:items-center max-[400px]:gap-[25px] max-[1400px]:pb-[46px]">
@@ -389,19 +431,38 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                 <div className="pp-product-list-main-product-pan flex flex-col" key={relateproduct.id}>
                   <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                     <div className="pp-product-list-mpp-image-outback absolute">
-                      {relateproduct.image.length > 30 ?
+                      {/* {relateproduct.image.length > 30 ?
                         <Image alt="Car accessories image" src={relateproduct.image} width={176.52} height={238}></Image>
                         :
                         <Image alt="Car accessories image" src={`${backend_url}/uploads/tyreImg/${relateproduct.image}`} width={176.52} height={238}></Image>
 
-                      }
+                      } */}
+                      {relateproduct.image.length === 0 ? (
+                        <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                      ) : (
+                        relateproduct.image.length > 30 && relateproduct.size == null ? (
+                          <Image
+                            alt="Car accessories image"
+                            src={relateproduct.image === "" ? <></> : relateproduct.image}
+                            width={176.52}
+                            height={238}
+                          />
+                        ) : (
+                          <Image
+                            alt="Car accessories image"
+                            src={`${backend_url}/uploads/tyreImg/${relateproduct.image}`}
+                            width={176.52}
+                            height={238}
+                          />
+                        )
+                      )}
                     </div>
                   </div>
                   <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
                     <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
                       {relateproduct.recommended == 1 ?
                         <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
-                          <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                          <p className="text-sm leading-5 font-normal font-['Inter'] text-white">Recommended</p>
                         </div> : <></>
                       }
                     </div>
@@ -445,10 +506,10 @@ const ProductDetail = ({ pID }: { pID: number }) => {
                     </div>
                     <div className="pp-product-list-mmp-btn-group flex flex-row justify-center gap-[8px] pt-[19px]">
                       <div className="pp-product-list-mmp-buy-btn py-[8px] px-[27.5px] rounded-[4px] bg-[#73C018] cursor-pointer" onClick={() => { productPurchasePage(), handleAddToCart(relateproduct) }}>
-                        <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                        <p className="text-base leading-6 font-normal font-['Inter'] uppercase text-white">BUY</p>
                       </div>
                       <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(relateproduct.id)}>
-                        <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
+                        <p className="text-base leading-6 font-normal font-['Inter'] uppercase text-white">DETAILS</p>
                       </div>
                     </div>
                   </div>
@@ -463,6 +524,8 @@ const ProductDetail = ({ pID }: { pID: number }) => {
 
           <GetInTouch />
           <Footer />
+          <BackToTop/>
+
         </div>
       </main >
     </div >

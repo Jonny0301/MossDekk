@@ -8,6 +8,7 @@ import Main_Image from "@/components/Main_Image"
 import Price_service_1 from "../../public/image/price-service-image-1.png";
 import Price_service_2 from "../../public/image/price-service-image-2.png";
 import CollapseContainer from "@/components/CollapseContainer";
+import BackToTop from "@/components/backToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 const backend_url = process.env.NEXT_PUBLIC_API_URL
@@ -230,6 +231,8 @@ export default function Pricing() {
                     <Partner />
                     <GetInTouch />
                     <Footer />
+                    <BackToTop />
+
                 </div>
             </main>
         </div>

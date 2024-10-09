@@ -60,8 +60,11 @@ import Cancel from "@/svg/Cancel";
 import { HtmlContext } from "next/dist/server/future/route-modules/app-page/vendored/contexts/entrypoints";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingComponent from "@/components/onLoad"
+import BackToTop from "@/components/backToTop";
 const backend_url = process.env.NEXT_PUBLIC_API_URL
 export default function Home() {
+    const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isHandlingClick, setIsHandlingClick] = useState<boolean>(false);
     const [isMenuPopup, setIsMenuPopup] = useState(false);
@@ -71,51 +74,67 @@ export default function Home() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const secondScrollRef = useRef<HTMLDivElement>(null);
     const [showPopup, setShowPopup] = useState(false);
-    const [selectseason, setSelectSeason] = useState<string | null>(null);
-    const [selectedWidth, setSelectedWidth] = useState<string | null>(null);
-    const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
-    const [selectedDimension, setSelectedDimension] = useState<string | null>(null);
-    useEffect(() => {
+    const [selectseason, setSelectSeason] = useState<string | null>(() => {
         const storedSeason = localStorage.getItem('selectSeason');
-        const storedWidth = localStorage.getItem('selectedWidth');
-        const storedProfile = localStorage.getItem('selectedProfile');
-        const storedDimension = localStorage.getItem('selectedDimension');
+        return storedSeason ? storedSeason : 'summer'; // Default to 'summer'
+    });
     
-        if (storedSeason) setSelectSeason(storedSeason);
-        if (storedWidth) setSelectedWidth(storedWidth);
-        if (storedProfile) setSelectedProfile(storedProfile);
-        if (storedDimension) setSelectedDimension(storedDimension);
-      }, []);
-    useEffect(() => {
-        if (selectseason) localStorage.setItem('selectSeason', selectseason);
-    }, [selectseason]);
+    const [selectedWidth, setSelectedWidth] = useState<string | null>(() => {
+        const storedWidth = localStorage.getItem('selectedWidth');
+        return storedWidth ? storedWidth : '205'; // Default to '205'
+    });
+    
+    const [selectedProfile, setSelectedProfile] = useState<string | null>(() => {
+        const storedProfile = localStorage.getItem('selectedProfile');
+        return storedProfile ? storedProfile : '55'; // Default to '55'
+    });
+    
+    const [selectedDimension, setSelectedDimension] = useState<string | null>(() => {
+        const storedDimension = localStorage.getItem('selectedDimension');
+        return storedDimension ? storedDimension : '16'; // Default to '16'
+    });
+    
+        useEffect(() => {
+            const storedSeason = localStorage.getItem('selectSeason');
+            const storedWidth = localStorage.getItem('selectedWidth');
+            const storedProfile = localStorage.getItem('selectedProfile');
+            const storedDimension = localStorage.getItem('selectedDimension');
+        
+            if (storedSeason) setSelectSeason(storedSeason);
+            if (storedWidth) setSelectedWidth(storedWidth);
+            if (storedProfile) setSelectedProfile(storedProfile);
+            if (storedDimension) setSelectedDimension(storedDimension);
+        }, []);
+        useEffect(() => {
+            if (selectseason) localStorage.setItem('selectSeason', selectseason);
+        }, [selectseason]);
 
-    useEffect(() => {
-        if (selectedWidth) localStorage.setItem('selectedWidth', selectedWidth);
-    }, [selectedWidth]);
+        useEffect(() => {
+            if (selectedWidth) localStorage.setItem('selectedWidth', selectedWidth);
+        }, [selectedWidth]);
 
-    useEffect(() => {
-        if (selectedProfile) localStorage.setItem('selectedProfile', selectedProfile);
-    }, [selectedProfile]);
+        useEffect(() => {
+            if (selectedProfile) localStorage.setItem('selectedProfile', selectedProfile);
+        }, [selectedProfile]);
 
-    useEffect(() => {
-        if (selectedDimension) localStorage.setItem('selectedDimension', selectedDimension);
-    }, [selectedDimension]);
+        useEffect(() => {
+            if (selectedDimension) localStorage.setItem('selectedDimension', selectedDimension);
+        }, [selectedDimension]);
 
-    const handleSeasonChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectSeason(event.target.value);
-    }
-    const handleWidthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedWidth(event.target.value);
-    };
+        const handleSeasonChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            setSelectSeason(event.target.value);
+        }
+        const handleWidthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            setSelectedWidth(event.target.value);
+        };
 
-    const handleProfileChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedProfile(event.target.value);
-    };
+        const handleProfileChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            setSelectedProfile(event.target.value);
+        };
 
-    const handleDimensionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedDimension(event.target.value);
-    };
+        const handleDimensionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            setSelectedDimension(event.target.value);
+        };
     const handleToggleModal = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();
         ``
@@ -173,6 +192,7 @@ export default function Home() {
     };
     const [tyres, setTyres] = useState<any[]>([])
     const goToProductPage = async () => {
+        setLoading(true);
         const selectSeason = localStorage.getItem("selectSeason") || '';
         const selectWidth = localStorage.getItem("selectedWidth") || '';
         const selectProfile = localStorage.getItem("selectedProfile") || '';
@@ -199,6 +219,7 @@ export default function Home() {
                 (response.data[3] && response.data[3].length > 0)
             ) {
                 window.location.href = "/products";
+                setLoading(false)
             }else if(response.data[0]=="no entry"){
                 toast("Tires not found", {
                     position: "top-right",
@@ -209,6 +230,8 @@ export default function Home() {
                     draggable: true,
                     type: "warning", // Changed to warning or error if more appropriate
                 });
+                setLoading(false)
+
             }
              else {
                 toast("Tires not found", {
@@ -220,7 +243,10 @@ export default function Home() {
                     draggable: true,
                     type: "warning", // Changed to warning or error if more appropriate
                 });
+                setLoading(false)
+
             }
+            
 
         } catch (error) {
             console.error(error);
@@ -939,7 +965,8 @@ export default function Home() {
                 {/* <Debetaling_modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Faktura_Another_Modal isOpen={isModalOpen} onClose={closeModal} /> */}
                 {/* <Popup_Modal isOpen={isModalOpen} onClose={closeModal} /> */}
-
+                {loading && <LoadingComponent />}
+                <BackToTop/>
             </main>
         </div>
     );

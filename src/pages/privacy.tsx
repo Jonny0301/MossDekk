@@ -7,6 +7,7 @@ import Main_Image from "@/components/Main_Image"
 import { MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import BackToTop from "@/components/backToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 const backend_url = process.env.NEXT_PUBLIC_API_URL
@@ -66,7 +67,7 @@ export default function Terms() {
             window.removeEventListener('scroll', handleScroll);
         };
     }, [router.asPath]);
-    
+
     return (
         <div className="home-container flex flex-col">
             <Header />
@@ -78,17 +79,17 @@ export default function Terms() {
 
                             <div className={`flex flex-col w-[390px] h-auto max-[1700px]:gap-[18px] max-[1023px]:w-[206px] max-[660px]:hidden ${isFixed ? 'fixed top-8' : ''}`}>
                                 <div className="flex w-full cursor-pointer">
-                                    <Link href="/terms#first"className={`flex text-lg leading-7 ${activeTerm === 'Kjøpsvilkår - Kjøpsvilkår' ? 'font-semi-bold text-[#73C018]' : 'font-normal text-black'} max-[1460px]:text-base max-[1460px]:leading-6`}>
+                                    <Link href="/terms#first" className={`flex text-lg leading-7 ${activeTerm === 'Kjøpsvilkår - Kjøpsvilkår' ? 'font-semi-bold text-[#73C018]' : 'font-normal text-black'} max-[1460px]:text-base max-[1460px]:leading-6`}>
                                         Kjøpsvilkår - Kjøpsvilkår
                                     </Link>
                                 </div>
                                 <div className="flex w-full cursor-pointer">
-                                    <Link href="/terms#second"className={`flex text-lg leading-7 ${activeTerm === 'Kjøpsvilkår - Betaling' ? 'font-semi-bold text-[#73C018]' : 'font-normal text-black'} max-[1460px]:text-base max-[1460px]:leading-6`}>
+                                    <Link href="/terms#second" className={`flex text-lg leading-7 ${activeTerm === 'Kjøpsvilkår - Betaling' ? 'font-semi-bold text-[#73C018]' : 'font-normal text-black'} max-[1460px]:text-base max-[1460px]:leading-6`}>
                                         Kjøpsvilkår - Betaling
                                     </Link>
                                 </div>
                                 <div className="flex w-full cursor-pointer">
-                                    <Link href="/terms#third"className={`flex text-lg leading-7 ${activeTerm === 'Kjøpsvilkår - Leveranser' ? 'font-semi-bold text-[#73C018]' : 'font-normal text-black'} max-[1460px]:text-base max-[1460px]:leading-6`}>
+                                    <Link href="/terms#third" className={`flex text-lg leading-7 ${activeTerm === 'Kjøpsvilkår - Leveranser' ? 'font-semi-bold text-[#73C018]' : 'font-normal text-black'} max-[1460px]:text-base max-[1460px]:leading-6`}>
                                         Kjøpsvilkår - Leveranser
                                     </Link>
                                 </div>
@@ -296,6 +297,8 @@ export default function Terms() {
                     </div>
                     <Partner />
                     <Footer />
+                    <BackToTop />
+
                 </div>
             </main>
         </div>

@@ -32,6 +32,7 @@ import Tyre_24 from "../../public/image/tyre(24).png"
 import Tyre_Info_first from "@/svg/Tyre_Infor_first";
 import Tyre_Infor_second from "@/svg/Tyre_Infor_second";
 import Tyre_Infor_third from "@/svg/Tyre_Infor_third";
+import BackToTop from "@/components/backToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 const backend_url = process.env.NEXT_PUBLIC_API_URL
@@ -1354,6 +1355,8 @@ export default function Report() {
                     <Partner />
                     <GetInTouch />
                     <Footer />
+                    <BackToTop />
+
                 </div>
             </main>
         </div>

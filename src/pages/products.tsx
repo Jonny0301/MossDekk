@@ -14,14 +14,24 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 const inter = Inter({ subsets: ["latin"] });
-
+import No_product from "../../public/image/Image_not_available.png"
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/cartSlice';
 import { Product } from '../store/store';
+import LoadingComponent from "@/components/onLoad";
+import BackToTop from "@/components/backToTop";
+
 const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 const ProductList: React.FC = ({ }) => {
+
+  const defaultSeason = 'summer';
+  const defaultWidth = '205';
+  const defaultProfile = '55';
+  const defaultDimension = '16';
+
   const [tyres, setTyres] = useState<any[]>([])
+  const [loading, setLoading] = useState(false);
   const [budgetarray, setBudgetArray] = useState<any[]>([]);
   const [qualityarray, setQualityArray] = useState<any[]>([]);
   const [premiumarray, setPremiumArray] = useState<any[]>([]);
@@ -34,10 +44,11 @@ const ProductList: React.FC = ({ }) => {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>(['Winter', 'Summer', 'All-Season', 'Performance']);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  const [selectseason, setSelectSeason] = useState<string | null>(null);
-  const [selectedWidth, setSelectedWidth] = useState<string | null>(null);
-  const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
-  const [selectedDimension, setSelectedDimension] = useState<string | null>(null);
+  const [selectseason, setSelectSeason] = useState('');
+  const [selectedWidth, setSelectedWidth] = useState('');
+  const [selectedProfile, setSelectedProfile] = useState('');
+  const [selectedDimension, setSelectedDimension] = useState('');
+  const [isResetting, setIsResetting] = useState(false);
   const [clickedCategories, setClickedCategories] = useState<{ [key: string]: boolean }>({
     Budget: true,
     Quality: true,
@@ -48,11 +59,12 @@ const ProductList: React.FC = ({ }) => {
     summer: false,
   });
   const fetchTyres = async () => {
-    const selectSeason = localStorage.getItem("selectSeason") || '';
-    const selectWidth = localStorage.getItem("selectedWidth") || '';
-    const selectProfile = localStorage.getItem("selectedProfile") || '';
-    const selectDimension = localStorage.getItem("selectedDimension") || '';
-  
+    setLoading(true); // Start loading
+    const selectSeason = localStorage.getItem("selectSeason") || 'summer';
+    const selectWidth = localStorage.getItem("selectedWidth") || '205';
+    const selectProfile = localStorage.getItem("selectedProfile") || '55';
+    const selectDimension = localStorage.getItem("selectedDimension") || '16  ';
+
     try {
       const formDataParams = new URLSearchParams();
       formDataParams.append('method', 'fetchFrontTyres');
@@ -60,7 +72,7 @@ const ProductList: React.FC = ({ }) => {
       formDataParams.append('sizeOne', selectWidth);
       formDataParams.append('sizeTwo', selectProfile);
       formDataParams.append('sizeThree', selectDimension);
-  
+
       const response = await axios.post(
         `${backend_url}/queryNewSite.php`,
         formDataParams,
@@ -70,8 +82,9 @@ const ProductList: React.FC = ({ }) => {
           },
         }
       );
-  
+
       if (response.data[0] === "no entry") {
+        setLoading(false); // Stop loading
         toast("Tires not found", {
           position: "top-right",
           autoClose: 2000,
@@ -87,38 +100,38 @@ const ProductList: React.FC = ({ }) => {
         setPremiumArray([]);
         return;
       }
-  
+
       console.log(response.data);
-  
+
       const budgetArray = response.data[1] && response.data[1].length ? response.data[1] : [];
       const qualityArray = response.data[2] && response.data[2].length ? response.data[2] : [];
       const premiumArray = response.data[3] && response.data[3].length ? response.data[3] : [];
-  
+
       // Helper function to round price
       const roundPrice = (tire: any) => ({
         ...tire,
         price: parseFloat(tire.price).toFixed(0), // Round price to 2 decimal places
         purchaseAmount: 4,
       });
-  
+
       // Merge and round prices
       const merged = [
         ...budgetArray.map(roundPrice),
         ...qualityArray.map(roundPrice),
         ...premiumArray.map(roundPrice),
       ];
-  
+
       setTyres(merged);
       setBudgetArray(budgetArray.map(roundPrice));
       setQualityArray(qualityArray.map(roundPrice));
       setPremiumArray(premiumArray.map(roundPrice));
-  
+      setLoading(false); // Stop loading
     } catch (error) {
       console.error(error);
     }
   };
-  
-  
+
+
 
 
   // Handle input change
@@ -176,43 +189,120 @@ const ProductList: React.FC = ({ }) => {
     return speedValues.indexOf(tyreSpeed) >= speedValues.indexOf(selectedSpeed);
   }
   useEffect(() => {
-    const storedSeason = localStorage.getItem('selectSeason');
-    const storedWidth = localStorage.getItem('selectedWidth');
-    const storedProfile = localStorage.getItem('selectedProfile');
-    const storedDimension = localStorage.getItem('selectedDimension');
+    // Check if the page has been reloaded by using a flag in localStorage
+    const isPageReloaded = localStorage.getItem('isPageReloaded');
 
-    if (storedSeason) setSelectSeason(storedSeason);
-    if (storedWidth) setSelectedWidth(storedWidth);
-    if (storedProfile) setSelectedProfile(storedProfile);
-    if (storedDimension) setSelectedDimension(storedDimension);
-  }, []);
-  useEffect(() => {
-    if (selectseason) localStorage.setItem('selectSeason', selectseason);
-  }, [selectseason]);
+    // If it's not a reload, get data from localStorage and do not clear it
+    if (!isPageReloaded) {
+      const storedSeason = localStorage.getItem('selectSeason');
+      const storedWidth = localStorage.getItem('selectedWidth');
+      const storedProfile = localStorage.getItem('selectedProfile');
+      const storedDimension = localStorage.getItem('selectedDimension');
 
-  useEffect(() => {
-    if (selectedWidth) localStorage.setItem('selectedWidth', selectedWidth);
-  }, [selectedWidth]);
+      // Only set state if localStorage has values (from index page)
+      if (storedSeason) setSelectSeason(storedSeason);
+      if (storedWidth) setSelectedWidth(storedWidth);
+      if (storedProfile) setSelectedProfile(storedProfile);
+      if (storedDimension) setSelectedDimension(storedDimension);
 
-  useEffect(() => {
-    if (selectedProfile) localStorage.setItem('selectedProfile', selectedProfile);
-  }, [selectedProfile]);
+      // Set the flag in localStorage to indicate that the page has been loaded once
+      localStorage.setItem('isPageReloaded', 'true');
+    } else {
+      // If it's a reload, reset data to default values and clear localStorage
+      setSelectSeason(defaultSeason);
+      setSelectedWidth(defaultWidth);
+      setSelectedProfile(defaultProfile);
+      setSelectedDimension(defaultDimension);
 
-  useEffect(() => {
-    if (selectedDimension) localStorage.setItem('selectedDimension', selectedDimension);
-  }, [selectedDimension]);
-  const handleSeasonChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectSeason(event.target.value);
+
+      // Clear all stored data on page reload
+      localStorage.setItem('selectSeason', defaultSeason);
+      localStorage.setItem('selectedWidth', defaultWidth);
+      localStorage.setItem('selectedProfile', defaultProfile);
+      localStorage.setItem('selectedDimension', defaultDimension);
+      localStorage.removeItem('isPageReloaded');  // Clear the reload flag as well
+      setIsResetting(true);
+    }
+  }, []);  // This runs once when the page is loaded or reloaded
+  const setResetAllValue = () => {
+    const isPageReloaded = localStorage.getItem('isPageReloaded');
+
+    // If it's not a reload, get data from localStorage and do not clear it
+    if (!isPageReloaded) {
+      const storedSeason = localStorage.getItem('selectSeason');
+      const storedWidth = localStorage.getItem('selectedWidth');
+      const storedProfile = localStorage.getItem('selectedProfile');
+      const storedDimension = localStorage.getItem('selectedDimension');
+
+      // Only set state if localStorage has values (from index page)
+      if (storedSeason) setSelectSeason(storedSeason);
+      if (storedWidth) setSelectedWidth(storedWidth);
+      if (storedProfile) setSelectedProfile(storedProfile);
+      if (storedDimension) setSelectedDimension(storedDimension);
+
+      // Set the flag in localStorage to indicate that the page has been loaded once
+      localStorage.setItem('isPageReloaded', 'true');
+    } else {
+      // If it's a reload, reset data to default values and clear localStorage
+      setSelectSeason(defaultSeason);
+      setSelectedWidth(defaultWidth);
+      setSelectedProfile(defaultProfile);
+      setSelectedDimension(defaultDimension);
+
+
+      // Clear all stored data on page reload
+      localStorage.setItem('selectSeason', defaultSeason);
+      localStorage.setItem('selectedWidth', defaultWidth);
+      localStorage.setItem('selectedProfile', defaultProfile);
+      localStorage.setItem('selectedDimension', defaultDimension);
+      localStorage.removeItem('isPageReloaded');  // Clear the reload flag as well
+      setIsResetting(true);
+    }
   }
-  const handleWidthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  useEffect(() => {
+    if (isResetting) {
+      // Reload the page once programmatically to reflect the updated state
+      window.location.reload();
+    }
+  }, [isResetting]);
+  // Effect to save data to local storage when values change
+  useEffect(() => {
+    if (!isResetting && selectseason && selectseason !== defaultSeason) {
+      localStorage.setItem('selectSeason', selectseason);
+    }
+  }, [selectseason, isResetting]);
+
+  useEffect(() => {
+    if (!isResetting && selectedWidth && selectedWidth !== defaultWidth) {
+      localStorage.setItem('selectedWidth', selectedWidth);
+    }
+  }, [selectedWidth, isResetting]);
+
+  useEffect(() => {
+    if (!isResetting && selectedProfile && selectedProfile !== defaultProfile) {
+      localStorage.setItem('selectedProfile', selectedProfile);
+    }
+  }, [selectedProfile, isResetting]);
+
+  useEffect(() => {
+    if (!isResetting && selectedDimension && selectedDimension !== defaultDimension) {
+      localStorage.setItem('selectedDimension', selectedDimension);
+    }
+  }, [selectedDimension, isResetting]);
+  // Handlers for user input
+  const handleSeasonChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+    setSelectSeason(event.target.value);
+  };
+
+  const handleWidthChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setSelectedWidth(event.target.value);
   };
 
-  const handleProfileChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleProfileChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setSelectedProfile(event.target.value);
   };
 
-  const handleDimensionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleDimensionChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setSelectedDimension(event.target.value);
   };
   const generateOptions = (start: number, end: number, step: number = 1): JSX.Element[] => {
@@ -233,6 +323,9 @@ const ProductList: React.FC = ({ }) => {
   const handleAddToCart = (Product: Product) => {
     dispatch(addToCart(Product));  // Dispatch product to be added to the cart
   };
+  if (isResetting) {
+    return <div><LoadingComponent /></div>; // Or show a loading spinner
+  }
   return (
     <div className="home-container flex flex-col">
       <Header />
@@ -309,18 +402,33 @@ const ProductList: React.FC = ({ }) => {
                               <div className="pp-product-list-main-product-pan flex flex-col tyreResultContainer" key={`budget-${tyre.id}`}>
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                   <div className="pp-product-list-mpp-image-outback absolute">
-                                    {tyre.image.length > 30 && tyre.size == null ?
-                                      <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
-                                      :
-                                      <Image alt="Tire image of Moss Dekk AS" src={`${backend_url}/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
-                                    }
+                                    {tyre.image.length === 0 ? (
+                                      <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                                    ) : (
+                                      tyre.image.length > 30 && tyre.size == null ? (
+                                        <Image
+                                          alt="Tire image of Moss Dekk AS"
+                                          src={tyre.image === "" ? No_product : tyre.image}
+                                          width={176.52}
+                                          height={238}
+                                        />
+                                      ) : (
+                                        <Image
+                                          alt="Tire image of Moss Dekk AS"
+                                          src={`${backend_url}/uploads/tyreImg/${tyre.image}`}
+                                          width={176.52}
+                                          height={238}
+                                        />
+                                      )
+                                    )}
+
                                   </div>
                                 </div>
                                 <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
                                   <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
                                     {tyre.recommended == 1 ?
                                       <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
-                                        <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                                        <p className="text-sm leading-5 font-normal font-['Inter'] text-white">Recommended</p>
                                       </div> : <div></div>
                                     }
                                   </div>
@@ -375,10 +483,10 @@ const ProductList: React.FC = ({ }) => {
                                       };
                                       handleAddToCart(productWithPurchaseAmount)
                                     }}>
-                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase text-white" >BUY</p>
                                     </div>
-                                    <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => {goToDetailPage(tyre.id)}}>
-                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
+                                    <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => { goToDetailPage(tyre.id) }}>
+                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase text-white">DETAILS</p>
                                     </div>
                                   </div>
                                 </div>
@@ -491,18 +599,33 @@ const ProductList: React.FC = ({ }) => {
                               <div className="pp-product-list-main-product-pan flex flex-col tyreResultContainer" key={`quality-${tyre.id}`}>
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                   <div className="pp-product-list-mpp-image-outback absolute">
-                                    {tyre.image.length > 30 && tyre.size == null ?
-                                      <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
-                                      :
-                                      <Image alt="Tire image of Moss Dekk AS" src={`${backend_url}/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
-                                    }
+                                    {tyre.image.length === 0 ? (
+                                      <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                                    ) : (
+                                      tyre.image.length > 30 && tyre.size == null ? (
+                                        <Image
+                                          alt="Tire image of Moss Dekk AS"
+                                          src={tyre.image === "" ? No_product : tyre.image}
+                                          width={176.52}
+                                          height={238}
+                                        />
+                                      ) : (
+                                        <Image
+                                          alt="Tire image of Moss Dekk AS"
+                                          src={`${backend_url}/uploads/tyreImg/${tyre.image}`}
+                                          width={176.52}
+                                          height={238}
+                                        />
+                                      )
+                                    )}
+
                                   </div>
                                 </div>
                                 <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
                                   <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
                                     {tyre.recommended == 1 ?
                                       <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
-                                        <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                                        <p className="text-sm leading-5 font-normal font-['Inter'] text-white">Recommended</p>
                                       </div> : <div></div>
                                     }
                                   </div>
@@ -557,10 +680,10 @@ const ProductList: React.FC = ({ }) => {
                                       };
                                       handleAddToCart(productWithPurchaseAmount)
                                     }}>
-                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase text-white">BUY</p>
                                     </div>
                                     <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(tyre.id)}>
-                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase">DETAILS</p>
+                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase text-white">DETAILS</p>
                                     </div>
                                   </div>
                                 </div>
@@ -615,18 +738,33 @@ const ProductList: React.FC = ({ }) => {
                               <div className="pp-product-list-main-product-pan flex flex-col tyreResultContainer" key={`quality-${tyre.id}`}>
                                 <div className="pp-product-list-mpp-image bg-[#F5F5F5] w-[331px] h-[312px] relative flex justify-center items-center">
                                   <div className="pp-product-list-mpp-image-outback absolute">
-                                    {tyre.image.length > 30 && tyre.size == null ?
-                                      <Image alt="Tire image of Moss Dekk AS" src={tyre.image} width={176.52} height={238} />
-                                      :
-                                      <Image alt="Tire image of Moss Dekk AS" src={`${backend_url}/uploads/tyreImg/${tyre.image}`} width={176.52} height={238} />
-                                    }
+                                    {tyre.image.length === 0 ? (
+                                      <div className="text-sm leading-5 font-normal font-['Inter'] text-black">No Product Image</div>
+                                    ) : (
+                                      tyre.image.length > 30 && tyre.size == null ? (
+                                        <Image
+                                          alt="Tire image of Moss Dekk AS"
+                                          src={tyre.image === "" ? No_product : tyre.image}
+                                          width={176.52}
+                                          height={238}
+                                        />
+                                      ) : (
+                                        <Image
+                                          alt="Tire image of Moss Dekk AS"
+                                          src={`${backend_url}/uploads/tyreImg/${tyre.image}`}
+                                          width={176.52}
+                                          height={238}
+                                        />
+                                      )
+                                    )}
+
                                   </div>
                                 </div>
                                 <div className="pp-product-list-mpp-main-info w-[331px] h-[336px] bg-[#E4E4E4] flex flex-col py-[11.5px] px-[34px]">
                                   <div className="pp-product-list-mmp-recommend-item w-full h-[25px] mb-[19px] flex justify-center items-center">
                                     {tyre.recommended == 1 ?
                                       <div className="pp-product-list-mmp-recommend px-[10px] py-[2.5px] rounded-[4px] bg-[#73C018] drop-shadow-2xl">
-                                        <p className="text-sm leading-5 font-normal font-['Inter']">Recommended</p>
+                                        <p className="text-sm leading-5 font-normal font-['Inter'] text-white">Recommended</p>
                                       </div> : <div></div>
                                     }
                                   </div>
@@ -681,10 +819,10 @@ const ProductList: React.FC = ({ }) => {
                                       };
                                       handleAddToCart(productWithPurchaseAmount)
                                     }}>
-                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase">BUY</p>
+                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase text-white">BUY</p>
                                     </div>
                                     <div className="pp-product-list-mmp-detail-btn py-[8px] px-[11.5px] rounded-[4px] bg-[#888888] cursor-pointer" onClick={() => goToDetailPage(tyre.id)}>
-                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase" >DETAILS</p>
+                                      <p className="text-base leading-6 font-normal font-['Inter'] uppercase text-white">DETAILS</p>
                                     </div>
                                   </div>
                                 </div>
@@ -937,7 +1075,7 @@ const ProductList: React.FC = ({ }) => {
                     <div className="py-[12px] px-[107px] rounded-[4px] bg-[#73C018] cat-info-search-btn cursor-pointer" onClick={() => { setSelectedLoad(preSelectedLoad); setSelectedSpeed(preSelectedSpeed); setSelectedSeason(selectedValues); fetchTyres() }}>
                       <p className="text-xl leading-7 font-normal font-['Inter'] text-white">Search</p>
                     </div>
-                    <div className="cat-info-reset-btn py-[14px] px-[13px] rounded-[4px] bg-white cursor-pointer" onClick={() => { setSelectedLoad(50); setSelectedSpeed('K') }}>
+                    <div className="cat-info-reset-btn py-[14px] px-[13px] rounded-[4px] bg-white cursor-pointer" onClick={() => { setSelectedLoad(50); setSelectedSpeed('K'); setSelectSeason("summer"); setSelectedWidth("205"); setSelectedProfile("55"); setSelectedDimension("16"); fetchTyres(); setResetAllValue() }}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M1 4V10H7" stroke="#6D6D6D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         <path d="M3.51 14.9999C4.15839 16.8403 5.38734 18.4201 7.01166 19.5013C8.63598 20.5825 10.5677 21.1065 12.5157 20.9944C14.4637 20.8823 16.3226 20.1401 17.8121 18.8797C19.3017 17.6193 20.3413 15.9089 20.7742 14.0063C21.2072 12.1037 21.0101 10.1119 20.2126 8.33105C19.4152 6.55019 18.0605 5.07674 16.3528 4.13271C14.6451 3.18868 12.6769 2.82521 10.7447 3.09707C8.81245 3.36892 7.02091 4.26137 5.64 5.63995L1 9.99995" stroke="#6D6D6D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -954,6 +1092,9 @@ const ProductList: React.FC = ({ }) => {
           <ToastContainer />
         </div>
       </main>
+      {loading && <LoadingComponent />}
+      <BackToTop />
+
     </div>
   );
 }

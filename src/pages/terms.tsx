@@ -8,6 +8,7 @@ import Terms_tick from "@/svg/Terms_tick";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import BackToTop from "@/components/backToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 const backend_url = process.env.NEXT_PUBLIC_API_URL
@@ -135,7 +136,7 @@ export default function Terms() {
                                 </div>
                             </div>
                             <div className="hidden max-[660px]:flex max-[660px]:flex-col max-[660px]:h-auto max-[660px]:w-[206px] max-[660px]:pb-[17px]">
-                            <div className="flex w-full cursor-pointer">
+                                <div className="flex w-full cursor-pointer">
                                     <Link href="/terms#first" onClick={(event) => handleTermClick('first', event)} className={`flex text-lg leading-7 ${activeTerm === 'first' ? 'font-semi-bold text-[#73C018]' : 'font-normal text-black'} max-[1460px]:text-base max-[1460px]:leading-6`}>
                                         Kjøpsvilkår - Kjøpsvilkår
                                     </Link>
@@ -241,7 +242,7 @@ export default function Terms() {
                                         Vi monterer og balanserer hjulene for kun 99 kroner per stykk. OBS! Bolt inngår ikke, men i de fleste tilfeller passer bilens originalbolter.
                                     </span>
                                 </div>
-                                <div className="flex flex-col w-full h-auto gap-4"  id="third">
+                                <div className="flex flex-col w-full h-auto gap-4" id="third">
                                     <span className="text-2xl leading-8 font-semi-bold text-[#73C018] max-[1460px]:text-xl max-[1460px]:leading-7  max-[660px]:text-base max-[660px]:leading-6">Aluminiumsfelg</span>
                                     <span className="text-lg leading-7 font-normal font-['Inter'] text-zinc-500 max-[660px]:text-sm max-[660px]:leading-5">
                                         Sølvfarget bolt/mutter og eventuell navring inngår med tilpasnngsgaranti.
@@ -302,6 +303,8 @@ export default function Terms() {
                     </div>
                     <Partner />
                     <Footer />
+                    <BackToTop />
+        
                 </div>
             </main>
         </div>

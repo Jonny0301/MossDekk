@@ -17,6 +17,7 @@ import Send from "@/svg/Send";
 import { MdCheckBox } from "react-icons/md";
 import Link from "next/link";
 import Union from "@/svg/Paymethod";
+import BackToTop from "@/components/backToTop";
 
 import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from 'react';
@@ -60,12 +61,12 @@ const Contact: React.FC = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-    
+
         if (!isNewCustomer) {
             alert("You have to agree to the Privacy and Policy!");
             return;
         }
-    
+
         try {
             // Convert formData object into URLSearchParams format for URL encoding
             const formDataParams = new URLSearchParams();
@@ -77,7 +78,7 @@ const Contact: React.FC = () => {
             formDataParams.append('msg', formData.msg);
             formDataParams.append('regNr', formData.regNr);
             formDataParams.append('location', "Moss Dekk AS"); // Optional field
-    
+
             // Make the POST request
             const response = await axios.post(
                 `${backend_url}/queryNewSite.php`,
@@ -88,9 +89,9 @@ const Contact: React.FC = () => {
                     },
                 }
             );
-    
+
             if (response.data === 'success') {
-                
+
                 alert('Contact saved successfully!');
                 window.location.reload();
             } else if (response.data === 'empty fields') {
@@ -275,6 +276,8 @@ const Contact: React.FC = () => {
                         </div>
                     </div>
                     <Footer />
+                    <BackToTop />
+
                 </div>
             </main>
         </div>

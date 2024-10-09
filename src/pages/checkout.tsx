@@ -20,9 +20,13 @@ import { Console } from "console";
 import { tree } from "next/dist/build/templates/app-page";
 import Faktura_Another_Modal from "@/modal/faktura_another_modal";
 const inter = Inter({ subsets: ["latin"] });
+import LoadingComponent from "@/components/onLoad"
+import BackToTop from "@/components/backToTop";
+
 const backend_url = process.env.NEXT_PUBLIC_API_URL
 
 export default function Pricing() {
+  const [loading, setLoading] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [dateTime, setDateTime] = useState<string>('');
   const [prices, setPrices] = useState<any>({ price128: '', price165: '' });
@@ -58,6 +62,7 @@ export default function Pricing() {
   };
   const handleRegChange = async (value: string) => {
     setRegNr(value);
+    setLoading(true);
     // if (value.length <= 7) {
     //   if (value.length === 7) {
     //     const isValidInput = /^[a-zA-Z]{2}[0-9]{5}$/.test(value);
@@ -82,7 +87,9 @@ export default function Pricing() {
         setEmail(response.data.email);
         setNavn(response.data.name);
         setMobilNr(response.data.mobile);
-        setLocation(response.data.location)
+        setLocation(response.data.location);
+        setLoading(false);
+        localStorage.setItem("regNr",regNr);
       }
       else {
         toast("Please enter correct RegNr", {
@@ -94,6 +101,7 @@ export default function Pricing() {
           draggable: true,
           type: "warning",
         });
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
@@ -108,7 +116,7 @@ export default function Pricing() {
 
     e.preventDefault();
     e.stopPropagation();
-    if (!emailError && isValid == true && email && regNr && navn && dateTime && mobilNr && location !== 'none') {
+    if (!emailError && isValid == true && email && regNr && navn && dateTime && mobilNr && location == "moss") {
 
       setPaymentModalOpen(prev => !prev);
 
@@ -237,7 +245,7 @@ export default function Pricing() {
                   value={regNr}
                   pattern="[a-zA-Z]{2}[0-9]{5}$" type="text"/* maxLength={7}*/
                   onBlur={(e) => handleRegChange(e.target.value)}
-                  onChange={(e)=>setRegNr(e.target.value)}
+                  onChange={(e) => setRegNr(e.target.value)}
                 >
 
                 </input>
@@ -410,7 +418,10 @@ export default function Pricing() {
           <Footer />
         </div>
       </main>
-      <Faktura_Another_Modal isOpen={paymentModalOpen} onClose={handleCloseModal} email={email} price={totalProductPrice} regNr={regNr} name={navn} mobile={mobilNr} date={dateTime} count={totalCount} envprice = {taxPrice} totalPrice = {totalProductPrice}/>
+      <Faktura_Another_Modal isOpen={paymentModalOpen} onClose={handleCloseModal} email={email} price={totalProductPrice} regNr={regNr} name={navn} mobile={mobilNr} date={dateTime} count={totalCount} envprice={taxPrice} totalPrice={totalProductPrice} />
+      {loading && <LoadingComponent />}
+      <BackToTop />
+
     </div>
 
   );
